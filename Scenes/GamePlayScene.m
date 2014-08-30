@@ -180,6 +180,7 @@
     float numTest = (_playAreaTexture.size.height - _xOffsetPA)/(_xOffsetPA + [_ballAtlas textureNamed:@"ball0"].size.height);
     
     _numRows = ceilf(numTest);
+    NSLog(@"%d", _numRows);
     
     _yOffsetPA = (_playAreaTexture.size.height - [_ballAtlas textureNamed:@"ball0"].size.height * _numRows)/(_numRows + 1);
     
@@ -845,8 +846,6 @@
         if (connectedBalls.count >= 3) {
             int score = (int)(connectedBalls.count - 2 )*3;
             
-            
-            
             if (_powerTypeAt == 5) {
                 score = score * 2;
             }
@@ -867,8 +866,6 @@
             }
             [self updateBallPositions];
         }
-        
-        
         
         [connectedBalls removeAllObjects];
         connectedBalls = nil;
@@ -904,9 +901,7 @@
 -(void)ballMoved:(Ball *)ball direction:(int)dirc{
     
     int ballIndex = ball.column + _levelFactory.numOfColumns*ball.row;
-    
-    
-    
+
     if (dirc == 1) {
         int upBallIndex = ballIndex + _levelFactory.numOfColumns;
         if (upBallIndex < _ballsArray.count &&
@@ -1222,8 +1217,6 @@
 
 //Changes a random ball color every specific time
 -(void)changeRandomBallColor{
-    
-    
     
     int randIndex = arc4random_uniform((unsigned)_ballsArray.count);
     

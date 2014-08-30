@@ -60,7 +60,6 @@
     
     if (_hasFinishCreated) {
         
-        
         if (_deltaTime >= _spawnRate) {
             _deltaTime = _deltaTime - _spawnRate;
             _passTime = currentTime - _deltaTime;
@@ -72,6 +71,7 @@
     }
 }
 
+
 //spawns a random ball from a random spawner
 -(void)spawnRandomBall{
     
@@ -81,6 +81,10 @@
         ballSp.velocity = _velocity;
         [ballSp setPhysicsProperties];
         [_ballQuene addObject:ballSp];
+        if (!_testB) {
+            _sBall = ballSp;
+            _testB = YES;
+        }
         
         //NSLog(@"IN Main Spawn Random ball %d ", [NSThread isMainThread]);
         [self addChild: ballSp];
@@ -119,9 +123,7 @@
         _hasFinishCreated = YES;
         
     }
-    
-    
-    
+
 }
 
 //Inits the variables that are use through out this scene
@@ -253,9 +255,7 @@
 
 //Called when the play button is pressed
 -(void)buttonPressed: (ButtonType)type{
-    
-   
-    
+
     if (type == StoreButton) {
         [self.delegate storeButtonPressed];
     }else{

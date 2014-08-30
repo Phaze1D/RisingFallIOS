@@ -43,53 +43,50 @@
     NSTimeInterval playerTime = data.player.timeLeftOnSocialMedia;
     NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
     
+    
+    if (date.timeIntervalSince1970 < playerTime && !_isOpen && _type == SOCIAL_BUTTON) {
+        [self displayTimeLeft];
+    }else{
         
-        if (date.timeIntervalSince1970 < playerTime && !_isOpen && _type == SOCIAL_BUTTON) {
-            [self displayTimeLeft];
+        if (_type == SOCIAL_BUTTON) {
+            [self.socialDelegate socialButtonPressed];
         }else{
             
-            if (_type == SOCIAL_BUTTON) {
-                [self.socialDelegate socialButtonPressed];
-            }else{
+            SocialMediaControl * control = [SocialMediaControl sharedSocialMediaControl];
+            control.delegate = self;
+            _didShare = NO;
+            
+            if ([self.name isEqualToString:@"facebook.png"]) {
                 
-                SocialMediaControl * control = [SocialMediaControl sharedSocialMediaControl];
-                control.delegate = self;
-                _didShare = NO;
+                [control facebookClicked];
                 
-                if ([self.name isEqualToString:@"facebook.png"]) {
-                    
-                    [control facebookClicked];
-                    
-                }else if ([self.name isEqualToString:@"contacts.png"]) {
-                    [control contactsClicked];
-                    
-                }else if ([self.name isEqualToString:@"google.png"]) {
-                    
-                    [control googleClicked];
-                    
-                }else if ([self.name isEqualToString:@"twitter.png"]) {
-                    
-                    [control twitterClicked];
-                    
-                }else if ([self.name isEqualToString:@"vk.png"]) {
-                    
-                    [control vkClicked];
-                    
-                }else if ([self.name isEqualToString:@"weibo.png"]) {
-                    
-                    [control weiboClicked];
-                    
-                }
+            }else if ([self.name isEqualToString:@"contacts.png"]) {
+                [control contactsClicked];
                 
-                if (_didShare) {
-                    [data.player calculateNextShareTime];
-                }
+            }else if ([self.name isEqualToString:@"google.png"]) {
+                
+                [control googleClicked];
+                
+            }else if ([self.name isEqualToString:@"twitter.png"]) {
+                
+                [control twitterClicked];
+                
+            }else if ([self.name isEqualToString:@"vk.png"]) {
+                
+                [control vkClicked];
+                
+            }else if ([self.name isEqualToString:@"weibo.png"]) {
+                
+                [control weiboClicked];
                 
             }
+            
+            if (_didShare) {
+                [data.player calculateNextShareTime];
+            }
+            
         }
-    
-    
-    
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{

@@ -30,6 +30,7 @@
 @property SKTextureAtlas * startAtlas;
 @property SKTextureAtlas * socialAtlas;
 @property SKTextureAtlas * ballAtlas;
+
 @property SKTexture * playImage;
 @property SKTexture * playPressedImage;
 @property SKTexture * storeImage;
@@ -52,6 +53,9 @@
 
 @property ButtonNode * playButton;
 @property ButtonNode * storeButton;
+
+@property Ball * sBall;
+@property BOOL testB;
 
 @property SocialMediaButton * socialMediaB;
 

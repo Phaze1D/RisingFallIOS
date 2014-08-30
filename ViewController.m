@@ -30,7 +30,7 @@
     //_mainView.ignoresSiblingOrder = YES;
     //_mainView.showsFPS = YES;
     //_mainView.showsNodeCount = YES;
-    _mainView.showsDrawCount = YES;
+    //_mainView.showsDrawCount = YES;
     _banner = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
     _banner.delegate = self;
     _bannerIsVisible = YES;
