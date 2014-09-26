@@ -12,7 +12,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:[PaymentClass sharePaymentClass]];
     // Override point for customization after application launch.
     return YES;
 }
@@ -80,7 +80,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    ViewController * myView = (ViewController *) self.window.rootViewController;
+    [myView.paymentClass clearClass];
 }
 
 - (BOOL)application: (UIApplication *)application

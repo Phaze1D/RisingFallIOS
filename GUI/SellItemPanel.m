@@ -7,6 +7,7 @@
 //
 
 #import "SellItemPanel.h"
+#import "StoreScene.h"
 
 @implementation SellItemPanel
 
@@ -65,13 +66,13 @@
     titleNode.position = CGPointMake(self.size.width/2, self.size.height - yOffset + powerItemText.size.height/2);
     [self addChild:titleNode];
     
-    ButtonNode * buyButton = [ButtonNode spriteNodeWithTexture:buyButtonText];
-    buyButton.position = CGPointMake(self.size.width/2, yOffset - buyButtonText.size.height/2);
-    [buyButton setText:NSLocalizedString(@".99k", nil)];
-    [buyButton setImages:buyButtonText pressedImage:buyButtonText];
-    buyButton.delegate = self;
-    buyButton.userInteractionEnabled = YES;
-    [self addChild:buyButton];
+     _buyButton = [ButtonNode spriteNodeWithTexture:buyButtonText];
+    _buyButton.position = CGPointMake(self.size.width/2, yOffset - buyButtonText.size.height/2);
+    [_buyButton setText:NSLocalizedString(@".99k", nil)];
+    [_buyButton setImages:buyButtonText pressedImage:buyButtonText];
+    _buyButton.delegate = self;
+    _buyButton.userInteractionEnabled = YES;
+    [self addChild:_buyButton];
 
 }
 
@@ -81,21 +82,25 @@
 }
 
 -(void)buttonPressed:(ButtonType)type{
-    
-    if ([self payButtonPressed]) {
-        //Display paid succes
+    [(StoreScene *) self.parent disableBack];
+    _buyButton.userInteractionEnabled = NO;
+    PaymentClass * paymentClass = [PaymentClass sharePaymentClass];
+    paymentClass.delegate = self;
+    [paymentClass buyProduct:_powerID];
+}
+
+
+-(void)buyTransctionFinished:(BOOL)didBuy{
+    if (didBuy) {
         GameData * info = [GameData sharedGameData];
         [info.player increasePower:_powerType];
-    }else{
-        //Display paid fail
     }
+    
+    [(StoreScene *) self.parent enableBack];
+    _buyButton.userInteractionEnabled = NO;
     
 }
 
-//Called when the pay button is pressed
--(BOOL)payButtonPressed{
-    PaymentClass * payment = [[PaymentClass alloc] init];
-    return [payment payDollar];
-}
+
 
 @end

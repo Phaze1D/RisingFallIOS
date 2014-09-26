@@ -21,6 +21,7 @@
 @property StoreScene * storeScene;
 @property BOOL bannerIsVisible;
 @property ADBannerView * banner;
+@property PaymentClass * paymentClass;
 
 
 @end

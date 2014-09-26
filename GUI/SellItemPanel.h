@@ -13,11 +13,13 @@
 #import "GameData.h"
 
 
-@interface SellItemPanel : SKSpriteNode <ButtonDelegate>
+@interface SellItemPanel : SKSpriteNode <ButtonDelegate, PaymentClassDelegate>
 
 @property CGSize textViewSize;
 @property UITextView * textView;
 @property int powerType;
+@property NSString * powerID;
+@property ButtonNode * buyButton;
 
 -(void)createPanel: (int)powerType Validate: (BOOL)isValidProduct;
 -(void)createTextView: (int)powerType;

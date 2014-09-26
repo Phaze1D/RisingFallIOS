@@ -24,7 +24,7 @@
 
 @interface LevelsScene : SKScene <ButtonDelegate, LevelButtonDelegate>
 
-@property(nonatomic, weak) id<LevelsSceneDelegate> delegate;
+@property(nonatomic, weak) id<LevelsSceneDelegate> mdelegate;
 
 @property PlayerInfo * player;
 

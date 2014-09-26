@@ -113,8 +113,7 @@
 
 //Pressed when the buy Button is pressed
 -(void)buttonPressed:(ButtonType)type{
-    PaymentClass * payment = [[PaymentClass alloc] init];
-    if ([payment payDollar]) {
+    if (YES) {
         GameData * info = [GameData sharedGameData];
         info.player.lifesLeft = 5;
         info.player.timeLeftOnLifes = 0;

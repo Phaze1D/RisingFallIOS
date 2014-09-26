@@ -257,9 +257,9 @@
 -(void)buttonPressed: (ButtonType)type{
 
     if (type == StoreButton) {
-        [self.delegate storeButtonPressed];
+        [self.mdelegate storeButtonPressed];
     }else{
-        [self.delegate playButtonPressed];
+        [self.mdelegate playButtonPressed];
     }
     
 }

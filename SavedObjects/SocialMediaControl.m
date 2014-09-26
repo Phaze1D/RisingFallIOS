@@ -230,22 +230,6 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     
 }
 
-
--(BOOL)pinClicked{
-    
-    return YES;
-}
-
--(BOOL)redditClicked{
-    
-    return YES;
-}
-
--(BOOL)tumblrClicked{
-    
-    return YES;
-}
-
 -(void)twitterClicked{
     
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){

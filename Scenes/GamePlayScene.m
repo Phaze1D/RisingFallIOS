@@ -65,9 +65,9 @@
         }
         
         
-        if (_levelID >= 70 && _levelFactory.gameType == 1 && currentTime >= _nextSpeedTime) {
+        if (_levelID >= 70 && _levelFactory.gameType == 1 && _objectivePanel.time <= _nextSpeedTime) {
             [_levelFactory changeSpeedAndDrop];
-            _nextSpeedTime = _currentTime + _levelFactory.changeSpeedTime - _deltaTime;
+            _nextSpeedTime = _objectivePanel.time - _levelFactory.changeSpeedTime;
         }
         
         if (currentTime >= _nextTime && !_objectiveReached) {
@@ -177,10 +177,30 @@
     
     _xOffsetPA = (_playAreaTexture.size.width - [_ballAtlas textureNamed:@"ball0"].size.width*_maxColumns)/(_maxColumns + 1);
     
-    float numTest = (_playAreaTexture.size.height - _xOffsetPA)/(_xOffsetPA + [_ballAtlas textureNamed:@"ball0"].size.height);
+    //float numTest = (_playAreaTexture.size.height - _xOffsetPA)/(_xOffsetPA + [_ballAtlas textureNamed:@"ball0"].size.height);
     
-    _numRows = ceilf(numTest);
-    NSLog(@"%d", _numRows);
+    switch (_levelFactory.ceilingHeight){
+        case 1:
+            _numRows = 13;
+            break;
+        case 2:
+        case 3:
+            _numRows = 12;
+            break;
+        case 4:
+        case 5:
+            _numRows = 11;
+            break;
+        case 6:
+            _numRows = 10;
+            
+    }
+
+    
+
+    
+   // _numRows = ceilf(numTest);
+     NSLog(@"%d --- %d", _numRows, _levelFactory.ceilingHeight);
     
     _yOffsetPA = (_playAreaTexture.size.height - [_ballAtlas textureNamed:@"ball0"].size.height * _numRows)/(_numRows + 1);
     
@@ -198,7 +218,12 @@
     if (_levelFactory.gameType == 2) {
         _nextBallChange = _levelFactory.numberOfBalls - _levelFactory.changeSpeedBNum;
     }
-}
+    
+    
+
+
+    
+   }
 
 //Creates the Positions of the still objects in the scene
 -(void) createPositions{
@@ -238,6 +263,8 @@
         _firstY = _playAreaPosition.y + _yOffsetPA;
         
     }
+    
+    
     
 }
 
@@ -504,6 +531,7 @@
         [self removeGameplay];
         _optionPanel.userInteractionEnabled = NO;
         [self createSettingPanel];
+        _previousPauseTime = _currentTime;
     });
     
 }
@@ -555,6 +583,7 @@
     [self createAllBallsArray];
     [_movingBallList gameResumed];
     _nextTime = _currentTime + _deltaTime;
+    //_nextSpeedTime = _currentTime + _nextSpeedTime;
     
 }
 
@@ -753,7 +782,7 @@
         [_player.scores replaceObjectAtIndex:_levelID withObject:[NSNumber numberWithInt: _scorePanel.currentScore]];
     }
     
-    [self.delegate quitGameplay];
+    [self.mdelegate quitGameplay];
     
 }
 
@@ -776,7 +805,7 @@
             _player.levelAt = _player.levelAt + 1;
         }
         if (_levelID < 100) {
-            [self.delegate beginNextLevel: ++_levelID];
+            [self.mdelegate beginNextLevel: ++_levelID];
         }
         
     }
@@ -796,9 +825,9 @@
     _player.lifesLeft--;
     if (_player.lifesLeft == 0) {
         [_player calculateNextLifeTime];
-        [self.delegate quitGameplay];
+        [self.mdelegate quitGameplay];
     }else{
-        [self.delegate beginNextLevel:_levelID];
+        [self.mdelegate beginNextLevel:_levelID];
     }
 }
 
@@ -821,7 +850,7 @@
             
             _nextTime = _currentTime + 1.0/_levelFactory.dropRate;
             _nextColorTime = _currentTime + _levelFactory.changeColorTime;
-            _nextSpeedTime = _currentTime + _levelFactory.changeSpeedTime;
+            _nextSpeedTime = _objectivePanel.time -  _levelFactory.changeSpeedTime;
             
         });
         

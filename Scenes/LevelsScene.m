@@ -118,7 +118,7 @@
 //Called when navigation button is pressed
 -(void)buttonPressed: (ButtonType ) type{
    
-    [self.delegate navigationPressed];
+    [self.mdelegate navigationPressed];
 }
 
 //Called when the parent level button is pressed
@@ -149,7 +149,7 @@
 -(void)childPressed:(int)levelNumber{
     
     
-    [self.delegate beginGamePlay:levelNumber];
+    [self.mdelegate beginGamePlay:levelNumber];
 }
 
 //Creates the child levels

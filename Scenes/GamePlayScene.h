@@ -29,7 +29,7 @@
 
 @interface GamePlayScene : SKScene<OptionPanelDelegate, SettingPanelDelegate, BallDelegate>
 
-@property(nonatomic, weak)id<GamePlayDelegate> delegate;
+@property(nonatomic, weak)id<GamePlayDelegate> mdelegate;
 
 @property PlayerInfo * player;
 
@@ -52,6 +52,7 @@
 @property NSTimeInterval currentTime;
 @property NSTimeInterval nextColorTime;
 @property NSTimeInterval nextSpeedTime;
+@property NSTimeInterval previousPauseTime;
 
 @property NSMutableArray * ballsArray;
 @property NSMutableArray * spwaners;

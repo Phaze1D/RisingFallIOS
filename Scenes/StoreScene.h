@@ -12,6 +12,7 @@
 #import "ButtonNode.h"
 #import "StoreBuyPanel.h"
 #import "SellItemPanel.h"
+#import "PaymentClass.h"
 
 @protocol StoreSceneDelegate <NSObject>
 
@@ -22,9 +23,9 @@
 
 
 
-@interface StoreScene : SKScene <ButtonDelegate, StoreBuyPanelDelegate, SKProductsRequestDelegate>
+@interface StoreScene : SKScene <ButtonDelegate, StoreBuyPanelDelegate>
 
-@property(nonatomic, weak) id<StoreSceneDelegate> delegate;
+@property(nonatomic, weak) id<StoreSceneDelegate> mdelegate;
 
 @property BOOL isCreated;
 @property BOOL hasFinishCreated;
@@ -34,9 +35,6 @@
 
 @property NSMutableArray * spawners;
 @property NSMutableArray * ballQuene;
-
-@property NSArray * productIdentifiers;
-@property NSArray * products;
 
 @property NSTimeInterval deltaTime;
 @property NSTimeInterval passTime;
@@ -54,6 +52,7 @@
 
 @property ButtonNode * backB;
 
-@property SKProductsRequest * productsRequest;
+-(void)disableBack;
+-(void)enableBack;
 
 @end

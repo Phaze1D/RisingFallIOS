@@ -258,7 +258,7 @@
             
             SocialMediaButton * subSocial = [SocialMediaButton spriteNodeWithTexture:[_socialMediaAtlas textureNamed: [names objectAtIndex:count]]];
             
-            subSocial.position = CGPointMake(self.size.width/2 - [_socialMediaAtlas textureNamed:@"facebook"].size.width/2 , self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
+            subSocial.position = CGPointMake(self.size.width/2, self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
             subSocial.alpha = 0;
             subSocial.zPosition = 3;
             subSocial.name = [names objectAtIndex:count];
@@ -295,7 +295,7 @@
 //Removes the social children
 -(void)removeSocialChildren{
     
-    CGPoint point = CGPointMake(self.size.width/2 - [_socialMediaAtlas textureNamed:@"facebook"].size.width/2 , self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
+    CGPoint point = CGPointMake(self.size.width/2 , self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
     
     for (SocialMediaButton * button in _socialChildren) {
         SKAction * fadin = [SKAction fadeAlphaTo:0 duration:.3];
@@ -345,8 +345,7 @@
 
 //Called when the pay button is pressed
 -(BOOL)payButtonPressed{
-    PaymentClass * payment = [[PaymentClass alloc] init];
-    return [payment payDollar];
+    return YES;
 }
 
 //Called when either the quit button or the resumen button is pressed

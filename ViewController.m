@@ -20,6 +20,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    _paymentClass = [PaymentClass sharePaymentClass];
     
     SocialMediaControl * socialC = [SocialMediaControl sharedSocialMediaControl];
     socialC.viewC = self;
@@ -56,7 +57,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             
             StartScene * startScene = [StartScene sceneWithSize:_mainView.bounds.size];
-            startScene.delegate = self;
+            startScene.mdelegate = self;
             startScene.startAtlas = startAtlas;
             startScene.socialAtlas = socialAtlas;
             startScene.ballAtlas = ballAtlas;
@@ -84,7 +85,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             
             LevelsScene * levelScene = [LevelsScene sceneWithSize:_mainView.bounds.size];
-            levelScene.delegate = self;
+            levelScene.mdelegate = self;
             levelScene.sceneAtlas = levelAtlas;
             levelScene.buttonAtlas = buttonAtlas;
             [self showBanner: levelScene];
@@ -107,7 +108,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             GamePlayScene *  gameplayScene = [GamePlayScene sceneWithSize:_mainView.bounds.size];
             gameplayScene.levelID = levelID;
-            gameplayScene.delegate = self;
+            gameplayScene.mdelegate = self;
             gameplayScene.gameSceneAtlas = gameAtlas;
             gameplayScene.ballAtlas = ballAtlas;
             [self hideBanner: gameplayScene];
@@ -126,7 +127,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             _storeScene = [StoreScene sceneWithSize:_mainView.bounds.size];
             _storeScene.scaleMode = SKSceneScaleModeAspectFill;
-            _storeScene.delegate = self;
+            _storeScene.mdelegate = self;
             _storeScene.sceneAtlas = storeAtlas;
             _storeScene.buyPanel.iteamsAtlas = ballAtlas;
             [self hideBanner: _storeScene];
@@ -148,7 +149,6 @@
 
 //Called when store button is pressed in the start scene
 -(void)storeButtonPressed{
-   
     [self loadStoreScene];
 }
 
@@ -312,5 +312,7 @@
     // Release any cached data, images, etc that aren't in use.
     NSLog(@"MEMORY WARING");
 }
+
+
 
 @end

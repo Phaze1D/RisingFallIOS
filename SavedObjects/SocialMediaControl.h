@@ -31,7 +31,7 @@
 
 @property (nonatomic, weak) id<SocialMediaControlDelegate> delegate;
 
-@property ViewController * viewC;
+@property (weak)ViewController * viewC;
 
 
 

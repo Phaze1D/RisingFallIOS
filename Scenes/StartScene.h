@@ -23,7 +23,7 @@
 
 @interface StartScene : SKScene <ButtonDelegate, SocialMediaDelegate>
 
-@property(nonatomic, weak) id<StartSceneDelegate> delegate;
+@property(nonatomic, weak) id<StartSceneDelegate> mdelegate;
 
 @property TextureLoader * textLoad;
 

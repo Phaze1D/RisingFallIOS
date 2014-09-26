@@ -46,9 +46,6 @@
 
 -(void)willMoveFromView:(SKView *)view{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_productsRequest cancel];
-        _productsRequest.delegate = nil;
-        _productsRequest = nil;
         [self removeAllChildren];
         [self removeAllActions];
         
@@ -60,15 +57,14 @@
 -(void)createScene{
     
     @synchronized(self){
-        _productIdentifiers = @[@"com.Phaze1D.RisingFall.Power1",@"com.Phaze1D.RisingFall.Power2",@"com.Phaze1D.RisingFall.Power3",@"com.Phaze1D.RisingFall.Power4",@"com.Phaze1D.RisingFall.Power5"];
-        
+     
         self.backgroundColor = [UIColor whiteColor];
         [self initVariables];
         [self createBackground];
         [self createPosition];
         [self createSideView];
         [self createBackButton];
-        [self validateProductsID];
+        
         _hasFinishCreated = YES;
     }
 }
@@ -178,6 +174,7 @@
     _sellItemP = [SellItemPanel spriteNodeWithTexture:[_sceneAtlas textureNamed:@"sellItemArea"]];
     _sellItemP.anchorPoint = CGPointMake(0, 0);
     _sellItemP.zPosition = 2;
+    _sellItemP.powerID = [self getPowerID: powerType];
     _sellItemP.position = _initPointSellPanel;
     [_sellItemP createPanel:powerType Validate:YES];
     _sellItemP.alpha = 0;
@@ -203,6 +200,22 @@
     
     [self addChild: _sellItemP];
     
+}
+
+-(NSString *)getPowerID: (int)powerType{
+    switch (powerType) {
+        case 1:
+            return POWER_TYPE_1;
+        case 2:
+            return POWER_TYPE_2;
+        case 3:
+            return POWER_TYPE_3;
+        case 4:
+            return POWER_TYPE_4;
+        case 5:
+            return POWER_TYPE_5;
+    }
+    return @"null";
 }
 
 //Removes the sell panel
@@ -266,7 +279,7 @@
             [self removeSellPanel];
             _isSellCreated = NO;
         }else{
-            [self.delegate storeBackPressed];
+            [self.mdelegate storeBackPressed];
         }
     });
 }
@@ -285,41 +298,12 @@
     });
 }
 
-
--(void)validateProductsID{
-    
-    _productsRequest = [[SKProductsRequest alloc]
-                                          initWithProductIdentifiers:[NSSet setWithArray:_productIdentifiers]];
-    _productsRequest.delegate = self;
-    [_productsRequest start];
-    
-    
-   
+-(void)disableBack{
+    _backB.userInteractionEnabled = NO;
 }
 
--(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
-    
-    NSLog(@"isMain %d", [NSThread isMainThread]);
-    
-    self.products = response.products;
-    
-    for (SKProduct * product in response.products) {
-        NSLog(@"%@",product.localizedTitle);
-    }
-    
-    
-}
-
--(void)request:(SKRequest *)request didFailWithError:(NSError *)error{
-    
-    NSLog(@"SKRequest didFail %@", error);
-    
-}
-
-
--(void)requestDidFinish:(SKRequest *)request{
-    NSLog(@"SKRequest didFinish");
-    
+-(void)enableBack{
+    _backB.userInteractionEnabled = YES;
 }
 
 @end
