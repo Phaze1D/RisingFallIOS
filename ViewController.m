@@ -21,6 +21,7 @@
     [super viewDidLoad];
     
     _paymentClass = [PaymentClass sharePaymentClass];
+    _paymentClass.viewC = self;
     
     SocialMediaControl * socialC = [SocialMediaControl sharedSocialMediaControl];
     socialC.viewC = self;

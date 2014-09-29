@@ -300,10 +300,12 @@
 
 -(void)disableBack{
     _backB.userInteractionEnabled = NO;
+    [_buyPanel disableButtons];
 }
 
 -(void)enableBack{
     _backB.userInteractionEnabled = YES;
+    [_buyPanel enableButtons];
 }
 
 @end

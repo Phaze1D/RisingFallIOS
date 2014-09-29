@@ -343,10 +343,6 @@
     
 }
 
-//Called when the pay button is pressed
--(BOOL)payButtonPressed{
-    return YES;
-}
 
 //Called when either the quit button or the resumen button is pressed
 -(void)buttonPressed:(ButtonType)type{
@@ -360,12 +356,12 @@
     }else if(type == RestartB){
         [self.delegate restartButtonPressed];
     }else if(type == PayButton){
-        
-        if ([self payButtonPressed]) {
-            [self.delegate continuePlaying];
-        }else{
-            //Display error message
+        for (SKNode * node in [self children]) {
+            node.userInteractionEnabled = NO;
         }
+        PaymentClass * paymentClass = [PaymentClass sharePaymentClass];
+        paymentClass.delegate = self;
+        [paymentClass beginBuyFlow: @"com.Phaze1D.RisingFall.KeepPlaying"];
     }
     
 }
@@ -379,6 +375,15 @@
 -(void)enbableChild{
     for (SocialMediaButton * sub in _socialChildren) {
         sub.userInteractionEnabled = YES;
+    }
+}
+
+-(void)buyTransctionFinished:(BOOL)didBuy{
+    for (SKNode * node in [self children]) {
+        node.userInteractionEnabled = YES;
+    }
+    if (didBuy) {
+        [self.delegate continuePlaying];
     }
 }
 

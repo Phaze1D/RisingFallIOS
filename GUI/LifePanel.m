@@ -65,13 +65,13 @@
 
     SKTextureAtlas * buttonA  = [[TextureLoader shareTextureLoader] buttonAtlas];
     
-    ButtonNode * buyB = [ButtonNode spriteNodeWithTexture: [buttonA textureNamed:@"buttonXS1"]];
-    buyB.position = CGPointMake( 0, -self.size.height/3);
-    buyB.userInteractionEnabled = YES;
-    buyB.delegate = self;
-    [buyB setImages:[buttonA textureNamed:@"buttonXS1"] pressedImage:[buttonA textureNamed:@"buttonXS1"]];
-    [buyB setText:NSLocalizedString(@".99k", nil)];
-    [self addChild: buyB];
+    _buyB = [ButtonNode spriteNodeWithTexture: [buttonA textureNamed:@"buttonXS1"]];
+    _buyB.position = CGPointMake( 0, -self.size.height/3);
+    _buyB.userInteractionEnabled = YES;
+    _buyB.delegate = self;
+    [_buyB setImages:[buttonA textureNamed:@"buttonXS1"] pressedImage:[buttonA textureNamed:@"buttonXS1"]];
+    [_buyB setText:NSLocalizedString(@".99k", nil)];
+    [self addChild: _buyB];
 
     
 }
@@ -113,16 +113,23 @@
 
 //Pressed when the buy Button is pressed
 -(void)buttonPressed:(ButtonType)type{
-    if (YES) {
+    _buyB.userInteractionEnabled = NO;
+    PaymentClass * paymentClass = [PaymentClass sharePaymentClass];
+    paymentClass.delegate = self;
+    [paymentClass beginBuyFlow: @"com.Phaze1D.RisingFall.Lifes"];
+}
+
+-(void)buyTransctionFinished:(BOOL)didBuy{
+    _buyB.userInteractionEnabled = YES;
+    if (didBuy) {
         GameData * info = [GameData sharedGameData];
         info.player.lifesLeft = 5;
         info.player.timeLeftOnLifes = 0;
         
         [self clearAll];
         [self createLifePanel];
-
+        
     }
 }
-
 
 @end

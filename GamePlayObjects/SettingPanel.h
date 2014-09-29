@@ -23,7 +23,7 @@
 
 @end
 
-@interface SettingPanel : SKSpriteNode <ButtonDelegate, SocialMediaDelegate>
+@interface SettingPanel : SKSpriteNode <ButtonDelegate, SocialMediaDelegate, PaymentClassDelegate>
 
 @property (nonatomic, weak) id <SettingPanelDelegate> delegate;
 

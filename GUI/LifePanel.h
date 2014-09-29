@@ -12,11 +12,13 @@
 #import "ButtonNode.h"
 #import "PaymentClass.h"
 
-@interface LifePanel : SKSpriteNode<ButtonDelegate>
+@interface LifePanel : SKSpriteNode<ButtonDelegate, PaymentClassDelegate>
 
 @property NSTimeInterval timeLeft;
 
 @property SKLabelNode * timeL;
+
+@property ButtonNode * buyB;
 
 -(void)createLifePanel;
 -(void)createTimePanel;

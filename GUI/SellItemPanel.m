@@ -86,7 +86,7 @@
     _buyButton.userInteractionEnabled = NO;
     PaymentClass * paymentClass = [PaymentClass sharePaymentClass];
     paymentClass.delegate = self;
-    [paymentClass buyProduct:_powerID];
+    [paymentClass beginBuyFlow:_powerID];
 }
 
 
@@ -97,7 +97,7 @@
     }
     
     [(StoreScene *) self.parent enableBack];
-    _buyButton.userInteractionEnabled = NO;
+    _buyButton.userInteractionEnabled = YES;
     
 }
 

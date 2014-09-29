@@ -17,138 +17,128 @@
     static PaymentClass *paymentClass = nil;
     @synchronized(self) {
         if (paymentClass == nil){
-            paymentClass = [[self alloc] init];
-            [paymentClass setupProductInfo];
+            paymentClass = [[PaymentClass alloc] init];
         }
         
     }
     return paymentClass;
 }
 
-
--(void)setupProductInfo{
-    _productIdentifiers = @[@"com.Phaze1D.RisingFall.Power1",@"com.Phaze1D.RisingFall.Power2",@"com.Phaze1D.RisingFall.Power3",@"com.Phaze1D.RisingFall.Power4",@"com.Phaze1D.RisingFall.Power5", @"com.Phaze1D.RisingFall.Lifes", @"com.Phaze1D.RisingFall.KeepPlaying"];
+-(void)beginBuyFlow:(NSString *)productID{
+    NSLog(@"buy flow began");
+    _currentProductID = productID;
+     NSLog(@"%@", _viewC);
+    [self displaySpinner];
+   
+    self.productResquest = nil;
+    self.productResquest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithArray:@[POWER_TYPE_1, POWER_TYPE_2, POWER_TYPE_3, POWER_TYPE_4, POWER_TYPE_5, MORE_LIFES, KEEP_PLAYING]]];
     
-    
-    _productsRequest = [[SKProductsRequest alloc]
-                        initWithProductIdentifiers:[NSSet setWithArray:_productIdentifiers]];
-    _productsRequest.delegate = self;
-    [_productsRequest start];
-    
-    NSLog(@"Started product request for info");
+    self.productResquest.delegate = self;
+    [self.productResquest start];
     
 }
 
-
--(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
+-(void)displaySpinner{
+    [DejalBezelActivityView activityViewForView:self.viewC.view];
     
-    NSLog(@"Finish product request ");
-    self.products = response.products;
-    
-    _didFinishRequest = YES;
-    if (_didFinishRequest && _wantToBuy) {
-        for (SKProduct * product in _products) {
-            if ([product.productIdentifier isEqualToString:_currentItemID]) {
-                [self beginProductBuyFlow:product];
-                break;
-            }
-        }
-    }
-
-
 }
+
+-(void)displayErrorMessage:(NSString *)error{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:nil
+                                                     message:error
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles: nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    
+}
+
 
 -(void)request:(SKRequest *)request didFailWithError:(NSError *)error{
-    NSLog(@"failed ");
-    _didFinishRequest = NO;
-    if (_wantToBuy) {
-        //Display error box
-        _wantToBuy = NO;
-    }
+    [self displayErrorMessage:@"Fail request"];
+    [self.delegate buyTransctionFinished:NO];
+    [DejalBezelActivityView removeView];
 }
 
 -(void)requestDidFinish:(SKRequest *)request{
-    NSLog(@"finished");
-    _didFinishRequest = YES;
-}
-
--(void)buyProduct:(NSString *)productID{
-    _currentItemID = productID;
-    _wantToBuy = YES;
-    if (_didFinishRequest) {
-        for (SKProduct * product in _products) {
-            if ([product.productIdentifier isEqualToString:_currentItemID]) {
-                [self beginProductBuyFlow:product];
-                break;
-            }
-        }
-    }else{
-        [_productsRequest start];
-    }
-}
-
--(void)beginProductBuyFlow:(SKProduct *)product{
-    SKMutablePayment * payment = [SKMutablePayment paymentWithProduct:product];
-    payment.quantity = 1;
-    [[SKPaymentQueue defaultQueue] addPayment:payment];
-}
-
--(void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue{
-    
     
 }
 
--(void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions{
-        
-    for (SKPaymentTransaction *transaction in transactions) {
-        switch (transaction.transactionState) {
-                // Call the appropriate custom method.
-            case SKPaymentTransactionStatePurchased:
-                [self.delegate buyTransctionFinished:YES];
-                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                break;
-            case SKPaymentTransactionStateFailed:
-                [self.delegate buyTransctionFinished:NO];
-                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                break;
-            case SKPaymentTransactionStateRestored:
-                [self.delegate buyTransctionFinished:NO];
-                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-            default:
-                break;
+-(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
+    [DejalBezelActivityView removeView];
+    NSLog(@"product request did receive");
+    
+    for (SKProduct *product in response.products) {
+        if ([product.productIdentifier isEqualToString:self.currentProductID]) {
+            SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+            payment.quantity = 1;
+            //payment.applicationUsername = @"add developer payload";
+            [[SKPaymentQueue defaultQueue] addPayment:payment];
+            break;
         }
-        
-        
     }
     
-    
+    [DejalBezelActivityView activityViewForView:self.viewC.view];
+    self.productResquest = nil;
 }
 
 -(void)paymentQueue:(SKPaymentQueue *)queue removedTransactions:(NSArray *)transactions{
-   
     
 }
 
 -(void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error{
     
-    
 }
 
 -(void)paymentQueue:(SKPaymentQueue *)queue updatedDownloads:(NSArray *)downloads{
     
+}
+
+-(void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions{
+    [DejalBezelActivityView removeView];
+    for (SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+                // Call the appropriate custom method.
+            case SKPaymentTransactionStatePurchased:
+                if (self.delegate != nil) {
+                    [self.delegate buyTransctionFinished:YES];
+                }
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateFailed:
+                if (self.delegate != nil) {
+                    
+                    [self.delegate buyTransctionFinished:NO];
+                }
+                [self displayErrorMessage:@"Error"];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateRestored:
+                if (self.delegate != nil) {
+                    [self.delegate buyTransctionFinished:NO];
+                }
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+            default:
+                break;
+        }
+    }
     
 }
 
--(void)didFinishBuying{
-    _wantToBuy = NO;
-    _currentItemID = nil;
+-(void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue{
+    
 }
 
+
 -(void)clearClass{
-    NSLog(@"did clear");
-    [_productsRequest cancel];
-    _productsRequest.delegate = nil;
-    _productsRequest = nil;
+    if (self.productResquest != nil) {
+        [self.productResquest cancel];
+    }
+    
 }
+
 
 @end

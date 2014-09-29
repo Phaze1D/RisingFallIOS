@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
+#import "DejalActivityView.h"
 
 @protocol PaymentClassDelegate <NSObject>
 
@@ -16,25 +17,21 @@
 
 @end
 
-@interface PaymentClass : NSObject <SKProductsRequestDelegate, SKRequestDelegate, SKPaymentTransactionObserver>
+@interface PaymentClass : NSObject <SKProductsRequestDelegate, SKRequestDelegate, SKPaymentTransactionObserver, UIAlertViewDelegate>
 
 @property(nonatomic, weak) id<PaymentClassDelegate> delegate;
 
-@property (readonly) NSArray * productIdentifiers;
-@property  NSArray * products;
+@property (weak)UIViewController * viewC;
 
-@property SKProductsRequest * productsRequest;
+@property SKProductsRequest * productResquest;
 
-@property NSString * currentItemID;
 
-@property BOOL didFinishRequest;
-@property BOOL wantToBuy;
+@property NSString * currentProductID;
 
 +(id)sharePaymentClass;
 
+-(void)beginBuyFlow:(NSString *)productID;
 -(void)clearClass;
--(void)buyProduct:(NSString * )productID;
-
 @end
 
 
