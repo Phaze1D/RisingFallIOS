@@ -29,8 +29,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol DejalActivityViewDelegate <NSObject>
+
+@required
+-(void)closedButtonPressed;
+
+@end
+
 
 @interface DejalActivityView : UIView
+
+@property(weak, nonatomic) id<DejalActivityViewDelegate> delegate;
 
 // The view to contain the activity indicator and label.  The bezel style has a semi-transparent rounded rectangle, others are fully transparent:
 @property (nonatomic, strong, readonly) UIView *borderView;
@@ -40,6 +49,8 @@
 
 // The activity label:
 @property (nonatomic, strong, readonly) UILabel *activityLabel;
+
+@property(nonatomic, strong) UIButton *closeButton;
 
 // A fixed width for the label text, or zero to automatically calculate the text size (normally set on creation of the view object):
 @property (nonatomic) NSUInteger labelWidth;
@@ -64,6 +75,7 @@
 
 // Immediately removes and releases the view without any animation:
 + (void)removeView;
+
 
 @end
 

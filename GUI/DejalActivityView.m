@@ -69,6 +69,7 @@ static DejalActivityView *dejalActivityView = nil;
     return dejalActivityView;
 }
 
+
 /*
  activityViewForView:
  
@@ -145,12 +146,14 @@ static DejalActivityView *dejalActivityView = nil;
     self.borderView = [self makeBorderView];
     self.activityIndicator = [self makeActivityIndicator];
     self.activityLabel = [self makeActivityLabelWithText:labelText];
+    [self makeCloseButton];
     
     // Assemble the subviews:
 	[addToView addSubview:self];
     [self addSubview:self.borderView];
     [self.borderView addSubview:self.activityIndicator];
     [self.borderView addSubview:self.activityLabel];
+    [self.borderView addSubview:self.closeButton];
     
 	// Animate the view in, if appropriate:
 	[self animateShow];
@@ -160,6 +163,7 @@ static DejalActivityView *dejalActivityView = nil;
 
 - (void)dealloc;
 {
+    self.delegate = nil;
     if ([dejalActivityView isEqual:self])
         dejalActivityView = nil;
 }
@@ -175,6 +179,7 @@ static DejalActivityView *dejalActivityView = nil;
 
 + (void)removeView;
 {
+    
     if (!dejalActivityView)
         return;
     
@@ -287,6 +292,19 @@ static DejalActivityView *dejalActivityView = nil;
     label.text = labelText;
     
     return label;
+}
+
+-(void)makeCloseButton{
+    UIImage * closeImage = [UIImage imageNamed:@"close.png"];
+    self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.closeButton setImage:closeImage forState:UIControlStateNormal];
+    self.closeButton.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, closeImage.size.width/2, closeImage.size.height/2);
+    [self.closeButton addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+-(void)buttonAction{
+    [self.delegate closedButtonPressed];
 }
 
 /*

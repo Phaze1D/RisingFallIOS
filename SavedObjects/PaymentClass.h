@@ -17,7 +17,7 @@
 
 @end
 
-@interface PaymentClass : NSObject <SKProductsRequestDelegate, SKRequestDelegate, SKPaymentTransactionObserver, UIAlertViewDelegate>
+@interface PaymentClass : NSObject <SKProductsRequestDelegate, SKRequestDelegate, SKPaymentTransactionObserver, UIAlertViewDelegate, DejalActivityViewDelegate>
 
 @property(nonatomic, weak) id<PaymentClassDelegate> delegate;
 

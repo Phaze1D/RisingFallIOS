@@ -39,8 +39,16 @@
 }
 
 -(void)displaySpinner{
-    [DejalBezelActivityView activityViewForView:self.viewC.view];
-    
+    [DejalBezelActivityView activityViewForView:self.viewC.view].delegate = self;
+}
+
+-(void)closedButtonPressed{
+    if (self.productResquest != nil) {
+        [self.productResquest cancel];
+        [DejalActivityView removeView];
+        [self displayErrorMessage:@"User Canceled"];
+        [self.delegate buyTransctionFinished:NO];
+    }
 }
 
 -(void)displayErrorMessage:(NSString *)error{
@@ -81,7 +89,7 @@
         }
     }
     
-    [DejalBezelActivityView activityViewForView:self.viewC.view];
+    [self displaySpinner];
     self.productResquest = nil;
 }
 
