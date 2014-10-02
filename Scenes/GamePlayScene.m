@@ -271,7 +271,7 @@
 //Creates the Background
 -(void)createBackground{
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor colorWithRed:0.063 green:0.341 blue:0.322 alpha:1];
 }
 
 //Creates the level id panel that is at the top right of the screen

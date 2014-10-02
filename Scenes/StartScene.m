@@ -79,6 +79,7 @@
         int randIndex = arc4random() % (_spawners.count);
         Ball * ballSp = [[_spawners objectAtIndex:randIndex] spawnBall];
         ballSp.velocity = _velocity;
+        //ballSp.alpha
         [ballSp setPhysicsProperties];
         [_ballQuene addObject:ballSp];
         if (!_testB) {
@@ -94,7 +95,7 @@
     //Remove ball that is off the screen
     if (_ballQuene.count > 0) {
         Ball * ballF = [_ballQuene objectAtIndex:0];
-        if (ballF.position.y < 0) {
+        if (ballF.position.y + ballF.size.height < 0) {
             [_ballQuene removeObjectAtIndex:0];
             [ballF removeFromParent];
             ballF = nil;
@@ -114,10 +115,10 @@
         
         [self stillObjectPositions];
         
-        [self createTitle];
-        [self createPlayButton];
-        [self createStoreButton];
-        [self createSocialMediaButton];
+        //[self createTitle];
+        //[self createPlayButton];
+        //[self createStoreButton];
+        //[self createSocialMediaButton];
         [self createBackground];
         
         _hasFinishCreated = YES;
@@ -134,11 +135,11 @@
     _storeImage = [[_textLoad buttonAtlas] textureNamed:@"buttonL1"];
     _storeImagePressed = [[_textLoad buttonAtlas] textureNamed:@"buttonL2"];
     
-    _spawnRate = 1/1.0;
+    _spawnRate = 1/1;
     _socialSubAnimationDuration = .3;
     _deltaTime = _spawnRate;
     _ballQuene = [NSMutableArray new];
-    _velocity = CGVectorMake(0, -200.0);
+    _velocity = CGVectorMake(0, -100.0);
     self.physicsWorld.gravity = CGVectorMake(0, 0);
     
     
@@ -175,7 +176,7 @@
     SKTexture * titleText = [_startAtlas textureNamed:@"Title"];
     SKSpriteNode * title = [SKSpriteNode spriteNodeWithTexture: titleText];
     title.position = _titlePosition;
-    title.zPosition = 2;
+    title.zPosition = 3;
     [self addChild:title];
     
 }
@@ -231,7 +232,20 @@
 //Creates the Background
 -(void)createBackground{
     [self createSpawners];
-    self.backgroundColor = [UIColor whiteColor];
+    //self.backgroundColor = [UIColor colorWithRed:0.557 green:0.588 blue:0.592 alpha:1];
+    NSString * path = [NSString stringWithFormat:@"background%d", arc4random_uniform(2)];
+    SKSpriteNode * backgroundUI = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:path]];
+    backgroundUI.position = CGPointMake(self.size.width/2, self.size.height/2);
+    backgroundUI.zPosition = 1;
+    [self addChild:backgroundUI];
+    //self.backgroundColor = [UIColor blackColor];
+    
+    SKSpriteNode * back2 = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:@"backColor.png"]];
+    back2.zPosition = 0;
+    back2.size = self.view.bounds.size;
+    back2.anchorPoint = CGPointMake(0, 0);
+    [self addChild:back2];
+    
     
 }
 

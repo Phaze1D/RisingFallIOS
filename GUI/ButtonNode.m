@@ -21,7 +21,7 @@
     
     _label = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _label.text = text;
-    _label.fontColor = [UIColor blackColor];
+    _label.fontColor = [UIColor whiteColor];
     _label.fontSize = 11;
     _label.zPosition = 2;
     _label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
@@ -35,7 +35,7 @@
 -(void)setText:(NSString *)text Size: (int)fontSize{
     _label = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _label.text = text;
-    _label.fontColor = [UIColor blackColor];
+    _label.fontColor = [UIColor whiteColor];
     _label.fontSize = fontSize;
     _label.zPosition = 2;
     _label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
@@ -53,7 +53,7 @@
    
     
     self.texture = _pressedImage;
-    self.alpha = .5;
+    //self.alpha = .5;
 }
 
 
@@ -77,7 +77,7 @@
         [self.delegate buttonPressed: _buttontype];
     }
     _isMoved = NO;
-    self.alpha = 1;
+    //self.alpha = 1;
     
 }
 

@@ -55,7 +55,7 @@
         int powerType = arc4random_uniform(5);
         Ball * ball = [Ball spriteNodeWithTexture: [_powerAtlas textureNamed:[_pTextures objectAtIndex:powerType]]];
         ball.position = position;
-        ball.zPosition = 1;
+        ball.zPosition = 2;
         ball.anchorPoint = CGPointMake(0, 0);
         ball.column = _column;
         ball.isPowerBall = YES;
@@ -74,7 +74,7 @@
             ball.doubleTexture = [_ballAtlas textureNamed:[NSString stringWithFormat:@"ball%d", randIndex]];
             ball.position = position;
             ball.anchorPoint = CGPointMake(0, 0);
-            ball.zPosition = 1;
+            ball.zPosition = 2;
             ball.column = _column;
             ball.ballColor = randIndex;
             ball.isDoubleBall = YES;
@@ -85,7 +85,7 @@
         if(un < _unMovableProb && _levelAt >= 50){
             Ball * ball = [Ball spriteNodeWithTexture: [_unBallAtlas textureNamed: [NSString stringWithFormat:@"unBall%d", randIndex]]];
             ball.position = position;
-            ball.zPosition = 1;
+            ball.zPosition = 2;
             ball.anchorPoint = CGPointMake(0, 0);
             ball.column = _column;
             ball.ballColor = randIndex;
@@ -96,7 +96,7 @@
         
         Ball * ball = [Ball spriteNodeWithTexture: [_ballAtlas textureNamed:[NSString stringWithFormat:@"ball%d", randIndex]]];
         ball.position = position;
-        ball.zPosition = 1;
+        ball.zPosition = 2;
         ball.anchorPoint = CGPointMake(0, 0);
         ball.column = _column;
         ball.ballColor = randIndex;
