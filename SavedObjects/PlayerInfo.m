@@ -39,12 +39,12 @@
 //Gets the players info
 -(void)getPlayInfo{
     
-    _levelAt = 99;
-    _power1 = 0;
-    _power2 = 0;
-    _power3 = 0;
-    _power4 = 0;
-    _power5 = 0;
+    _levelAt = 90;
+    _power1 = 1;
+    _power2 = 1;
+    _power3 = 1;
+    _power4 = 1;
+    _power5 = 1;
     _timeLeftOnSocialMedia = 0;
     _lifesLeft = 5;
     _timeLeftOnLifes = 0;

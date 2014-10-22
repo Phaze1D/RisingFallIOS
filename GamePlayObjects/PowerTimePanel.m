@@ -21,7 +21,7 @@
     
     _titlePower = [SKSpriteNode spriteNodeWithTexture:text];
     _titlePower.position = CGPointMake(self.size.width/2, self.size.height/2);
-    _titlePower.size = CGSizeMake(text.size.width/1.5, text.size.height/1.5);
+    _titlePower.size = CGSizeMake(text.size.width/1.6/2, text.size.height/1.6/2);
     _titlePower.anchorPoint = CGPointMake(.5, 0);
     [self addChild:_titlePower];
     
@@ -47,7 +47,7 @@
     
     _titlePower = [SKSpriteNode spriteNodeWithTexture:text];
     _titlePower.position = CGPointMake(self.size.width/2, self.size.height/2);
-    _titlePower.size = CGSizeMake(text.size.width/1.5, text.size.height/1.5);
+    _titlePower.size = CGSizeMake(text.size.width/1.5/2, text.size.height/1.5/2);
     _titlePower.anchorPoint = CGPointMake(.5, 0);
     [self addChild:_titlePower];
     

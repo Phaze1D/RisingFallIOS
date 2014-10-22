@@ -59,17 +59,19 @@
     NSString * textureName = [NSString stringWithFormat:@"st%d",_powerType];
     
     SKTexture * powerItemText = [[[TextureLoader shareTextureLoader] itemsAtlas] textureNamed: textureName];
-    SKTexture * buyButtonText = [[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"buttonS1"];
-    float yOffset = (self.size.height - powerItemText.size.height - buyButtonText.size.height)/4;
+    SKTexture * buyButtonText = [[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"buttonS1B"];
+    float yOffset = (self.size.height - powerItemText.size.height/2 - buyButtonText.size.height/2)/4;
     
     SKSpriteNode * titleNode = [SKSpriteNode spriteNodeWithTexture:powerItemText];
-    titleNode.position = CGPointMake(self.size.width/2, self.size.height - yOffset + powerItemText.size.height/2);
+    titleNode.size = CGSizeMake(titleNode.size.width/2, titleNode.size.height/2);
+    titleNode.position = CGPointMake(self.size.width/2, self.size.height - yOffset);
     [self addChild:titleNode];
     
      _buyButton = [ButtonNode spriteNodeWithTexture:buyButtonText];
-    _buyButton.position = CGPointMake(self.size.width/2, yOffset - buyButtonText.size.height/2);
+    _buyButton.size = CGSizeMake(_buyButton.size.width/2, _buyButton.size.height/2);
+    _buyButton.position = CGPointMake(self.size.width/2, yOffset);
     [_buyButton setText:NSLocalizedString(@".99k", nil)];
-    [_buyButton setImages:buyButtonText pressedImage:buyButtonText];
+    [_buyButton setImages:buyButtonText pressedImage:[[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"buttonS2B"]];
     _buyButton.delegate = self;
     _buyButton.userInteractionEnabled = YES;
     [self addChild:_buyButton];

@@ -115,9 +115,9 @@
         
         [self stillObjectPositions];
         
-        //[self createTitle];
-        //[self createPlayButton];
-        //[self createStoreButton];
+        [self createTitle];
+        [self createPlayButton];
+        [self createStoreButton];
         //[self createSocialMediaButton];
         [self createBackground];
         
@@ -150,7 +150,7 @@
     _titlePosition = CGPointMake(self.size.width/2, self.size.height - self.size.height/5);
     _playButtonPosition = CGPointMake(self.size.width/2, self.size.height/2.25);
     _socialButtonPosition = CGPointMake(self.size.width*.9, self.size.height*.1);
-    _storeButtonPosition = CGPointMake(self.size.width/2, _playButtonPosition.y - _playImage.size.height*2);
+    _storeButtonPosition = CGPointMake(self.size.width/2, _playButtonPosition.y - _playImage.size.height);
     
     _socialSubPositions = [NSMutableArray new];
     
@@ -175,8 +175,14 @@
     
     SKTexture * titleText = [_startAtlas textureNamed:@"Title"];
     SKSpriteNode * title = [SKSpriteNode spriteNodeWithTexture: titleText];
+    title.size = CGSizeMake(titleText.size.width/1.96, titleText.size.height/1.96);
     title.position = _titlePosition;
     title.zPosition = 3;
+    
+//    SKAction * up = [SKAction scaleBy:1.05 duration:.9];
+//    SKAction * down = [SKAction scaleBy:.95 duration:.9];
+//    [title runAction:[SKAction repeatActionForever:[SKAction sequence:@[up, down]]]];
+    
     [self addChild:title];
     
 }
@@ -187,11 +193,12 @@
     
     _playButton = [ButtonNode spriteNodeWithTexture: _playImage];
     [_playButton setImages:_playImage pressedImage:_playPressedImage];
-    [_playButton setText:NSLocalizedString(@"PlayB", nil)];
+    [_playButton setText:NSLocalizedString(@"Play", nil)];
     _playButton.userInteractionEnabled = YES;
     _playButton.position = _playButtonPosition;
     _playButton.delegate = self;
-    _playButton.zPosition = 2;
+    _playButton.zPosition = 4;
+    _playButton.size = CGSizeMake(_playButton.size.width/2, _playButton.size.height/2);
     _playButton.buttontype = NaviagtionButton;
     [self addChild:_playButton];
     
@@ -203,12 +210,13 @@
     
     _storeButton = [ButtonNode spriteNodeWithTexture: _storeImage];
     [_storeButton setImages:_storeImage pressedImage:_storeImagePressed];
-    [_storeButton setText:NSLocalizedString(@"StoreB", nil)];
+    [_storeButton setText:NSLocalizedString(@"Store", nil)];
     _storeButton.userInteractionEnabled = YES;
     _storeButton.position = _storeButtonPosition;
     _storeButton.delegate = self;
     _storeButton.buttontype = StoreButton;
-    _storeButton.zPosition = 2;
+    _storeButton.zPosition = 4;
+    _storeButton.size = CGSizeMake(_storeButton.size.width/2, _storeButton.size.height/2);
     [self addChild:_storeButton];
     
     
@@ -232,19 +240,18 @@
 //Creates the Background
 -(void)createBackground{
     [self createSpawners];
-    //self.backgroundColor = [UIColor colorWithRed:0.557 green:0.588 blue:0.592 alpha:1];
-    NSString * path = [NSString stringWithFormat:@"background%d", arc4random_uniform(2)];
-    SKSpriteNode * backgroundUI = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:path]];
+    self.backgroundColor = [UIColor colorWithRed:0 green:0.443 blue:0.737 alpha:1];
+    SKSpriteNode * backgroundUI = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:@"background.png"]];
     backgroundUI.position = CGPointMake(self.size.width/2, self.size.height/2);
-    backgroundUI.zPosition = 1;
+    backgroundUI.size = self.view.bounds.size;
+    backgroundUI.zPosition = 3;
+    backgroundUI.userInteractionEnabled = NO;
     [self addChild:backgroundUI];
-    //self.backgroundColor = [UIColor blackColor];
     
-    SKSpriteNode * back2 = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:@"backColor.png"]];
-    back2.zPosition = 0;
-    back2.size = self.view.bounds.size;
-    back2.anchorPoint = CGPointMake(0, 0);
-    [self addChild:back2];
+    SKSpriteNode * backbo = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:@"background0.png"]];
+    backbo.position = CGPointMake(self.size.width/2, self.size.height/2);
+    backbo.zPosition = 0;
+    [self addChild:backbo];
     
     
 }

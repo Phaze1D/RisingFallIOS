@@ -20,6 +20,8 @@
 @interface OptionPanel : SKSpriteNode
 
 @property (nonatomic, weak) id <OptionPanelDelegate> delegate;
+@property SKTexture * pressedTexture;
+@property SKTexture * notPressedTexture;
 
 -(void)clearAll;
 

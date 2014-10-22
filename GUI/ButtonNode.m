@@ -21,8 +21,8 @@
     
     _label = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _label.text = text;
-    _label.fontColor = [UIColor whiteColor];
-    _label.fontSize = 11;
+    _label.fontColor = [UIColor blueColor];
+    _label.fontSize = 14;
     _label.zPosition = 2;
     _label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     _label.position = CGPointMake(0, 0);
@@ -46,9 +46,14 @@
     
 }
 
+-(void)setText:(NSString *)text Color:(UIColor *)fontColor Size: (int) size{
+    
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesBegan:touches withEvent:event];
     
+   // NSLog(@"testing touch");
     
    
     
@@ -60,7 +65,7 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesMoved:touches withEvent:event];
     
-    
+    // NSLog(@"testing touch move");
    
     self.texture = _pressedImage;
     self.isMoved = YES;
@@ -70,6 +75,7 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesEnded:touches withEvent:event];
     
+    // NSLog(@"testing touch ended");
    
     
     self.texture = _defaultImage;
@@ -84,7 +90,7 @@
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesCancelled:touches withEvent:event];
     
-   
+   // NSLog(@"testing touch cancelled");
     self.texture = _defaultImage;
     
 }

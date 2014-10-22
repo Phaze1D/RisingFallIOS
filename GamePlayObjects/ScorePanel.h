@@ -15,7 +15,6 @@
 
 @property BOOL reachYet;
 
-@property SKLabelNode * scoreLabel;
 @property SKLabelNode * titleLabel;
 
 

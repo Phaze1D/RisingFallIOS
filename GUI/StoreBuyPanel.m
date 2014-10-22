@@ -22,14 +22,14 @@
 //Creates the position point
 -(void)createPosition{
     
-    float yOffset = (self.size.height - ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height*5 - _title.frame.size.height)/7;
-    _title.position = CGPointMake(self.size.width/2, self.size.height - yOffset);
+    float yOffset = (self.size.height - ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height/2*5 - _title.frame.size.height)/7;
+    _title.position = CGPointMake(self.size.width/2 - _title.frame.size.width/6, self.size.height - yOffset);
     
     [self addChild:_title];
     
     for (int i = 0; i < 5; i++) {
-        float yPosition = yOffset + (yOffset + ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height)*i;
-        ((ButtonNode *)[_powerItems objectAtIndex:i]).position = CGPointMake(self.size.width/2, yPosition);
+        float yPosition = yOffset + (yOffset + ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height/2)*i + ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height/4;
+        ((ButtonNode *)[_powerItems objectAtIndex:i]).position = CGPointMake(self.size.width/2 - ((ButtonNode *)[_powerItems objectAtIndex:0]).size.height/6, yPosition);
         [self addChild:[_powerItems objectAtIndex:i]];
     }
     
@@ -38,9 +38,9 @@
 //Creates the title
 -(void)createTitle{
     _title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _title.text = NSLocalizedString(@"ItemsK", nil);
+    _title.text = NSLocalizedString(@"Items", nil);
     _title.fontSize = 15;
-    _title.fontColor = [UIColor blackColor];
+    _title.fontColor = [UIColor colorWithRed:0 green:0.443 blue:0.737 alpha:1];
     _title.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     
 }
@@ -50,13 +50,18 @@
     
     _iteamsAtlas = [[TextureLoader shareTextureLoader] itemsAtlas];
     
+    SKAction * scaleUp = [SKAction scaleTo:1.1 duration:1];
+    SKAction * scaleDown = [SKAction scaleTo:.9 duration:1];
+    
     for (int i = 0; i < 5; i++) {
         SKTexture * pText = [_iteamsAtlas textureNamed:[[_iteamsAtlas textureNames] objectAtIndex:i]];
         ButtonNode * pbutton = [ButtonNode spriteNodeWithTexture: pText];
         pbutton.buttontype = i+7;
         pbutton.delegate = self;
+        pbutton.size = CGSizeMake(pbutton.size.width/2, pbutton.size.height/2);
         pbutton.userInteractionEnabled = YES;
-        pbutton.anchorPoint = CGPointMake(0.5, 0);
+        pbutton.anchorPoint = CGPointMake(0.5, 0.5);
+        [pbutton runAction:[SKAction repeatActionForever:[SKAction sequence:@[scaleUp,scaleDown]]]];
         [pbutton setImages:pText pressedImage:pText];
         [_powerItems addObject:pbutton];
     }

@@ -93,8 +93,16 @@
         }
         
         _objectiveReached = [_objectivePanel updateObjective];
+        if (_levelFactory.gameType == 1 && _objectivePanel.time <= 6 && !_objectiveReached) {
+            [self startAlmostFinishAnimation: _objectivePanel.time];
+        }
+        
+        if (_levelFactory.gameType == 2 && _objectivePanel.ballsLeft <= 5 && !_objectiveReached) {
+            [self startAlmostFinishAnimation:_objectivePanel.ballsLeft];
+        }
         if (_objectiveReached && _movingBallList.count == 0) {     //When the objective has been reached
             _stageAt = 3;
+            [self removeEndAnimation];
             _didReachScore = [_scorePanel didReachScore];         //Check to see if the target score has been reached if not game lost
             [self pauseGame];
         }
@@ -139,7 +147,6 @@
         _optionPanel = nil;
         _sPanel = nil;
         _gameSceneAtlas = nil;
-        _ballAtlas = nil;
         
     });
     
@@ -149,7 +156,8 @@
 //Creates the scene and GUI
 -(void)createScene{
     @synchronized(self){
-        
+        NSLog(@"%f --- %f", self.size.width, self.size.height);
+        _sizeManager = [SizeManager sharedSizeManager];
         [self initVariables];
         [self createPositions];
         [self createBackground];
@@ -171,38 +179,36 @@
     _player = ((GameData *)[GameData sharedGameData]).player;
     _levelFactory = [[LevelFactory alloc] initLevelNumber:_levelID];
     _stageAt = 1;
-    _ceilingTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"ceiling%d",_levelFactory.ceilingHeight]];
-    _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",_levelFactory.ceilingHeight]];
     _maxColumns= 8;
     
-    _xOffsetPA = (_playAreaTexture.size.width - [_ballAtlas textureNamed:@"ball0"].size.width*_maxColumns)/(_maxColumns + 1);
-    
-    //float numTest = (_playAreaTexture.size.height - _xOffsetPA)/(_xOffsetPA + [_ballAtlas textureNamed:@"ball0"].size.height);
     
     switch (_levelFactory.ceilingHeight){
         case 1:
             _numRows = 13;
+            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",1]];
+            _levelFactory.ceilingHeight = 1;
             break;
         case 2:
         case 3:
             _numRows = 12;
+            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",2]];
+            _levelFactory.ceilingHeight = 2;
             break;
         case 4:
         case 5:
             _numRows = 11;
+            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",3]];
+            _levelFactory.ceilingHeight = 3;
             break;
         case 6:
             _numRows = 10;
+            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",4]];
+            _levelFactory.ceilingHeight = 4;
             
     }
-
     
-
-    
-   // _numRows = ceilf(numTest);
-     NSLog(@"%d --- %d", _numRows, _levelFactory.ceilingHeight);
-    
-    _yOffsetPA = (_playAreaTexture.size.height - [_ballAtlas textureNamed:@"ball0"].size.height * _numRows)/(_numRows + 1);
+    _xOffsetPA = ([_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].width - [_sizeManager getBallSize].width*_maxColumns)/(_maxColumns + 1);
+    _yOffsetPA = ([_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height - [_sizeManager getBallSize].height * _numRows)/(_numRows + 1);
     
     
     _ballsArray = [[NSMutableArray alloc] initWithCapacity:_numRows * _levelFactory.numOfColumns];
@@ -219,118 +225,72 @@
         _nextBallChange = _levelFactory.numberOfBalls - _levelFactory.changeSpeedBNum;
     }
     
-    
-
-
-    
-   }
+}
 
 //Creates the Positions of the still objects in the scene
 -(void) createPositions{
     
-    float playAreaWidth =  _playAreaTexture.size.width ;
+    float xOffset = (self.size.width - [_sizeManager getPlayAreaSize: _levelFactory.ceilingHeight].width - [_sizeManager getPauseButtonSize].width)/3;
+    float yOffset = (self.size.height - [_sizeManager getPlayAreaSize: _levelFactory.ceilingHeight].height - [_sizeManager getPowerPanelSize].height)/2;
     
-    float playCeilHeight = _playAreaTexture.size.height + _ceilingTexture.size.height;
+    _playAreaPosition = CGPointMake(xOffset, yOffset);
+    _optionAreaPosition = CGPointMake(xOffset*2 + [_sizeManager getPlayAreaSize: _levelFactory.ceilingHeight].width, (self.size.height - [_sizeManager getPlayAreaSize: 1].height - [_sizeManager getPowerPanelSize].height)/2);
     
-    float sideViewWidth =  [_gameSceneAtlas textureNamed:@"powerArea"].size.width;
-    float xOffset1 = (self.size.width - playAreaWidth - sideViewWidth)/2.0;
-    float yOffset1 = (self.size.height - playCeilHeight - [_gameSceneAtlas textureNamed:@"scoreArea"].size.height)/2.0;
     
-    float yOffset2 = (self.size.height - yOffset1 - [_gameSceneAtlas textureNamed:@"optionArea"].size.height - [_gameSceneAtlas textureNamed:@"powerArea"].size.height - [_gameSceneAtlas textureNamed:@"LevelIDArea"].size.height)/2;
+    float topXOffset = (self.size.width - [_sizeManager getPowerPanelSize].width - [_sizeManager getPowerTimeSize].width - [_sizeManager getInfoPanelSize].width)/3;
     
-    _playAreaPosition = CGPointMake(xOffset1, yOffset1);
-    _ceilingPosition = CGPointMake(xOffset1, yOffset1 + _playAreaTexture.size.height - 1);
-    _powerAreaPosition = CGPointMake(xOffset1*2 + playAreaWidth, yOffset2 + [_gameSceneAtlas textureNamed:@"powerArea"].size.height + yOffset1 + [_gameSceneAtlas textureNamed:@"optionArea"].size.height);
-    _optionAreaPosition = CGPointMake(xOffset1*2 + playAreaWidth,yOffset1);
+    _powerAreaPosition = CGPointMake(topXOffset, yOffset*2 + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height);
+    _ptPosition = CGPointMake(topXOffset*2 + [_sizeManager getPowerPanelSize].width, yOffset*2 + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height);
+    _infoAreaPosition = CGPointMake(topXOffset*3 + [_sizeManager getPowerPanelSize].width + [_sizeManager getPowerTimeSize].width , yOffset*2 + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height);
     
-    float playerTimeWidth = [_gameSceneAtlas textureNamed:@"playerTimeArea"].size.width;
-    float scoreWidth = [_gameSceneAtlas textureNamed:@"scoreArea"].size.width;
-    float objectiveWidth = [_gameSceneAtlas textureNamed:@"objectiveArea"].size.width;
-    float xOffset2 = (playAreaWidth - playerTimeWidth - scoreWidth - objectiveWidth)/2.0;
     
-    _objectivePosition = CGPointMake(xOffset1, yOffset1*2 + playCeilHeight);
-    _scorePosition = CGPointMake(_objectivePosition.x + xOffset2 + objectiveWidth , yOffset1*2 + playCeilHeight);
+    _settingPosition = CGPointMake(_playAreaPosition.x + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].width/2 - [_sizeManager getSettingSize].width/2, _playAreaPosition.y + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height/2 - [_sizeManager getSettingSize].height/2 );
     
-    _ptPosition = CGPointMake(_scorePosition.x + xOffset2 + scoreWidth , yOffset1*2 + playCeilHeight);
+    _objectivePosition = CGPointMake(_playAreaPosition.x, _playAreaPosition.y + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height);
     
-    _settingPosition = CGPointMake(_playAreaPosition.x + playAreaWidth/2 - [_gameSceneAtlas textureNamed:@"gameOverArea"].size.width/2, self.size.height/2 - [_gameSceneAtlas textureNamed:@"gameOverArea"].size.height/2);
+    _scorePosition = CGPointMake(_playAreaPosition.x + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].width , _playAreaPosition.y + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height);
+    
+    
+    
     if (_maxColumns == _levelFactory.numOfColumns) {
-        _firstX = _playAreaPosition.x + _xOffsetPA;
-        _firstY = _playAreaPosition.y + _yOffsetPA;
+        _firstX = _playAreaPosition.x  + _xOffsetPA;
+        _firstY = _playAreaPosition.y  +  _yOffsetPA;
     }else{
         int round = roundf(_maxColumns/_levelFactory.numOfColumns);
-        _firstX = _playAreaPosition.x + _xOffsetPA + (_xOffsetPA + [_ballAtlas textureNamed:@"ball0"].size.width)* round;
-        _firstY = _playAreaPosition.y + _yOffsetPA;
-        
+        _firstX = _playAreaPosition.x + _xOffsetPA + (_xOffsetPA + [_sizeManager getBallSize].width)* round;
+        _firstY = _playAreaPosition.y +  _yOffsetPA;
     }
-    
-    
     
 }
 
 //Creates the Background
 -(void)createBackground{
     
-    self.backgroundColor = [UIColor colorWithRed:0.063 green:0.341 blue:0.322 alpha:1];
+    self.backgroundColor = [UIColor colorWithRed:0 green:0.443 blue:0.737 alpha:1];
+    SKSpriteNode * backboxes = [SKSpriteNode spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"backBoxes"]];
+    backboxes.size = CGSizeMake(backboxes.size.width/2, backboxes.size.height/2);
+    backboxes.position = CGPointMake(self.size.width/2, self.size.height/2);
+    [self addChild:backboxes];
 }
 
 //Creates the level id panel that is at the top right of the screen
 -(void)createLevelID{
+   
+    SKSpriteNode * infoArea = [SKSpriteNode spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"LevelIDArea"]];
+    infoArea.size = [_sizeManager getInfoPanelSize];
+    infoArea.position = _infoAreaPosition;
+    infoArea.anchorPoint = CGPointMake(0, 0);
+    [self addChild:infoArea];
     
-    SKSpriteNode * levelIDArea = [SKSpriteNode spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"LevelIDArea"]];
-    levelIDArea.position = CGPointMake(self.size.width, self.size.height);
-    levelIDArea.anchorPoint = CGPointMake(1, 1);
+    SKLabelNode * levelLa = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+    levelLa.text = [NSString stringWithFormat:@"%d", _levelID];
+    levelLa.fontSize = 18;
+    levelLa.fontColor = [UIColor colorWithRed:0.969 green:0.576 blue:0.118 alpha:1] ;
+    levelLa.position = CGPointMake(infoArea.position.x + infoArea.size.width/2, infoArea.position.y + infoArea.size.height/2);
+    levelLa.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    levelLa.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [self addChild:levelLa];
     
-    SKLabelNode * levelLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    levelLabel.position = CGPointMake(-levelIDArea.size.width/2, -levelIDArea.size.height/4);
-    levelLabel.text = [NSString stringWithFormat:@"%d", _levelID];
-    levelLabel.fontSize = 11;
-    levelLabel.fontColor = [UIColor blackColor];
-    levelLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    levelLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    
-    
-    SKLabelNode * levelTitle = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    levelTitle.position = CGPointMake(-levelIDArea.size.width/2 + 5, -levelIDArea.size.height/4);
-    levelTitle.text = NSLocalizedString(@"LevelK", nil);
-    levelTitle.fontSize = 11;
-    levelTitle.fontColor = [UIColor blackColor];
-    levelTitle.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    levelTitle.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
-    
-    SKLabelNode * highScore = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    highScore.position = CGPointMake(-levelIDArea.size.width/2, -levelIDArea.size.height*4.0/5);
-    highScore.text = [NSString stringWithFormat:@"%@", [_player.scores objectAtIndex:_levelID]];
-    highScore.fontSize = 11;
-    highScore.fontColor = [UIColor blackColor];
-    highScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    highScore.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-    
-    
-    SKLabelNode * highTitle = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    highTitle.position = CGPointMake(-levelIDArea.size.width/2 + 5, -levelIDArea.size.height/2);
-    highTitle.text = NSLocalizedString(@"HighK", nil);
-    highTitle.fontSize = 11;
-    highTitle.fontColor = [UIColor blackColor];
-    highTitle.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    highTitle.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    
-    SKLabelNode * scoreTitle = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    scoreTitle.position = CGPointMake(-levelIDArea.size.width/2 + 5, -levelIDArea.size.height*3.0/4);
-    scoreTitle.text = NSLocalizedString(@"ScoreK", nil);
-    scoreTitle.fontSize = 11;
-    scoreTitle.fontColor = [UIColor blackColor];
-    scoreTitle.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    scoreTitle.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
-    
-    
-    
-    [levelIDArea addChild:levelLabel];
-    [levelIDArea addChild: levelTitle];
-    [levelIDArea addChild:highScore];
-    [levelIDArea addChild: highTitle];
-    [levelIDArea addChild: scoreTitle];
-    [self addChild:levelIDArea];
     
     
 }
@@ -338,11 +298,14 @@
 //Creates the area were the game play will happen
 -(void)createPlayArea{
     
+   
+    
     _playArea = [SKSpriteNode spriteNodeWithTexture: _playAreaTexture];
     _playArea.position = _playAreaPosition;
     _playArea.anchorPoint = CGPointMake(0, 0);
+    _playArea.zPosition = 1;
+    _playArea.size = [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight];
     [self addChild:_playArea];
-    [self createCeiling];
     [self createSpawners];
     
     
@@ -354,7 +317,7 @@
     for (int i = 0; i < _levelFactory.numOfColumns; i++) {
         Spawner * spawner = [[Spawner alloc]initWithLevel:_levelID];
         spawner.column = i;
-        spawner.position = CGPointMake(_firstX + (_xOffsetPA + spawner.size.width)*i, _ceilingPosition.y);
+        spawner.position = CGPointMake(_firstX + (_xOffsetPA + spawner.size.width)*i, _playAreaPosition.y + [_sizeManager getPlayAreaSize:_levelFactory.ceilingHeight].height - [_sizeManager getBallSize].height/1.5);
         spawner.powerupProb = _levelFactory.powerBallDrop;
         spawner.doubleBallProb = _levelFactory.doubleBallProb;
         spawner.unMovableProb = _levelFactory.unMovableProb;
@@ -364,22 +327,14 @@
     
 }
 
-//Creates the ceiling in the play area
--(void)createCeiling{
-    _ceiling = [SKSpriteNode spriteNodeWithTexture:_ceilingTexture];
-    _ceiling.position = _ceilingPosition;
-    _ceiling.anchorPoint = CGPointMake(0, 0);
-    _ceiling.zPosition = 2;
-    [self addChild:_ceiling];
-    
-}
-
 //Creates the side view with all the options
 -(void)createSideView{
     
     _objectivePanel = [ObjectivePanel spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"objectiveArea"]];
     _objectivePanel.position = _objectivePosition;
-    _objectivePanel.zPosition = 2;
+    _objectivePanel.anchorPoint = CGPointMake(0, 1);
+    _objectivePanel.zPosition = 3;
+    _objectivePanel.size = CGSizeMake(_objectivePanel.size.width/2, _objectivePanel.size.height/2);
     _objectivePanel.gameType = _levelFactory.gameType;
     
     if (_levelFactory.gameType == 1) {
@@ -391,28 +346,32 @@
     }
     
     [_objectivePanel initVariables];
-    _objectivePanel.anchorPoint = CGPointMake(0, 0);
     [self addChild: _objectivePanel];
     
     _optionPanel = [OptionPanel spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"optionArea"]];
     _optionPanel.position = _optionAreaPosition;
+    _optionPanel.notPressedTexture = [_gameSceneAtlas textureNamed:@"optionArea"];
+    _optionPanel.pressedTexture = [_gameSceneAtlas textureNamed:@"optionAreaPressed"];
     _optionPanel.zPosition = 2;
     _optionPanel.delegate = self;
     _optionPanel.userInteractionEnabled = YES;
+    _optionPanel.size = [_sizeManager getPauseButtonSize];
     _optionPanel.anchorPoint = CGPointMake(0, 0);
     [self addChild:_optionPanel];
     
     _scorePanel = [ScorePanel spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"scoreArea"]];
     _scorePanel.position = _scorePosition;
-    _scorePanel.zPosition = 2;
-    _scorePanel.anchorPoint = CGPointMake(0, 0);
+    _scorePanel.zPosition = 3;
+    _scorePanel.size = CGSizeMake(_scorePanel.size.width/2, _scorePanel.size.height/2);
+    _scorePanel.anchorPoint = CGPointMake(1, 1);
     [_scorePanel createScorePanel:_levelFactory.targetScore];
     [self addChild:_scorePanel];
     
     _powerPanel = [PowerPanel spriteNodeWithTexture:[_gameSceneAtlas textureNamed:@"powerArea"]];
     _powerPanel.position = _powerAreaPosition;
     _powerPanel.zPosition = 2;
-    _powerPanel.anchorPoint = CGPointMake(0, 1);
+    _powerPanel.anchorPoint = CGPointMake(0, 0);
+    _powerPanel.size = [_sizeManager getPowerPanelSize];
     [_powerPanel createPanel];
     [self addChild:_powerPanel];
     for (Ball * pball in _powerPanel.powerBalls) {
@@ -425,7 +384,6 @@
 -(void)createSettingPanel{
    
     
-    _ceiling.alpha = .3;
     _playArea.alpha = .3;
     
     if (!_isSettingPanelCreated) {
@@ -438,7 +396,8 @@
         _sPanel.anchorPoint = CGPointMake(0, 0);
         _sPanel.position = _settingPosition;
         _sPanel.alpha = 1;
-        _sPanel.zPosition = 2;
+        _sPanel.size = [_sizeManager getSettingSize];
+        _sPanel.zPosition = 4;
         _sPanel.gameType = _levelFactory.gameType;
         if (_levelFactory.gameType == 1) {
             _sPanel.objectiveLeft = _levelFactory.gameTime;
@@ -513,8 +472,6 @@
             }
             
             
-            
-            
         }
         
         _isSettingPanelCreated = YES;
@@ -562,8 +519,6 @@
 
 //Called when the player resumes the gameplay
 -(void)resumeGameplay{
-    
-    _ceiling.alpha = 1;
     _playArea.alpha = 1;
     if (_levelFactory.gameType == 1) {
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow: _objectivePanel.time];
@@ -605,8 +560,9 @@
             Ball * ball = [Ball spriteNodeWithTexture: [_ballAtlas textureNamed:[NSString stringWithFormat:@"ball%d", randIndex]]];
             ball.column = randC%_levelFactory.numOfColumns;
             ball.ballColor = randIndex;
+            ball.size = [_sizeManager getBallSize];
             ball.row = row;
-            ball.zPosition = 1;
+            ball.zPosition = 2;
             ball.userInteractionEnabled = YES;
             ball.delegate = self;
             ball.position = CGPointMake(_firstX + (_xOffsetPA + ball.size.width)*ball.column, _firstY + (_yOffsetPA + ball.size.height)* ball.row);
@@ -689,6 +645,7 @@
     }
     [ball updateName];
     [ball setPhysicsProperties];
+    ball.zPosition = 2;
     [_ballsArray replaceObjectAtIndex:index withObject:ball];
     [_movingBallList addToEnd:ball];
     
@@ -1231,6 +1188,7 @@
     _ptPanel.anchorPoint = CGPointMake(0, 0);
     _ptPanel.currentTime = _currentTime;
     _ptPanel.powerType = _powerTypeAt;
+    _ptPanel.size = [_sizeManager getPowerTimeSize];
     SKAction * moveTo = [SKAction moveTo:_ptPosition duration:.3];
     [self addChild:_ptPanel];
     [_ptPanel runAction:moveTo];
@@ -1311,14 +1269,38 @@
     
     _stageAt = 2;
     
-    [_scorePanel.scoreLabel removeAllActions];
-    [_scorePanel.scoreLabel runAction:[SKAction scaleTo:1 duration:1]];
+    [_scorePanel.titleLabel removeAllActions];
+    [_scorePanel.titleLabel runAction:[SKAction scaleTo:1 duration:1]];
     [self removeSettingPanel];
     [self pauseGame];
     
 }
 
 
+-(void)startAlmostFinishAnimation:(int)amountLeft{
+    
+    if (amountLeft != _passEndTexture) {
+        
+        if (amountLeft == 5) {
+
+            _animationNode = [SKSpriteNode spriteNodeWithTexture:[_gameSceneAtlas textureNamed:[NSString stringWithFormat:@"end%d", amountLeft]]];
+            _animationNode.position = CGPointMake(_playAreaPosition.x + _playArea.size.width/2, _playAreaPosition.y + _playArea.size.height/2);
+            _animationNode.size = CGSizeMake(_animationNode.size.width/2, _animationNode.size.height/2);
+            [self addChild:_animationNode];
+            
+        }else{
+            _animationNode.texture = [_gameSceneAtlas textureNamed:[NSString stringWithFormat:@"end%d", amountLeft]];
+            
+        }
+        
+        _passEndTexture = amountLeft;
+    }
+}
+
+-(void)removeEndAnimation{
+    [_animationNode removeFromParent];
+    _animationNode = nil;
+}
 
 //Debug
 -(void)printArray{

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Ball.h"
 #import "TextureLoader.h"
+#import "SizeManager.h"
 
 
 @interface Spawner : NSObject

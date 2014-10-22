@@ -39,5 +39,12 @@
         }
 }
 
+-(void)currentLevelAnimation{
+    SKAction * scaleUp = [SKAction scaleTo:1.1 duration:.6];
+    SKAction * scaleDown = [SKAction scaleTo:.9 duration:.6];
+    
+    [self runAction:[SKAction repeatActionForever:[SKAction sequence:@[scaleUp, scaleDown]]]];
+}
+
 
 @end

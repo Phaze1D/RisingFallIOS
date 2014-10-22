@@ -75,7 +75,7 @@
     _spawnRate = 1/1.0;
     _deltaTime = _spawnRate;
     _ballQuene = [NSMutableArray new];
-    _velocity = CGVectorMake(0, -200.0);
+    _velocity = CGVectorMake(0, -100.0);
     self.physicsWorld.gravity = CGVectorMake(0, 0);
     
     
@@ -83,10 +83,10 @@
 
 //Creates the Positions
 -(void)createPosition{
-    float yOffset = (self.size.height - [_sceneAtlas textureNamed:@"itemsArea"].size.height - [_sceneAtlas textureNamed:@"backButton"].size.height)/3;
+    float yOffset = (self.size.height - ([_sceneAtlas textureNamed:@"itemsArea"].size.height/2) - ([_sceneAtlas textureNamed:@"backButton"].size.height/2))/3;
     
-    _backButtonPosition = CGPointMake(0, yOffset);
-    _sidePositions = CGPointMake(0, yOffset * 2 + [_sceneAtlas textureNamed:@"backButton"].size.height );
+    _backButtonPosition = CGPointMake([_sceneAtlas textureNamed:@"itemsArea"].size.width/4, yOffset);
+    _sidePositions = CGPointMake(0, yOffset * 2 + [_sceneAtlas textureNamed:@"backButton"].size.height/2 );
     
 }
 
@@ -97,6 +97,7 @@
         int randIndex = arc4random() % (_spawners.count);
         Ball * ballSp = [[_spawners objectAtIndex:randIndex] spawnBall];
         ballSp.velocity = _velocity;
+        ballSp.zPosition = 1;
         [ballSp setPhysicsProperties];
         [_ballQuene addObject:ballSp];
         [self addChild: ballSp];
@@ -119,6 +120,19 @@
 //Creates the background
 -(void)createBackground{
     [self createSpawners];
+    
+    self.backgroundColor = [UIColor colorWithRed:0 green:0.443 blue:0.737 alpha:1];
+    SKSpriteNode * backui = [SKSpriteNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"background"]];
+    backui.size = self.view.bounds.size;
+    backui.position = CGPointMake(self.size.width/2, self.size.height/2);
+    backui.zPosition = 2;
+    [self addChild:backui];
+    
+    SKSpriteNode * box = [SKSpriteNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"backbox"]];
+    box.size = CGSizeMake(box.size.width/2, box.size.height/2);
+    box.position = CGPointMake(self.size.width/2, self.size.height/2);
+    box.zPosition = 0;
+    [self addChild:box];
 }
 
 //Creates thes spawners
@@ -132,7 +146,7 @@
         float x = offsetX + ( spawnerO.size.width + offsetX )*i;
         
         spawnerO.position = CGPointMake(x, self.size.height);
-        spawnerO.powerupProb = .3;
+        spawnerO.powerupProb = .5;
         [_spawners addObject:spawnerO];
     }
     
@@ -143,7 +157,8 @@
 -(void)createSideView{
     _buyPanel = [StoreBuyPanel spriteNodeWithTexture:[_sceneAtlas textureNamed:@"itemsArea"]];
     _buyPanel.position = _sidePositions;
-    _buyPanel.zPosition = 2;
+    _buyPanel.size = CGSizeMake(_buyPanel.size.width/2, _buyPanel.size.height/2);
+    _buyPanel.zPosition = 3;
     _buyPanel.anchorPoint = CGPointMake(0, 0);
     _buyPanel.delegate = self;
     [_buyPanel createPanel];
@@ -156,10 +171,11 @@
     _backB = [ButtonNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"backButton"]];
     _backB.position = _backButtonPosition;
     _backB.delegate = self;
-    _backB.zPosition = 2;
-    _backB.anchorPoint = CGPointMake(0, 0);
+    _backB.size = CGSizeMake(_backB.size.width/2, _backB.size.height/2);
+    _backB.zPosition = 3;
+    _backB.anchorPoint = CGPointMake(0.5, 0);
     _backB.userInteractionEnabled = YES;
-    [_backB setImages:[_sceneAtlas textureNamed:@"backButton"] pressedImage:[_sceneAtlas textureNamed:@"backButton"]];
+    [_backB setImages:[_sceneAtlas textureNamed:@"backButton"] pressedImage:[_sceneAtlas textureNamed:@"backButton2"]];
     [self addChild:_backB];
 }
 
@@ -167,13 +183,14 @@
 -(void)createSellPanel:(int)powerType{
     
     [_buyPanel disableButtons];
-    float xoffset = (self.size.width - _buyPanel.size.width - [_sceneAtlas textureNamed:@"sellItemArea"].size.width)/2;
+    float xoffset = (self.size.width - _buyPanel.size.width - [_sceneAtlas textureNamed:@"sellItemArea"].size.width/2)/6;
     
     _initPointSellPanel = CGPointMake(self.size.width/2, 0);
     
     _sellItemP = [SellItemPanel spriteNodeWithTexture:[_sceneAtlas textureNamed:@"sellItemArea"]];
     _sellItemP.anchorPoint = CGPointMake(0, 0);
     _sellItemP.zPosition = 2;
+    _sellItemP.size = CGSizeMake(_sellItemP.size.width/2, _sellItemP.size.height/2);
     _sellItemP.powerID = [self getPowerID: powerType];
     _sellItemP.position = _initPointSellPanel;
     [_sellItemP createPanel:powerType Validate:YES];
@@ -182,7 +199,7 @@
     
     SKAction * scaleDown = [SKAction scaleTo:0 duration:.1];
     
-    SKAction * moveTo = [SKAction moveTo:CGPointMake(xoffset + _buyPanel.size.width, self.size.height/2 - [_sceneAtlas textureNamed:@"sellItemArea"].size.height/2) duration:.25];
+    SKAction * moveTo = [SKAction moveTo:CGPointMake(xoffset + _buyPanel.size.width, self.size.height/2 - [_sceneAtlas textureNamed:@"sellItemArea"].size.height/4) duration:.25];
     SKAction * scaleUp = [SKAction scaleTo:1 duration:.25];
     SKAction * fadin = [SKAction fadeAlphaTo:1 duration:.3];
     

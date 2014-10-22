@@ -13,42 +13,47 @@
 
 -(void)createScorePanel:(int)targetScore{
     
-    int fontsize = 11;
+    int fontsize = 16;
     _currentScore = 0;
     _targetScore = targetScore;
-    _titleLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _titleLabel.fontColor = [UIColor blackColor];
-    _titleLabel.position = CGPointMake(self.size.width/2, self.size.height*4.0/7);
-    _titleLabel.fontSize = fontsize;
-    _titleLabel.zPosition = 2;
-    _titleLabel.text = NSLocalizedString(@"score", nil);
-    [self addChild: _titleLabel];
     
-    _scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _scoreLabel.fontColor = [UIColor blackColor];
-    _scoreLabel.position = CGPointMake(self.size.width/2, self.size.height/7.0);
-    _scoreLabel.fontSize = fontsize;
-    _scoreLabel.zPosition = 2;
-    _scoreLabel.text = [NSString stringWithFormat:@"%d/%d", 0, targetScore];
-    [self addChild:_scoreLabel];
+    NSMutableString * stringL = [[NSMutableString alloc]init];
+    
+    [stringL appendString:NSLocalizedString(@"Score:", nil)];
+    [stringL appendFormat:@" %d/%d", _currentScore, _targetScore];
+    
+    _titleLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+    _titleLabel.fontColor = [UIColor whiteColor];
+    _titleLabel.fontSize = fontsize;
+    _titleLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    _titleLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    _titleLabel.zPosition = 2;
+    _titleLabel.text = stringL;
+    _titleLabel.position = CGPointMake(-_titleLabel.frame.size.width/1.5, -self.size.height/2);
+    [self addChild: _titleLabel];
+
     
 }
 
 //Updates the current score
 -(void)updateScore:(int)addScore{
     _currentScore = _currentScore + addScore;
-    _scoreLabel.text = [NSString stringWithFormat:@"%d/%d", _currentScore, _targetScore];
+    
+    NSMutableString * stringL = [[NSMutableString alloc]init];
+    
+    [stringL appendString:NSLocalizedString(@"Score:", nil)];
+    [stringL appendFormat:@" %d/%d", _currentScore, _targetScore];
+    _titleLabel.text = stringL;
     
     if (_currentScore >= _targetScore && !_reachYet) {
         //Create score reach animation
         _reachYet = YES;
         _titleLabel.alpha = 0;
-        _scoreLabel.alpha = 0;
         
         SKLabelNode * reachL = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-        reachL.fontColor = [UIColor blackColor];
+        reachL.fontColor = [UIColor whiteColor];
         reachL.alpha = 1;
-        reachL.position = CGPointMake(self.size.width/2, self.size.height/2);
+        reachL.position = CGPointMake(-self.size.width/2, -self.size.height/2);
         reachL.fontSize = 9;
         reachL.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         reachL.text = [NSString stringWithFormat:@"%d", _targetScore];
@@ -61,7 +66,6 @@
         [reachL runAction:group completion:^{
             
                 _titleLabel.alpha = 1;
-                _scoreLabel.alpha = 1;
                 [reachL removeFromParent];
         }];
 
@@ -87,7 +91,7 @@
     SKAction * scaleUp = [SKAction scaleTo:1.8 duration:1];
     SKAction * scaleDown = [SKAction scaleTo:1 duration:1];
     SKAction * group = [SKAction sequence:@[scaleUp, scaleDown]];
-    [_scoreLabel runAction:[SKAction repeatActionForever:group]];
+    [_titleLabel runAction:[SKAction repeatActionForever:group]];
     
 }
 

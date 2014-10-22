@@ -12,39 +12,34 @@
 
 -(void)initVariables{
     
-    NSString * titleString;
+    NSMutableString * titleString = [[NSMutableString alloc] init];
     
     if(_gameType == 2){
-        titleString = NSLocalizedString(@"ballsLeft", nil);
+        [titleString appendString: NSLocalizedString(@"Balls Left:", nil)];
+        
     }else{
-        titleString = NSLocalizedString(@"timeLeft", nil);
+         [titleString appendString: NSLocalizedString(@"Time Left:", nil)];
     }
     
-    _fontSize = 11;
+    _fontSize = 16;
     
     _titleNode = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _titleNode.fontSize = _fontSize;
     _titleNode.fontColor = [UIColor blackColor];
-    _titleNode.position = CGPointMake(self.size.width/2, self.size.height*4.0/7);
-    _titleNode.text = titleString;
-    [self addChild:_titleNode];
-    
-    _objectiveNode = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _objectiveNode.fontSize = _fontSize;
-    _objectiveNode.fontColor = [UIColor blackColor];
-    _objectiveNode.position = CGPointMake(self.size.width/2, self.size.height/7.0);
+    _titleNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    _titleNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
     
     if (_gameType == 2) {
-        _objectiveNode.text = [NSString stringWithFormat:@"%d", _ballsLeft];
+        [titleString appendFormat: @" %d", _ballsLeft];
     }else{
         int minutes = _time/60;
         int seconds = _time - minutes*60;
-        _objectiveNode.text = [NSString stringWithFormat:@"%02d:%02d",minutes, seconds ]; // Should present the time in MM:SS
+        [titleString appendFormat:@" %02d:%02d",minutes, seconds];
     }
 
-    
-    [self addChild:_objectiveNode];
-    
+    [_titleNode setText:titleString];
+     _titleNode.position = CGPointMake(_titleNode.frame.size.width/1.75, -self.size.height/2);
+    [self addChild:_titleNode];
     
 }
 
@@ -52,13 +47,26 @@
 //Checks and updates the game objective
 -(BOOL)updateObjective{
     
+    NSMutableString * titleString = [[NSMutableString alloc] init];
+    
+    if(_gameType == 2){
+        [titleString appendString: NSLocalizedString(@"Balls Left:", nil)];
+        
+    }else{
+        [titleString appendString: NSLocalizedString(@"Time Left:", nil)];
+    }
+
+    
     
     if (_gameType == 2) {
-        _objectiveNode.text = [NSString stringWithFormat:@"%d", _ballsLeft];
+        
+        [titleString appendFormat:@" %d", _ballsLeft];
+        _titleNode.text = titleString;
     }else{
         int minutes = _time/60;
         int seconds = _time - minutes*60;
-        _objectiveNode.text = [NSString stringWithFormat:@"%02d:%02d",minutes, seconds ];
+         [titleString appendFormat:@" %02d:%02d",minutes, seconds];
+        _titleNode.text = titleString;
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
         _time = _futureTime - date.timeIntervalSince1970;
     }
@@ -66,13 +74,15 @@
     
     if (_gameType == 2 && _ballsLeft <= 0) {
         _ballsLeft = 0;
-        _objectiveNode.text = [NSString stringWithFormat:@"%d", _ballsLeft];
+        [titleString appendFormat:@" %d", _ballsLeft];
+        _titleNode.text = titleString;
         return YES;
     }else if (_gameType == 1 && _time < 0){
         _time  = 0;
         int minutes = _time/60;
         int seconds = _time - minutes*60;
-        _objectiveNode.text = [NSString stringWithFormat:@"%02d:%02d",minutes, seconds ];
+        [titleString appendFormat:@" %02d:%02d",minutes, seconds];
+        _titleNode.text = titleString;
         return YES;
     }
 

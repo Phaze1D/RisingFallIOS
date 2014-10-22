@@ -26,4 +26,5 @@
 @property BOOL isChild;
 
 
+-(void)currentLevelAnimation;
 @end

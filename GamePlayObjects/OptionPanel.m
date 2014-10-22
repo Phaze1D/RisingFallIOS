@@ -14,6 +14,7 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesBegan:touches withEvent:event];
+    [self setTexture:_pressedTexture];
     
 }
 
@@ -25,12 +26,14 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesMoved:touches withEvent:event];
+    [self setTexture:_pressedTexture];
 }
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesEnded:touches withEvent:event];
         [self.delegate optionButtonPressed];
+    [self setTexture:_notPressedTexture];
 
 }
 

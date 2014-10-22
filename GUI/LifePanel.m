@@ -18,26 +18,26 @@
 
     
     SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    title.text = NSLocalizedString(@"Lifesk", nil);
-    title.fontColor = [UIColor blackColor];
+    title.text = NSLocalizedString(@"Lifes Left", nil);
+    title.fontColor = [UIColor whiteColor];
     title.fontSize = fontSize;
-    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    title.position = CGPointMake(0, self.size.height/3);
+    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
+    title.position = CGPointMake(0, 0);
     [self addChild:title];
     
     SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     lifes.text = [NSString stringWithFormat:@"%d", info.player.lifesLeft ];
-    lifes.fontColor = [UIColor blackColor];
-    lifes.position = CGPointMake(0, -self.size.height/3);
+    lifes.fontColor = [UIColor whiteColor];
+    lifes.position = CGPointMake(0, 0);
     lifes.fontSize = fontSize;
-    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
+    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     [self addChild:lifes];
     
 }
 
 -(void)createTimePanel{
     
-    int fontSize = 12;
+    int fontSize = 19;
     NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
     GameData * info = [GameData sharedGameData];
 
@@ -48,8 +48,8 @@
     int seconds = _timeLeft - minutes*60;
     
     SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    title.text = NSLocalizedString(@"Lifesk", nil);
-    title.fontColor = [UIColor blackColor];
+    title.text = NSLocalizedString(@"Lifes Left", nil);
+    title.fontColor = [UIColor whiteColor];
     title.fontSize = fontSize;
     title.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     title.position = CGPointMake(0, self.size.height/3);
@@ -59,18 +59,19 @@
     _timeL.position = CGPointMake(0, 0);
     _timeL.text = [NSString stringWithFormat:@"%02d:%02d",minutes, seconds];
     _timeL.fontSize = fontSize;
-    _timeL.fontColor = [UIColor blackColor];
+    _timeL.fontColor = [UIColor whiteColor];
     _timeL.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
     [self addChild: _timeL];
 
     SKTextureAtlas * buttonA  = [[TextureLoader shareTextureLoader] buttonAtlas];
     
-    _buyB = [ButtonNode spriteNodeWithTexture: [buttonA textureNamed:@"buttonXS1"]];
+    _buyB = [ButtonNode spriteNodeWithTexture: [buttonA textureNamed:@"buttonS1B"]];
     _buyB.position = CGPointMake( 0, -self.size.height/3);
     _buyB.userInteractionEnabled = YES;
     _buyB.delegate = self;
-    [_buyB setImages:[buttonA textureNamed:@"buttonXS1"] pressedImage:[buttonA textureNamed:@"buttonXS1"]];
-    [_buyB setText:NSLocalizedString(@".99k", nil)];
+    _buyB.size = CGSizeMake(_buyB.size.width/2, _buyB.size.height/2);
+    [_buyB setImages:[buttonA textureNamed:@"buttonS1B"] pressedImage:[buttonA textureNamed:@"buttonS2B"]];
+    [_buyB setText:NSLocalizedString(@".99", nil)];
     [self addChild: _buyB];
 
     

@@ -17,6 +17,7 @@
 #import "Spawner.h"
 #import "LinkedListNew.h"
 #import "PowerTimePanel.h"
+#import "SizeManager.h"
 
 
 @protocol GamePlayDelegate <NSObject>
@@ -74,11 +75,10 @@
 @property SKTextureAtlas * ballAtlas;
 
 @property SKTexture *playAreaTexture;
-@property SKTexture *ceilingTexture;
 
-@property SKSpriteNode * ceiling;
 @property SKSpriteNode * playArea;
 @property SKSpriteNode * crackSprite;
+@property SKSpriteNode * animationNode;
 
 @property ObjectivePanel * objectivePanel;
 @property OptionPanel * optionPanel;
@@ -98,11 +98,13 @@
 @property CGPoint scorePosition;
 @property CGPoint ptPosition;
 @property CGPoint settingPosition;
-@property CGPoint ceilingPosition;
+@property CGPoint infoAreaPosition;
 
 @property TextureLoader * textLoader;
 
+@property SizeManager * sizeManager;
 
+@property int passEndTexture;
 
 -(void)pauseGame;
 -(void)disableBalls;

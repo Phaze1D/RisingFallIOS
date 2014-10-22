@@ -19,7 +19,6 @@
 @property (readonly) int fontSize;
 
 @property SKLabelNode * titleNode;
-@property SKLabelNode * objectiveNode;
 
 -(void)initVariables;
 -(BOOL)updateObjective;

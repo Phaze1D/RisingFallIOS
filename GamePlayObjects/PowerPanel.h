@@ -10,7 +10,7 @@
 #import "TextureLoader.h"
 #import "Ball.h" 
 #import "GameData.h"
-
+#import "SizeManager.h"
 
 @interface PowerPanel : SKSpriteNode
 

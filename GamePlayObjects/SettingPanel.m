@@ -32,7 +32,7 @@
             }
         }
         
-        CGRect frame = CGRectMake(self.position.x ,self.position.y+self.size.height/2,self.size.width,self.size.height/2);
+        CGRect frame = CGRectMake(self.position.x ,self.position.y+self.size.height/1.5,self.size.width - self.size.width/50,self.size.height/2);
         
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.textColor = [UIColor blackColor];
@@ -68,12 +68,12 @@
     float xOffset = (self.size.width - [infoAtlas textureNamed:@"correct"].size.width*2)/3;
     
     SKSpriteNode * node1 = [SKSpriteNode spriteNodeWithTexture:[infoAtlas textureNamed:@"correct"]];
-    node1.position = CGPointMake(xOffset, self.size.height - 5);
+    node1.position = CGPointMake(xOffset, self.size.height - self.size.height/10);
     node1.anchorPoint = CGPointMake(0, 1);
     [self addChild:node1];
     
     SKSpriteNode * node2 = [SKSpriteNode spriteNodeWithTexture:[infoAtlas textureNamed:@"incorrect"]];
-    node2.position = CGPointMake(xOffset*2 + [infoAtlas textureNamed:@"correct"].size.width, self.size.height - 5);
+    node2.position = CGPointMake(xOffset*2 + [infoAtlas textureNamed:@"correct"].size.width, self.size.height - self.size.height/10);
     node2.anchorPoint = CGPointMake(0, 1);
     [self addChild:node2];
     
@@ -87,27 +87,31 @@
     
     SKTexture * buttonL1T = [[textLoader buttonAtlas]textureNamed:@"buttonL1"];
     SKTexture * buttonL2T = [[ textLoader buttonAtlas]textureNamed:@"buttonL2"];
-    float yOffset = (self.size.height - buttonL1T.size.height - buttonL2T.size.height)/3.0;
-    CGPoint quitPosition = CGPointMake(self.size.width/2, yOffset + buttonL1T.size.height/2);
-    CGPoint resumenPosition = CGPointMake(self.size.width/2, yOffset*2 + buttonL1T.size.height*3/2.0);
+    float yOffset = (self.size.height - buttonL1T.size.height/2 - (buttonL2T.size.height/2))/3.0;
+    CGPoint quitPosition = CGPointMake(self.size.width/2, yOffset + (buttonL1T.size.height/2)/2);
+    CGPoint resumenPosition = CGPointMake(self.size.width/2, yOffset*2 + (buttonL1T.size.height/2)*3/2.0);
     
     ButtonNode * quitButton = [ButtonNode spriteNodeWithTexture:buttonL1T];
     [quitButton setImages:buttonL1T pressedImage:buttonL2T];
-    [quitButton setText: NSLocalizedString(@"QuitK", nil)];
+    [quitButton setText: NSLocalizedString(@"Quit", nil)];
     quitButton.anchorPoint = CGPointMake(0.5, 0.5);
     quitButton.buttontype = NaviagtionButton;
     quitButton.delegate = self;
+    quitButton.size = CGSizeMake(quitButton.size.width/2, quitButton.size.height/2);
     quitButton.position = quitPosition;
     quitButton.userInteractionEnabled = YES;
     
     ButtonNode * resumenButton = [ButtonNode spriteNodeWithTexture:buttonL1T];
     [resumenButton setImages:buttonL1T pressedImage:buttonL2T];
     resumenButton.anchorPoint = CGPointMake(0.5, 0.5);
-    [resumenButton setText: NSLocalizedString(@"ResumeK", nil)];
+    [resumenButton setText: NSLocalizedString(@"Resume", nil)];
     resumenButton.buttontype = ResumenButton;
     resumenButton.delegate = self;
+    resumenButton.size = CGSizeMake(resumenButton.size.width/2, resumenButton.size.height/2);
     resumenButton.position = resumenPosition;
     resumenButton.userInteractionEnabled = YES;
+    
+    [self createSoundButton];
     
     [self addChild:resumenButton];
     [self addChild:quitButton];
@@ -130,31 +134,33 @@
     
     SKTexture * buttonL1T = [[textLoader buttonAtlas] textureNamed:@"buttonL1"];
     SKTexture * buttonL2T = [[textLoader buttonAtlas] textureNamed:@"buttonL2"];
-    float yOffset = (self.size.height - buttonL1T.size.height*3)/4;
+    float yOffset = (self.size.height - (buttonL1T.size.height/2)*3)/4;
     
     SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    title.text = NSLocalizedString(@"GameWonTitle", nil);
-    title.fontColor = [UIColor blackColor];
+    title.text = NSLocalizedString(@"You Won", nil);
+    title.fontColor = [UIColor colorWithRed:0.376 green:0.035 blue:1 alpha:1];
     title.fontSize = 20;
     title.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
-    title.position = CGPointMake(self.size.width/2, self.size.height - yOffset*2);
+    title.position = CGPointMake(self.size.width/2, self.size.height - yOffset - title.frame.size.height);
     [self addChild:title];
     
     ButtonNode * nextLevelB = [ButtonNode spriteNodeWithTexture:buttonL1T];
-    nextLevelB.position = CGPointMake(self.size.width/2, buttonL1T.size.height*3.0/2.0 + yOffset*2);
+    nextLevelB.position = CGPointMake(self.size.width/2, buttonL1T.size.height*3.0/4.0 + yOffset*2);
     nextLevelB.buttontype = NextLevelB;
     nextLevelB.delegate = self;
+    nextLevelB.size = CGSizeMake(nextLevelB.size.width/2, nextLevelB.size.height/2);
     nextLevelB.userInteractionEnabled = YES;
-    [nextLevelB setText:NSLocalizedString(@"NextLevel", nil)];
+    [nextLevelB setText:NSLocalizedString(@"Next Level", nil)];
     [nextLevelB setImages:buttonL1T pressedImage:buttonL2T];
     [self addChild:nextLevelB];
     
     ButtonNode * mainMeunB = [ButtonNode spriteNodeWithTexture:buttonL1T];
     mainMeunB.buttontype = BackToMain;
     mainMeunB.delegate = self;
+    mainMeunB.size = CGSizeMake(mainMeunB.size.width/2, mainMeunB.size.height/2);
     mainMeunB.userInteractionEnabled = YES;
-    mainMeunB.position = CGPointMake(self.size.width/2, buttonL1T.size.height/2 + yOffset);
-    [mainMeunB setText:NSLocalizedString(@"MainMenu", nil)];
+    mainMeunB.position = CGPointMake(self.size.width/2, buttonL1T.size.height/4 + yOffset);
+    [mainMeunB setText:NSLocalizedString(@"Main Menu", nil)];
     [mainMeunB setImages:buttonL1T pressedImage:buttonL2T];
     [self addChild:mainMeunB];
     
@@ -167,20 +173,23 @@
 -(void)createGameLost{
     TextureLoader * textLoader = [TextureLoader shareTextureLoader];
     
-    SKTexture * buttonS1T = [[textLoader buttonAtlas] textureNamed:@"buttonS1"];
-    SKTexture * buttonS2T = [[textLoader buttonAtlas] textureNamed:@"buttonS2"];
-    float yOffset = (self.size.height - buttonS1T.size.height*5)/6;
-    float xOffset = (self.size.width - buttonS1T.size.width * 2)/3;
-    CGPoint keepLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset - buttonS1T.size.height/2);
-    CGPoint payPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*2 - buttonS1T.size.height*3/2);
-    CGPoint socialPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*3 - buttonS1T.size.height*5/2);
-    CGPoint endLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*4 - buttonS1T.size.height*7/2);
-    CGPoint resestPosition = CGPointMake(xOffset + buttonS1T.size.width/2 , self.size.height - yOffset*5 - buttonS1T.size.height*9/2);
-    CGPoint quitPosition = CGPointMake(xOffset * 2 + buttonS1T.size.width*3/2, self.size.height - yOffset*5 - buttonS1T.size.height*9/2);
+    SKTexture * buttonS1T = [[textLoader buttonAtlas] textureNamed:@"buttonS1B"];
+    SKTexture * buttonS2T = [[textLoader buttonAtlas] textureNamed:@"buttonS2B"];
+    SKTexture * buttonS1TG = [[textLoader buttonAtlas] textureNamed:@"buttonS1G"];
+    SKTexture * buttonS2TG = [[textLoader buttonAtlas] textureNamed:@"buttonS2G"];
+    
+    float yOffset = (self.size.height - buttonS1T.size.height/2*5)/6;
+    float xOffset = (self.size.width - buttonS1T.size.width)/3;
+    CGPoint keepLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset - buttonS1T.size.height/4);
+    CGPoint payPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*2 - buttonS1T.size.height*3/4);
+    CGPoint socialPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*3 - buttonS1T.size.height*5/4);
+    CGPoint endLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*4 - buttonS1T.size.height*7/4);
+    CGPoint resestPosition = CGPointMake(xOffset + buttonS1T.size.width/4 , self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
+    CGPoint quitPosition = CGPointMake(xOffset * 2 + buttonS1T.size.width*3/4, self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
     
     SKLabelNode * keepPlayingLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     keepPlayingLabel.position = keepLabelPosition;
-    keepPlayingLabel.text = NSLocalizedString(@"KeepPlayK", nil);
+    keepPlayingLabel.text = NSLocalizedString(@"Keep Play", nil);
     keepPlayingLabel.fontColor = [UIColor blackColor];
     keepPlayingLabel.fontSize = 20;
     keepPlayingLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
@@ -190,43 +199,48 @@
     payButton.position = payPosition;
     payButton.buttontype = PayButton;
     payButton.delegate = self;
+    payButton.size = CGSizeMake(payButton.size.width/2, payButton.size.height/2);
     payButton.userInteractionEnabled = YES;
-    [payButton setText:NSLocalizedString(@".99k", nil)];
+    [payButton setText:NSLocalizedString(@".99", nil)];
     [payButton setImages:buttonS1T pressedImage:buttonS2T];
     [self addChild:payButton];
     
-    _socialB = [SocialMediaButton spriteNodeWithTexture:buttonS1T];
+    _socialB = [SocialMediaButton spriteNodeWithTexture:[[textLoader gameplayAtlas] textureNamed:@"shareB1"]];
     _socialB.position = socialPosition;
     _socialB.socialDelegate = self;
+    [_socialB setPressedImage:[[textLoader gameplayAtlas] textureNamed:@"shareB2"]];
+    _socialB.size = CGSizeMake(_socialB.size.width/2, _socialB.size.height/2);
     _socialB.userInteractionEnabled = YES;
     _socialB.type = SOCIAL_BUTTON;
-    [_socialB setText:NSLocalizedString(@"ShareK", nil)];
+    //[_socialB setText:NSLocalizedString(@"ShareK", nil)];
     [self addChild:_socialB];
     
     SKLabelNode * endLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     endLabel.position = endLabelPosition;
-    endLabel.text = NSLocalizedString(@"Endk", nil);
+    endLabel.text = NSLocalizedString(@"Game Over", nil);
     endLabel.fontSize = 20;
     endLabel.fontColor = [UIColor blackColor];
     endLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [self addChild: endLabel];
     
-    ButtonNode * resetButton = [ButtonNode spriteNodeWithTexture:buttonS1T];
+    ButtonNode * resetButton = [ButtonNode spriteNodeWithTexture:buttonS1TG];
     resetButton.position = resestPosition;
     resetButton.buttontype = RestartB;
     resetButton.delegate = self;
+    resetButton.size = CGSizeMake(resetButton.size.width/2, resetButton.size.height/2);
     resetButton.userInteractionEnabled = YES;
-    [resetButton setText:NSLocalizedString(@"Restartk", nil)];
-    [resetButton setImages:buttonS1T pressedImage:buttonS2T];
+    [resetButton setText:NSLocalizedString(@"Restart", nil)];
+    [resetButton setImages:buttonS1TG pressedImage:buttonS2TG];
     [self addChild: resetButton];
     
-    ButtonNode * quitButton = [ButtonNode spriteNodeWithTexture:buttonS1T];
+    ButtonNode * quitButton = [ButtonNode spriteNodeWithTexture:buttonS1TG];
     quitButton.position = quitPosition;
     quitButton.buttontype = BackToMain;
     quitButton.delegate = self;
+    quitButton.size = CGSizeMake(quitButton.size.width/2, quitButton.size.height/2);
     quitButton.userInteractionEnabled = YES;
-    [quitButton setText:NSLocalizedString(@"Quitk", nil)];
-    [quitButton setImages:buttonS1T pressedImage:buttonS2T];
+    [quitButton setText:NSLocalizedString(@"Quit", nil)];
+    [quitButton setImages:buttonS1TG pressedImage:buttonS2TG];
     [self addChild:quitButton];
     
     
@@ -240,12 +254,12 @@
     TextureLoader * textLoader = [TextureLoader shareTextureLoader];
     float duration = .3;
     
-    SKTexture * buttonS1 = [[textLoader buttonAtlas] textureNamed:@"buttonS1"];
+    SKTexture * buttonS1 = [[textLoader buttonAtlas] textureNamed:@"backButton"];
     _socialMediaAtlas = [textLoader socialMediaAtlas];
     _socialChildren = [[NSMutableArray alloc] initWithCapacity:6];
     
-    float xoffset = (self.size.width - [_socialMediaAtlas textureNamed:@"facebook"].size.width*3)/4;
-    float yoffset = (self.size.height - [_socialMediaAtlas textureNamed:@"facebook"].size.height*2 - buttonS1.size.height)/4;
+    float xoffset = (self.size.width - [_socialMediaAtlas textureNamed:@"facebook"].size.width*3/2)/4;
+    float yoffset = (self.size.height - [_socialMediaAtlas textureNamed:@"facebook"].size.height - buttonS1.size.height/2)/4;
     
     NSArray * names = [_socialMediaAtlas textureNames];
     
@@ -254,13 +268,14 @@
     for (int row = 0 ; row < 2 ; row++) {
         for (int column = 0; column < 3; column++) {
             
-            CGPoint point = CGPointMake(xoffset + (xoffset + [_socialMediaAtlas textureNamed:@"facebook"].size.width)*column + [_socialMediaAtlas textureNamed:@"facebook"].size.width/2, self.size.height - ( yoffset + (yoffset + [_socialMediaAtlas textureNamed:@"facebook"].size.height)*row + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2));
+            CGPoint point = CGPointMake(xoffset + (xoffset + [_socialMediaAtlas textureNamed:@"facebook"].size.width/2)*column + [_socialMediaAtlas textureNamed:@"facebook"].size.width/4, self.size.height - ( yoffset + (yoffset + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2)*row + [_socialMediaAtlas textureNamed:@"facebook"].size.height/4));
             
             SocialMediaButton * subSocial = [SocialMediaButton spriteNodeWithTexture:[_socialMediaAtlas textureNamed: [names objectAtIndex:count]]];
             
-            subSocial.position = CGPointMake(self.size.width/2, self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
+            subSocial.position = CGPointMake(self.size.width/2, self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/4);
             subSocial.alpha = 0;
             subSocial.zPosition = 3;
+            subSocial.size = CGSizeMake(subSocial.size.width/2, subSocial.size.height/2);
             subSocial.name = [names objectAtIndex:count];
             subSocial.socialDelegate = self;
             subSocial.indexInSubArray = count;
@@ -283,10 +298,11 @@
     SocialMediaButton * socialB = [SocialMediaButton spriteNodeWithTexture:buttonS1];
     socialB.position = CGPointMake(self.size.width/2, yoffset);
     socialB.socialDelegate = self;
+    [socialB setPressedImage:[[textLoader buttonAtlas] textureNamed:@"backButton2"]];
+    socialB.size = CGSizeMake(socialB.size.width/2, socialB.size.height/2);
     socialB.userInteractionEnabled = YES;
     socialB.type = SOCIAL_BUTTON;
     socialB.name = @"BackB";
-    [socialB setText:NSLocalizedString(@"BackK", nil)];
     [self addChild:socialB];
     
     
@@ -295,7 +311,7 @@
 //Removes the social children
 -(void)removeSocialChildren{
     
-    CGPoint point = CGPointMake(self.size.width/2 , self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/2);
+    CGPoint point = CGPointMake(self.size.width/2 , self.size.height/2 + [_socialMediaAtlas textureNamed:@"facebook"].size.height/4);
     
     for (SocialMediaButton * button in _socialChildren) {
         SKAction * fadin = [SKAction fadeAlphaTo:0 duration:.3];
@@ -385,6 +401,15 @@
     if (didBuy) {
         [self.delegate continuePlaying];
     }
+}
+
+-(void)createSoundButton{
+    ButtonNode * soundB = [ButtonNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] gameplayAtlas] textureNamed:@"soundOff"]];
+    soundB.size = CGSizeMake(soundB.size.width/2, soundB.size.height/2);
+    soundB.anchorPoint = CGPointMake(1,0);
+    soundB.position = CGPointMake(self.size.width - soundB.size.width/2, soundB.size.height/2);
+    [soundB setPressedImage:[[[TextureLoader shareTextureLoader] gameplayAtlas] textureNamed:@"soundOn"]];
+    [self addChild:soundB];
 }
 
 //Clears all the variables

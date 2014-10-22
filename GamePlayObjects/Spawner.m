@@ -43,7 +43,7 @@
     
     _pTextures = [_powerAtlas textureNames];
     _pTextures = [_pTextures sortedArrayUsingDescriptors:@[sd]];
-    _size = [_ballAtlas textureNamed:@"ball0"].size;
+    _size = [[SizeManager sharedSizeManager] getBallSize];
 }
 
 //Spawns random ball
@@ -61,6 +61,7 @@
         ball.isPowerBall = YES;
         ball.powerBallType = powerType + 1;
         ball.ballColor = -1;
+        ball.size = CGSizeMake(ball.size.width/2, ball.size.height/2);
         return ball;
         
     }else{
@@ -77,6 +78,7 @@
             ball.zPosition = 2;
             ball.column = _column;
             ball.ballColor = randIndex;
+            ball.size = CGSizeMake(ball.size.width/2, ball.size.height/2);
             ball.isDoubleBall = YES;
             return ball;
             
@@ -89,6 +91,7 @@
             ball.anchorPoint = CGPointMake(0, 0);
             ball.column = _column;
             ball.ballColor = randIndex;
+            ball.size = CGSizeMake(ball.size.width/2, ball.size.height/2);
             ball.isUnMoveable = YES;
             return ball;
         
@@ -100,6 +103,7 @@
         ball.anchorPoint = CGPointMake(0, 0);
         ball.column = _column;
         ball.ballColor = randIndex;
+        ball.size = [[SizeManager sharedSizeManager] getBallSize];
         return ball;
         
     }
@@ -114,6 +118,7 @@
     Ball * ball = [Ball spriteNodeWithTexture: [_ballAtlas textureNamed:[NSString stringWithFormat:@"ball%d", balltype]]];
     ball.position = position;
     ball.zPosition = 1;
+    ball.size = [[SizeManager sharedSizeManager] getBallSize];
     ball.anchorPoint = CGPointMake(0, 0);
     ball.column = _column;
     ball.ballColor = balltype;

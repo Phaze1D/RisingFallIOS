@@ -27,7 +27,6 @@
 -(void)beginBuyFlow:(NSString *)productID{
     NSLog(@"buy flow began");
     _currentProductID = productID;
-     NSLog(@"%@", _viewC);
     [self displaySpinner];
    
     self.productResquest = nil;
