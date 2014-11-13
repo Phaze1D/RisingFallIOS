@@ -53,7 +53,7 @@
 
 -(CGSize)getPlayAreaSize: (int)playHeight{
     
-    CGSize size = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",playHeight]].size;
+    CGSize size = [[TextureLoader shareTextureLoader] playAreaTexture:playHeight].size;
     
      return CGSizeMake(size.width/2, size.height/2);
 }

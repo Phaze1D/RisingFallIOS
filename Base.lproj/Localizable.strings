@@ -7,3 +7,50 @@
 */
 
 
+
+
+"Play" = "Play";
+"Store" = "Store";
+"Powers" = "Powers";
+
+"P5Title" = "Double Points";
+"P5Info" = "Double Points for 10 seconds";
+
+"P4Title" = "Away with You";
+"P4Info" = "Destroys the bottom two rows and gives you points";
+
+"P3Title" = "Copy Me";
+"P3Info" = "Changes all the balls of one color to other color";
+
+"P2Title" = "We're all the same";
+"P2Info" = "Spawns 10 balls of the same color";
+
+"P1Title" = "Slow and Steady";
+"P1Info" = "Reduce the drop rate and velocity of the balls by half for 10 seconds";
+
+"Balls Left" = "Balls Left";
+"Time Left" = "Time Left";
+"Score" = "Score";
+"Resume" = "Resume";
+"Quit" = "Quit";
+"You Won" = "You Won";
+"Next" = "Next";
+"Main Menu" = "Main Menu";
+"Play on" = "Play On";
+"Game Over" = "Game Over";
+"Restart" = "Restart";
+
+"InfoLevel0" = "Move the balls around to combine 3 or more balls of the same color and tap them to destroy them.";
+"InfoLevel1" = "The bigger the group of the same color balls the more points you get.";
+"InfoLevel2" = "Reach the target score and make sure you don’t let the balls hit the top.";
+"InfoLevel18" = "Striped balls need to be grouped twice to remove them.";
+"InfoLevel28" = "Something is changing";
+"InfoLevel50" = "The square boxes cant be moved";
+"InfoLevel70" = "Something is changing";
+"InfoLevel101" = "Reach %d \n Don’t hit the top.";
+
+"Payment Failed" = "Payment Failed";
+"No Internet Access" = "No Internet Access";
+"Twitter Error" = "No Twitter account founded";
+"Weibo Error" = "No Twitter account founded";
+"Post Failed" = "Post Failed";

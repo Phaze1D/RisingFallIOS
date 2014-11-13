@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+
+
+"Play" = "プレー";
+"Store" = "店舗";
+"Powers" = "プロダクト";
+
+"P5Title" = "ダブルポイント";
+"P5Info" = "10秒間のダブルポイント";
+
+"P4Title" = "アウェイあなたと一緒に";
+"P4Info" = "下の二つの行を破棄し、あなたにポイントを付与する";
+
+"P3Title" = "私をコピー";
+"P3Info" = "他の色に1色のすべてのボールを変更";
+
+"P2Title" = "私たちは、すべて同じいる";
+"P2Info" = " 同じ色のボール10を生成し";
+
+"P1Title" = "ゆっくりと着実な";
+"P1Info" = "10秒間半分にボールの速度を減らす";
+
+"Balls Left" = "ボール";
+"Time Left" = "時間";
+"Score" = "スコア";
+"Resume" = "再開する";
+"Quit" = "やめる";
+"You Won" = "勝者";
+"Next" = "次";
+"Main Menu" = "メインメニュー";
+"Play on" = "続ける";
+"Game Over" = "ゲームオーバー";
+"Restart" = "再起動";
+
+"InfoLevel0" = "同じ色の3つ以上のボールを組み合わせ、それらを破壊するためにそれらをタップする";
+"InfoLevel1" = "同じ色のボールあなたが得るより多くのポイントのグループを大きく。";
+"InfoLevel2" = "目標スコアに到達し、あなたはボールがトップにヒットさせていないことを確認してください。";
+"InfoLevel18" = "ストライプボールはそれらを削除するには二回グループである必要が";
+"InfoLevel28" = "何かが変化している";
+"InfoLevel50" = "四角いボックスは移動できません";
+"InfoLevel70" = "何かが変化している";
+"InfoLevel101" = "%dリーチ \n トップにヒットしないでください";
+
+"Payment Failed" = "お支払いは、失敗しました";
+"No Internet Access" = "いいえ、インターネットアクセスしない";
+"Twitter Error" = "いいえTwitterアカウントのセットアップん";
+"Weibo Error" = "いいえWeiboアカウントのセットアップん";
+"Post Failed" = "共有ポスト失敗しました";

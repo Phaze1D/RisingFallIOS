@@ -38,8 +38,8 @@
 //Creates the title
 -(void)createTitle{
     _title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _title.text = NSLocalizedString(@"Items", nil);
-    _title.fontSize = 15;
+    _title.text = NSLocalizedString(@"Powers", nil);
+    _title.fontSize = [[FontChoicerClass shareFontChoicer] fontStoreTitle];
     _title.fontColor = [UIColor colorWithRed:0 green:0.443 blue:0.737 alpha:1];
     _title.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     

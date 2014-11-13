@@ -11,6 +11,7 @@
 #import "Ball.h" 
 #import "GameData.h"
 #import "SizeManager.h"
+#import "FontChoicerClass.h"
 
 @interface PowerPanel : SKSpriteNode
 

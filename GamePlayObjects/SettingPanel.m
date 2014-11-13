@@ -16,19 +16,21 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         
-        int fontsize = 13;
+        int fontsize = [[FontChoicerClass shareFontChoicer] fontIntroText];
         
         NSString * key;
         NSString * info;
         
         if (levelAt <= 2 || levelAt == 18 || levelAt == 28 || levelAt == 50 || levelAt == 70) {
-            key = [NSString stringWithFormat:@"LevelInfo%d",levelAt];
+            key = [NSString stringWithFormat:@"InfoLevel%d",levelAt];
             info = NSLocalizedString(key, nil);
         }else{
             if (_gameType == 1) {
-                info = [NSString stringWithFormat:@"You have %d seconds to reach the target score of %d and surive without hitting the roof", _objectiveLeft, _targetScore];
+                key = [NSString stringWithFormat:@"InfoLevel%d",101];
+                info = NSLocalizedString(key, nil);
             }else{
-                info = [NSString stringWithFormat:@"You have %d balls left to reach the target score of %d and surive without hitting the roof", _objectiveLeft, _targetScore];
+                key = [NSString stringWithFormat:@"InfoLevel%d",101];
+                info = NSLocalizedString(key, nil);
             }
         }
         
@@ -49,7 +51,7 @@
         
         [owner.view addSubview:_textView];
         
-        [self createInfoTexture:levelAt];
+        //[self createInfoTexture:levelAt];
         
     });
     
@@ -139,7 +141,7 @@
     SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     title.text = NSLocalizedString(@"You Won", nil);
     title.fontColor = [UIColor colorWithRed:0.376 green:0.035 blue:1 alpha:1];
-    title.fontSize = 20;
+    title.fontSize = [[FontChoicerClass shareFontChoicer] fontGameWon];
     title.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
     title.position = CGPointMake(self.size.width/2, self.size.height - yOffset - title.frame.size.height);
     [self addChild:title];
@@ -150,7 +152,7 @@
     nextLevelB.delegate = self;
     nextLevelB.size = CGSizeMake(nextLevelB.size.width/2, nextLevelB.size.height/2);
     nextLevelB.userInteractionEnabled = YES;
-    [nextLevelB setText:NSLocalizedString(@"Next Level", nil)];
+    [nextLevelB setText:NSLocalizedString(@"Next", nil)];
     [nextLevelB setImages:buttonL1T pressedImage:buttonL2T];
     [self addChild:nextLevelB];
     
@@ -189,9 +191,9 @@
     
     SKLabelNode * keepPlayingLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     keepPlayingLabel.position = keepLabelPosition;
-    keepPlayingLabel.text = NSLocalizedString(@"Keep Play", nil);
+    keepPlayingLabel.text = NSLocalizedString(@"Play on", nil);
     keepPlayingLabel.fontColor = [UIColor blackColor];
-    keepPlayingLabel.fontSize = 20;
+    keepPlayingLabel.fontSize = [[FontChoicerClass shareFontChoicer] fontKeepPlaying];
     keepPlayingLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [self addChild: keepPlayingLabel];
     
@@ -218,7 +220,7 @@
     SKLabelNode * endLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     endLabel.position = endLabelPosition;
     endLabel.text = NSLocalizedString(@"Game Over", nil);
-    endLabel.fontSize = 20;
+    endLabel.fontSize = [[FontChoicerClass shareFontChoicer] fontGameOver];
     endLabel.fontColor = [UIColor blackColor];
     endLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [self addChild: endLabel];

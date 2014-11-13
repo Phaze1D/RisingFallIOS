@@ -22,7 +22,7 @@
     _label = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _label.text = text;
     _label.fontColor = [UIColor blueColor];
-    _label.fontSize = 14;
+    _label.fontSize = [[FontChoicerClass shareFontChoicer] fontButtonL];
     _label.zPosition = 2;
     _label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     _label.position = CGPointMake(0, 0);

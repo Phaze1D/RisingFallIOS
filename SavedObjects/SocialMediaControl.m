@@ -53,14 +53,14 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
                                                       // See: https://developers.facebook.com/docs/ios/errors
                                                       NSLog(@"Error publishing story: %@", error.description);
                                                       [self.delegate sharedCallBack:NO];
-                                                      [self sharedErrorCallBack];
+                                                      [self sharedErrorCallBack: @"Post Failed"];
                                                       
                                                   } else {
                                                       if (result == FBWebDialogResultDialogNotCompleted) {
                                                           // User cancelled.
                                                           NSLog(@"User cancelled.");
                                                           [self.delegate sharedCallBack:NO];
-                                                          [self sharedErrorCallBack];
+                                                          [self sharedErrorCallBack: @"Post Failed"];
                                                           
                                                       } else {
                                                           // Handle the publish feed callback
@@ -70,7 +70,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
                                                               // User cancelled.
                                                               NSLog(@"User cancelled.");
                                                               [self.delegate sharedCallBack:NO];
-                                                              [self sharedErrorCallBack];
+                                                              [self sharedErrorCallBack : @"Post Failed"];
                                                           } else {
                                                               // User clicked the Share button
                                                               //NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
@@ -123,7 +123,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         [_viewC presentViewController:messageController animated:YES completion:nil];
         
     }else{
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack:@"Post Failed"];
     }
     
     
@@ -136,13 +136,13 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
             
             NSLog(@"cancel");
             [_viewC dismissViewControllerAnimated:YES completion:nil];
-            [self sharedErrorCallBack];
+            [self sharedErrorCallBack:@"Post Failed"];
             break;
             
         case MessageComposeResultFailed:
             NSLog(@"faild");
             [_viewC dismissViewControllerAnimated:YES completion:nil];
-            [self sharedErrorCallBack];
+            [self sharedErrorCallBack:@"Post Failed"];
             break;
             
             
@@ -188,7 +188,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     if (error) {
         [self.delegate enableOther];
         [self resumeGame];
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack:@"Post Failed"];
     }else{
         [self.delegate disableOther];
         _viewC.mainView.paused = YES;
@@ -213,11 +213,11 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     } else if (error.code == kGPPErrorShareboxCanceled) {
         text = @"Canceled";
         [self.delegate sharedCallBack:NO];
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack:@"Post Failed"];
     } else {
         text = [NSString stringWithFormat:@"Error (%@)", [error localizedDescription]];
         [self.delegate sharedCallBack:NO];
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack:@"Post Failed"];
     }
     
     NSLog(@"Status: %@", text);
@@ -248,7 +248,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
                     case SLComposeViewControllerResultCancelled:
                         NSLog(@"canecle");
                         [self.delegate sharedCallBack:NO];
-                        [self sharedErrorCallBack];
+                        [self sharedErrorCallBack: @"Post Failed"];
                         [self resumeGame];
                         break;
                         //  This means the user hit 'Send'
@@ -269,7 +269,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         
     }else{
         
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack: @"Twitter Error"];
         [self resumeGame];
         [self.delegate sharedCallBack:NO];
     }
@@ -325,7 +325,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
 
 -(void)vkuserCanceled{
     NSLog(@"vkcanceled");
-    [self sharedErrorCallBack];
+    [self sharedErrorCallBack:@"Post Failed"];
     [self.delegate enableOther];
     [self resumeGame];
     [VKSdk forceLogout];
@@ -363,7 +363,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
                     case SLComposeViewControllerResultCancelled:
                         NSLog(@"canecle");
                         [self.delegate sharedCallBack:NO];
-                        [self sharedErrorCallBack];
+                        [self sharedErrorCallBack:@"Post Failed"];
                         [self resumeGame];
                         break;
                         //  This means the user hit 'Send'
@@ -379,7 +379,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         
         
     }else{
-        [self sharedErrorCallBack];
+        [self sharedErrorCallBack:@"Weibo Error"];
         [self.delegate sharedCallBack:NO];
         [self resumeGame];
     }
@@ -397,10 +397,10 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     
 }
 
--(void)sharedErrorCallBack{
+-(void)sharedErrorCallBack: (NSString *) key{
     UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"TweetWaringTitleK", nil)
-                              message:NSLocalizedString(@"TweetWaringK", nil)
+                              initWithTitle:NSLocalizedString(@"Error", nil)
+                              message:NSLocalizedString(key, nil)
                               delegate:self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];

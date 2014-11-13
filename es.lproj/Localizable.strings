@@ -6,3 +6,51 @@
   Copyright (c) 2014 David Villarreal. All rights reserved.
 */
 
+
+"Play" = "Jugar";
+"Store" = "Tienda";
+"Powers" = "Poderes";
+
+"P5Title" = "Doble Puentos";
+"P5Info" = "El doble de puntos por 10 segundos";
+
+"P4Title" = "¡Fuera de aquí!";
+"P4Info" = "Destruye las dos filas inferiores y te da puntos";
+
+"P3Title" = "Cópiame";
+"P3Info" = "Cambia todas las pelotas de un color a otro color";
+
+"P2Title" = "Somos todos iguales";
+"P2Info" = "Genera 10 pelotas del mismo color";
+
+"P1Title" = "Lento y Constante";
+"P1Info" = "Reduce la velocidad de las pelotas por mitad por 10 segundos";
+
+"Balls Left" = "Pelotas";
+"Time Left" = "Tiempo";
+"Score" = "Puntos";
+"Resume" = "Continuar";
+"Quit" = "Salir";
+"You Won" = "Has Ganado";
+"Next" = "Siguiente";
+"Main Menu" = "Menú";
+"Play on" = "Seguir Jugando";
+"Game Over" = "Game Over";
+"Restart" = "De Nuevo";
+
+"InfoLevel0" = "Mueve las bolas alrededor para combinar 3 o más bolas del mismo color y toque ellos para destruirlos";
+"InfoLevel1" = "Cuanto más grande sea el grupo de bolas del mismo color los más puntos obtendrá.";
+"InfoLevel2" = "Llegar a la meta de puntuación y asegúrese de que usted no deje que las bolas de golpear la parte superior.";
+"InfoLevel18" = "Pelotas rayadas necesitan ser grupo dos veces para eliminar las";
+"InfoLevel28" = "Algo está cambiando";
+"InfoLevel50" = "Las cajas cuadradas no puedo ser movidos";
+"InfoLevel70" = "Algo está cambiando";
+"InfoLevel101" = "Alcanzar %d \n No golpee la parte superior.";
+
+"Payment Failed" = "Pago Error";
+"No Internet Access" = "Sin acceso a Internet";
+"Twitter Error" = "Ninguna cuenta de Twitter encontrada";
+"Weibo Error" = "Ninguna cuenta de Weibo encontrada";
+"Post Failed" = "Compartiendo Error";
+
+

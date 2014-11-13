@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+
+"Play" = "Jouer";
+"Store" = "Boutique";
+"Powers" = "Produits";
+
+"P5Title" = "Double de Points";
+"P5Info" = "Le double de points pendant 10 secondes";
+
+"P4Title" = "Loin avec vous";
+"P4Info" = "Détruit les deux rangées du bas et vous donne des points";
+
+"P3Title" = "Me Copier";
+"P3Info" = "Change toutes les boules de même couleur pour les autres couleurs";
+
+"P2Title" = "Nous sommes tous les mêmes";
+"P2Info" = "Génère 10 boules de la même couleur";
+
+"P1Title" = "Lente et régulière";
+"P1Info" = "Réduire la vitesse des billes de moitié pendant 10 secondes";
+
+"Balls Left" = "Balle";
+"Time Left" = "Temps";
+"Score" = "Marquer";
+"Resume" = "Reprendre";
+"Quit" = "Quitter";
+"You Won" = "Vous avez Gagné";
+"Next" = "Suivant";
+"Main Menu" = "Menu";
+"Play on" = "Jouer sur";
+"Game Over" = "Jeu Terminé";
+"Restart" = "Recommencer";
+
+"InfoLevel0" = "Déplacez les boules de combiner 3 ou plus boules de la même couleur et appuyez sur eux pour les détruire.";
+"InfoLevel1" = "Plus le groupe des boules de même couleur les plus de points que vous obtenez.";
+"InfoLevel2" = "Atteindre le score cible et assurez-vous que vous ne laissez pas les balles ont frappé le haut.";
+"InfoLevel18" = "Boules rayées doivent être regroupés à deux reprises pour les supprimer";
+"InfoLevel28" = "Quelque chose est en train de changer";
+"InfoLevel50" = "Les boîtes carrées ne peux pas être déplacés";
+"InfoLevel70" = "Quelque chose est en train de changer";
+"InfoLevel101" = "Atteindre %d \n Ne pas frapper le haut";
+
+"Payment Failed" = "Paiement a échoué";
+"No Internet Access" = "Pas d'accès à Internet";
+"Twitter Error" = "Aucune configuration du compte Twitter";
+"Weibo Error" = "Aucune configuration du compte Weibo";
+"Post Failed" = "Après échec";
+

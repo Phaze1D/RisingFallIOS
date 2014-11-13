@@ -36,7 +36,7 @@
         [_powerBalls addObject:ball];
     }
     
-    int fontsize = 11;
+    int fontsize = [[FontChoicerClass shareFontChoicer] fontPowerNoti];
     
     SKTextureAtlas * gameObjects = [_textLoad gameplayAtlas];
     
@@ -54,7 +54,7 @@
             noti.size = CGSizeMake(0, 0);
             
             
-            SKAction * resize = [SKAction resizeToWidth:[gameObjects textureNamed:@"notificationCircle"].size.width height:[gameObjects textureNamed:@"notificationCircle"].size.height duration:.6];
+            SKAction * resize = [SKAction resizeToWidth:[gameObjects textureNamed:@"notificationCircle"].size.width/2 height:[gameObjects textureNamed:@"notificationCircle"].size.height/2 duration:.6];
             [noti runAction:resize completion:^{
                     SKAction * scaleDown = [SKAction scaleTo:.9 duration:.8];
                     SKAction * scaleUp = [SKAction scaleTo:1 duration:.8];

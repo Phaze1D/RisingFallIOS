@@ -13,6 +13,7 @@
 
 +(id)shareTextureLoader;
 
+
 -(SKTextureAtlas *)socialMediaAtlas;
 -(SKTextureAtlas *)startMenuAtlas;
 -(SKTextureAtlas *)levelSceneAtlas;
@@ -25,9 +26,11 @@
 -(SKTextureAtlas *)storeAtlas;
 -(SKTextureAtlas *)itemsAtlas;
 -(SKTextureAtlas *)infoAtlas: (int)levelAt;
+-(SKTexture *)playAreaTexture:(int)height;
 
 
+@property NSString * screenSizeAlt;
 
-
+-(void)selectScreenSize: (float)screenWidth Height: (float)screenHeight;
 
 @end

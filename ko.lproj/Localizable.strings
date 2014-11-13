@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+
+"Play" = "놀이";
+"Store" = "상점";
+"Powers" = "상품";
+
+"P5Title" = "더블 포인트 ";
+"P5Info" = "10 초 동안 더블 포인트";
+
+"P4Title" = "물러 가라";
+"P4Info" = "아래 두 행을 파괴하고 당신에게 포인트를 제공합니다";
+
+"P3Title" = "나 복사";
+"P3Info" = "다른 색으로 하나의 색상의 모든 공을 변경";
+
+"P2Title" = "우리는 모두 같은 것";
+"P2Info" = "동일한 색깔의 공 (10)를 생성";
+
+"P1Title" = "느리고 꾸준한";
+"P1Info" = "10 초 동안 반으로 볼의 속도를 줄이기";
+
+"Balls Left" = "공";
+"Time Left" = "시간";
+"Score" = "득점";
+"Resume" = "다시 시작하다";
+"Quit" = "종료";
+"You Won" = "우승자";
+"Next" = "다음 수준";
+"Main Menu" = "메인 메뉴";
+"Play on" = "경기";
+"Game Over" = "게임 오버";
+"Restart" = "다시 시작";
+
+"InfoLevel0" = "공 동일한 색깔의 3 개 이상의 공을 결합하는 이동하고 그들을 파괴하기 위해 그들을 클릭";
+"InfoLevel1" = "같은 색 공 당신이 얻을 더 많은 포인트의 그룹 더 큰.";
+"InfoLevel2" = "목표 점수에 도달하고 공 상단을 공격 못하게해야합니다.";
+"InfoLevel18" = "스트라이프 공 그들을 제거하는 두 그룹 일 필요";
+"InfoLevel28" = "뭔가 변화";
+"InfoLevel50" = "사각 상자는 이동할 수 없습니다";
+"InfoLevel70" = "뭔가 변화";
+"InfoLevel101" = "(%d)에 도달 \n 상단에 충돌하지 마십시오";
+
+"Payment Failed" = "지불 실패";
+"No Internet Access" = "인터넷 연결을 제공하지 않습니다";
+"Twitter Error" = "어떤 트위터 계정 설정하지";
+"Weibo Error" = "더 웨이 보 계정 설정하지";
+"Post Failed" = "공유 게시물에 실패했습니다";

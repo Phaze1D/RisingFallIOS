@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+"Play" = "Spielen";
+"Store" = "der Laden";
+"Powers" = "Produkte";
+
+"P5Title" = "Doppelpunkte";
+"P5Info" = "Doppelte Punkte für 10 Sekunden";
+
+"P4Title" = "hier raus";
+"P4Info" = "Zerstört die beiden unteren Reihen und wird mit Punkten belohnt";
+
+"P3Title" = "kopieren Sie mich";
+"P3Info" = "Ändert alle Kugeln einer Farbe zur anderen Farbe";
+
+"P2Title" = "Wir sind alle gleich";
+"P2Info" = "Laicht 10 Kugeln der gleichen Farbe";
+
+"P1Title" = "Langsam und stetig";
+"P1Info" = "Reduzieren Sie die Geschwindigkeit der Kugeln um die Hälfte 10 Sekunden";
+
+"Balls Left" = "Bälle";
+"Time Left" = "Zeit";
+"Score" = "Erzielen";
+"Resume" = "Fortsetzen";
+"Quit" = "Verlassen";
+"You Won" = "Sie gewonnen";
+"Next" = "nächste Stufe";
+"Main Menu" = "Hauptmenü";
+"Play on" = "Bespielen";
+"Game Over" = "Spiel ist aus";
+"Restart" = "Neustart";
+
+"InfoLevel0" = "Bewegen Sie die Kugeln um 3 oder mehr Kugeln der gleichen Farbe zu verbinden und klicken Sie auf sie, um sie zu zerstören";
+"InfoLevel1" = "Je größer die Gruppe von der gleichen Farbe Kugeln, desto mehr Punkte erhalten Sie.";
+"InfoLevel2" = "Erreiche das Ziel der Gäste und stellen Sie sicher, lassen Sie sich nicht die Kugeln traf den oberen.";
+"InfoLevel18" = "Gestreift Kugeln müssen zweimal gruppiert werden, um sie zu entfernen";
+"InfoLevel28" = "Etwas verändert sich";
+"InfoLevel50" = "Die rechteckigen Kästchen können nicht verschoben werden";
+"InfoLevel70" = "Etwas verändert sich";
+"InfoLevel101" = "Erreiche %d \n Schlagen Sie nicht die Spitze";
+
+"Payment Failed" = "Zahlung fehlgeschlagen";
+"No Internet Access" = "Kein Internetzugang";
+"Twitter Error" = "Kein Twitter-Account Setup";
+"Weibo Error" = "Kein Weibo-Account Setup";
+"Post Failed" = "Post gescheitert";

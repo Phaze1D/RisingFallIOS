@@ -185,24 +185,24 @@
     switch (_levelFactory.ceilingHeight){
         case 1:
             _numRows = 13;
-            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",1]];
+            _playAreaTexture = [[TextureLoader shareTextureLoader] playAreaTexture:1];
             _levelFactory.ceilingHeight = 1;
             break;
         case 2:
         case 3:
             _numRows = 12;
-            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",2]];
+            _playAreaTexture = [[TextureLoader shareTextureLoader] playAreaTexture:2];
             _levelFactory.ceilingHeight = 2;
             break;
         case 4:
         case 5:
             _numRows = 11;
-            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",3]];
+            _playAreaTexture = [[TextureLoader shareTextureLoader] playAreaTexture:3];
             _levelFactory.ceilingHeight = 3;
             break;
         case 6:
             _numRows = 10;
-            _playAreaTexture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"playArea%d",4]];
+            _playAreaTexture = [[TextureLoader shareTextureLoader] playAreaTexture:4];
             _levelFactory.ceilingHeight = 4;
             
     }
@@ -284,7 +284,7 @@
     
     SKLabelNode * levelLa = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     levelLa.text = [NSString stringWithFormat:@"%d", _levelID];
-    levelLa.fontSize = 18;
+    levelLa.fontSize = [[FontChoicerClass shareFontChoicer] fontGameplayLevelID];
     levelLa.fontColor = [UIColor colorWithRed:0.969 green:0.576 blue:0.118 alpha:1] ;
     levelLa.position = CGPointMake(infoArea.position.x + infoArea.size.width/2, infoArea.position.y + infoArea.size.height/2);
     levelLa.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
@@ -864,7 +864,7 @@
     
     SKLabelNode * scoreLab = [SKLabelNode labelNodeWithFontNamed: @"CooperBlack"];
     scoreLab.text = [NSString stringWithFormat: @"%d", score];
-    scoreLab.fontSize = 15;
+    scoreLab.fontSize = [[FontChoicerClass shareFontChoicer] fontPopEffect];
     scoreLab.fontColor = [UIColor blackColor];
     scoreLab.position = CGPointMake(ball.position.x + ball.size.width/2, ball.position.y + ball.size.height/2 );
     scoreLab.zPosition = 2;

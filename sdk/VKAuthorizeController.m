@@ -127,9 +127,9 @@ static NSString *const REDIRECT_URL = @"https://oauth.vk.com/blank.html";
 	_webView.scrollView.bounces = NO;
 	_webView.scrollView.clipsToBounds = NO;
 	[view addSubview:_webView];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VKBundle localizedString:@"Cancel"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelAuthorization:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VKBundle localizedString:@"Cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(cancelAuthorization:)];
 
-    [self setElementsPositions:self.interfaceOrientation duration:0];
+    //[self setElementsPositions:self.interfaceOrientation duration:0];
 }
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self setElementsPositions:toInterfaceOrientation duration:duration];

@@ -8,12 +8,6 @@
 
 #import "ViewController.h"
 
-#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
-#define IS_IPHONE_4 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )480 ) < DBL_EPSILON )
-#define IS_IPAD_1 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )1024 ) < DBL_EPSILON )
-#define IS_IPAD_2 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )2048 ) < DBL_EPSILON )
-
-
 
 @implementation ViewController
 
@@ -27,12 +21,15 @@
     socialC.viewC = self;
     
     
+   
+    
     // Configure the view.
     _mainView = (SKView *)self.view;
     //_mainView.ignoresSiblingOrder = YES;
     //_mainView.showsFPS = YES;
     //_mainView.showsNodeCount = YES;
     //_mainView.showsDrawCount = YES;
+     [[TextureLoader shareTextureLoader]selectScreenSize:_mainView.bounds.size.width*2 Height:_mainView.bounds.size.height*2 ];
     _banner = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
     _banner.delegate = self;
     _bannerIsVisible = YES;

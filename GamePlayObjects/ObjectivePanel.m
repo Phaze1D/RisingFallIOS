@@ -15,17 +15,17 @@
     NSMutableString * titleString = [[NSMutableString alloc] init];
     
     if(_gameType == 2){
-        [titleString appendString: NSLocalizedString(@"Balls Left:", nil)];
+        [titleString appendString: NSLocalizedString(@"Balls Left", nil)];
         
     }else{
-         [titleString appendString: NSLocalizedString(@"Time Left:", nil)];
+         [titleString appendString: NSLocalizedString(@"Time Left", nil)];
     }
     
-    _fontSize = 16;
+    _fontSize = [[FontChoicerClass shareFontChoicer] fontObjectivePanel];
     
     _titleNode = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _titleNode.fontSize = _fontSize;
-    _titleNode.fontColor = [UIColor blackColor];
+    _titleNode.fontColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
     _titleNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     _titleNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
     
@@ -50,10 +50,10 @@
     NSMutableString * titleString = [[NSMutableString alloc] init];
     
     if(_gameType == 2){
-        [titleString appendString: NSLocalizedString(@"Balls Left:", nil)];
+        [titleString appendString: NSLocalizedString(@"Balls Left", nil)];
         
     }else{
-        [titleString appendString: NSLocalizedString(@"Time Left:", nil)];
+        [titleString appendString: NSLocalizedString(@"Time Left", nil)];
     }
 
     

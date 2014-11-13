@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+
+"Play" = "Spela";
+"Store" = "Butik";
+"Powers" = "Produkter";
+
+"P5Title" = "Dubbla Poäng";
+"P5Info" = "Dubbla poäng för 10 sekunder";
+
+"P4Title" = "Bort med dig";
+"P4Info" = " Förstör de två nedersta raderna och ger dig poäng";
+
+"P3Title" = "Kopiera mig";
+"P3Info" = "Ändrar alla bollar av en färg till en annan färg";
+
+"P2Title" = "Vi är alla samma";
+"P2Info" = "Droppar 10 bollar av samma färg";
+
+"P1Title" = "Sakta och stödja";
+"P1Info" = "Minska hastigheten för bollarna genom halv till 10 sekunder";
+
+"Balls Left" = "Boll";
+"Time Left" = "Tid";
+"Score" = "Göra mål";
+"Resume" = "Fortgå";
+"Quit" = "Sluta";
+"You Won" = "Vinnare";
+"Next" = "Nästa nivå";
+"Main Menu" = "Startsida";
+"Play on" = "Spela på";
+"Game Over" = "Game Over";
+"Restart" = "Omstart";
+
+"InfoLevel0" = "Flytta bollarna att kombinera 3 eller fler bollar av samma färg och klicka på dem för att förstöra dem.";
+"InfoLevel1" = "Ju större grupp av samma färg bollar desto fler poäng får du.";
+"InfoLevel2" = "Nå målet poäng och se till att du inte låter bollarna träffade toppen.";
+"InfoLevel18" = "Randiga bollar måste grupperas två gånger för att ta bort dem";
+"InfoLevel28" = "Något håller på att förändras";
+"InfoLevel50" = "De fyrkantiga lådor kan inte flyttas";
+"InfoLevel70" = "Något håller på att förändras";
+"InfoLevel101" = "Nå %d \n Slå inte toppen";
+
+"Payment Failed" = "Betalning Misslyckades";
+"No Internet Access" = "Inget internet";
+"Twitter Error" = "Inget Twitter-konto installation";
+"Weibo Error" = "Inget Weibo Kontoinställning";
+"Post Failed" = "Post Misslyckades";

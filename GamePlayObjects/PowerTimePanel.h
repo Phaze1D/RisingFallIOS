@@ -8,6 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 #import "TextureLoader.h"
+#import "FontChoicerClass.h"
 
 @interface PowerTimePanel : SKSpriteNode
 

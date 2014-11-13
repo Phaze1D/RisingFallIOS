@@ -7,6 +7,7 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import "FontChoicerClass.h"
 
 typedef NS_ENUM(NSInteger,
                 ButtonType) {

@@ -25,7 +25,7 @@
 }
 
 -(void)beginBuyFlow:(NSString *)productID{
-    NSLog(@"buy flow began");
+    
     _currentProductID = productID;
     [self displaySpinner];
    
@@ -45,7 +45,7 @@
     if (self.productResquest != nil) {
         [self.productResquest cancel];
         [DejalActivityView removeView];
-        [self displayErrorMessage:@"User Canceled"];
+        [self displayErrorMessage:NSLocalizedString(@"Payment Failed", nil)];
         [self.delegate buyTransctionFinished:NO];
     }
 }
@@ -65,7 +65,7 @@
 
 
 -(void)request:(SKRequest *)request didFailWithError:(NSError *)error{
-    [self displayErrorMessage:@"Fail request"];
+    [self displayErrorMessage:NSLocalizedString(@"Payment Failed", nil)];
     [self.delegate buyTransctionFinished:NO];
     [DejalBezelActivityView removeView];
 }
@@ -76,7 +76,6 @@
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
     [DejalBezelActivityView removeView];
-    NSLog(@"product request did receive");
     
     for (SKProduct *product in response.products) {
         if ([product.productIdentifier isEqualToString:self.currentProductID]) {
@@ -120,7 +119,7 @@
                     
                     [self.delegate buyTransctionFinished:NO];
                 }
-                [self displayErrorMessage:@"Error"];
+                 [self displayErrorMessage:NSLocalizedString(@"Payment Failed", nil)];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             case SKPaymentTransactionStateRestored:

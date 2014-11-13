@@ -13,17 +13,17 @@
 //Creates the panel if the player has lifes
 -(void)createLifePanel{
     
-    int fontSize = 19;
+    int fontSize = [[FontChoicerClass shareFontChoicer] fontLifePanelLifes];
     GameData * info = [GameData sharedGameData];
 
     
-    SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    title.text = NSLocalizedString(@"Lifes Left", nil);
-    title.fontColor = [UIColor whiteColor];
-    title.fontSize = fontSize;
-    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
-    title.position = CGPointMake(0, 0);
-    [self addChild:title];
+//    SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+//    title.text = NSLocalizedString(@"Lifes Left", nil);
+//    title.fontColor = [UIColor whiteColor];
+//    title.fontSize = fontSize;
+//    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeBottom;
+//    title.position = CGPointMake(0, 0);
+//    [self addChild:title];
     
     SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     lifes.text = [NSString stringWithFormat:@"%d", info.player.lifesLeft ];
@@ -37,7 +37,7 @@
 
 -(void)createTimePanel{
     
-    int fontSize = 19;
+    int fontSize = [[FontChoicerClass shareFontChoicer] fontLifePanelLifes];;
     NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
     GameData * info = [GameData sharedGameData];
 
@@ -47,13 +47,13 @@
     int minutes = _timeLeft/60;
     int seconds = _timeLeft - minutes*60;
     
-    SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    title.text = NSLocalizedString(@"Lifes Left", nil);
-    title.fontColor = [UIColor whiteColor];
-    title.fontSize = fontSize;
-    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-    title.position = CGPointMake(0, self.size.height/3);
-    [self addChild:title];
+//    SKLabelNode * title = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+//    title.text = NSLocalizedString(@"Lifes Left", nil);
+//    title.fontColor = [UIColor whiteColor];
+//    title.fontSize = fontSize;
+//    title.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+//    title.position = CGPointMake(0, self.size.height/3);
+//    [self addChild:title];
     
     _timeL = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _timeL.position = CGPointMake(0, 0);

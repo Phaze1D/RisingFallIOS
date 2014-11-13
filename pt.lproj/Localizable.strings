@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  Rising Fall
+
+  Created by David Villarreal on 5/26/14.
+  Copyright (c) 2014 David Villarreal. All rights reserved.
+*/
+
+"Play" = "Jogar";
+"Store" = "Loja";
+"Powers" = "Poderes";
+
+"P5Title" = "Dobro de Pontos";
+"P5Info" = "Dobro de pontos por 10 segundos";
+
+"P4Title" = "Vá embora!";
+"P4Info" = "Destrói as duas últimas linhas e dá-lhe pontos";
+
+"P3Title" = "Me Copiar";
+"P3Info" = "Altera todas as bolas de uma cor para outra cor";
+
+"P2Title" = "Nós somos todos iguais";
+"P2Info" = "Gera 10 bolas da mesma cor";
+
+"P1Title" = "Lento e constante";
+"P1Info" = "Reduzir a velocidade das bolas para metade durante 10 segundos";
+
+"Balls Left" = "Bolas";
+"Time Left" = "Tempo";
+"Score" = "Pontos";
+"Resume" = "Prosseguir";
+"Quit" = "Desistir";
+"You Won" = "Você Ganhou";
+"Next" = "Seguinte";
+"Main Menu" = "Menu";
+"Play on" = "Jogar em";
+"Game Over" = "Game Over";
+"Restart" = "Reiniciar";
+
+"InfoLevel0" = "Mova as bolas para combinar 3 ou mais bolas da mesma cor e clique neles para destruí-los";
+"InfoLevel1" = "Quanto maior o grupo das mesmas bolas de cor o mais pontos você ganha.";
+"InfoLevel2" = "Alcançar a meta de pontuação e certifique-se que você não deixe as bolas atingiu o topo.";
+"InfoLevel18" = "Bolas listradas precisa estar grupo duas vezes para removê-los";
+"InfoLevel28" = "Algo está mudando";
+"InfoLevel50" = "As caixas quadradas não pode ser movido";
+"InfoLevel70" = "Algo está mudando";
+"InfoLevel101" = "Chegar a %d \n Não atingiu o topo";
+
+"Payment Failed" = "Pagamento Falha";
+"No Internet Access" = "Sem acesso à internet";
+"Twitter Error" = "Não configuração da conta do Twitter";
+"Weibo Error" = "Não configuração da conta Weibo";
+"Post Failed" = "Publicar falhou";

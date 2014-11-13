@@ -7,6 +7,7 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import "FontChoicerClass.h"
 
 @interface ObjectivePanel : SKSpriteNode
 

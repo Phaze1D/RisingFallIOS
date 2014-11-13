@@ -94,6 +94,7 @@
     SKSpriteNode  * background = [SKSpriteNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"background"]];
     background.zPosition = 0;
     background.position = CGPointMake(self.size.width/2, self.size.height/2);
+    background.size = CGSizeMake(background.size.width/2, background.size.height/2);
     [self addChild:background];
     
     SKSpriteNode * backui = [SKSpriteNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"backgroundui"]];
@@ -103,7 +104,7 @@
     [self addChild:backui];
     
     
-    int fontSize = 14;
+    int fontSize = [[FontChoicerClass shareFontChoicer] fontLevelButton];
     
     _parentLevelButtons = [NSMutableArray new];
     
@@ -178,7 +179,7 @@
     
     _navigationB.alpha = 0;
     _navigationB.userInteractionEnabled = NO;
-    int fontSize = 14;
+    int fontSize = [[FontChoicerClass shareFontChoicer] fontLevelButton];
     
     //Deactivate parent buttons
     for (LevelButton * button in _parentLevelButtons) {

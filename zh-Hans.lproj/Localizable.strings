@@ -7,3 +7,49 @@
 */
 
 
+"Play" = "玩";
+"Store" = "商店";
+"Powers" = "制品";
+
+"P5Title" = "双倍积分";
+"P5Info" = "双分10秒";
+
+"P4Title" = "除掉你";
+"P4Info" = "销毁上下两排，给你点";
+
+"P3Title" = "我复制";
+"P3Info" = "改变一种颜色的所有的球，以其他颜色";
+
+"P2Title" = "我们都是一样的";
+"P2Info" = "产卵10个球的颜色相同的";
+
+"P1Title" = "缓慢而稳定";
+"P1Info" = "降低球的速度的一半，10秒";
+
+"Balls Left" = "冒泡";
+"Time Left" = "时间";
+"Score" = "评分";
+"Resume" = "重新开始";
+"Quit" = "退出";
+"You Won" = "你赢了";
+"Next" = "下一个";
+"Main Menu" = "主菜单";
+"Play on" = "玩";
+"Game Over" = "游戏结束";
+"Restart" = "再开始";
+
+"InfoLevel0" = "谨动议球各地结合3个或更多相同颜色的并点击他们消灭他们";
+"InfoLevel1" = "了组相同颜色的球更多的积分，你得到的更大。";
+"InfoLevel2" = "达到目标得分，并确保你不要让球击中顶部。";
+"InfoLevel18" = "条纹的的球必须是组两次将其删除";
+"InfoLevel28" = "事情正在发生变化";
+"InfoLevel50" = "在方箱不能被移动";
+"InfoLevel70" = "事情正在发生变化";
+"InfoLevel101" = "达到%d \n 不打人顶";
+
+"Payment Failed" = "付款失败";
+"No Internet Access" = "无法上网";
+"Twitter Error" = "没有Twitter账户成立";
+"Weibo Error" = "没有微博帐号创立";
+"Post Failed" = "共享失败";
+

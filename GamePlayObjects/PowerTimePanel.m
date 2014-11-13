@@ -28,7 +28,7 @@
     _constantTime = 11;
     _timeLeftLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _timeLeftLabel.fontColor = [UIColor blackColor];
-    _timeLeftLabel.fontSize = 11;
+    _timeLeftLabel.fontSize = [[FontChoicerClass shareFontChoicer] fontPowerTime];
     _timeLeftLabel.position = CGPointMake(self.size.width/2, self.size.height/7.0);
     _timeLeftLabel.text = [NSString stringWithFormat:@"%02d:%02d",0, _constantTime];
     _targetTime = _constantTime + _currentTime;
@@ -55,7 +55,7 @@
     
     _ballsLeftLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     _ballsLeftLabel.fontColor = [UIColor blackColor];
-    _ballsLeftLabel.fontSize = 11;
+    _ballsLeftLabel.fontSize = [[FontChoicerClass shareFontChoicer] fontPowerTime];
     _ballsLeftLabel.position = CGPointMake(self.size.width/2, self.size.height/7.0);
     _ballsLeftLabel.text = [NSString stringWithFormat:@"%d", _ballsLeft];
     [self addChild:_ballsLeftLabel];

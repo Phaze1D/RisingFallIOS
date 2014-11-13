@@ -13,17 +13,17 @@
 
 -(void)createScorePanel:(int)targetScore{
     
-    int fontsize = 16;
+    int fontsize = [[FontChoicerClass shareFontChoicer] fontScorePanel];
     _currentScore = 0;
     _targetScore = targetScore;
     
     NSMutableString * stringL = [[NSMutableString alloc]init];
     
-    [stringL appendString:NSLocalizedString(@"Score:", nil)];
+    [stringL appendString:NSLocalizedString(@"Score", nil)];
     [stringL appendFormat:@" %d/%d", _currentScore, _targetScore];
     
     _titleLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _titleLabel.fontColor = [UIColor whiteColor];
+    _titleLabel.fontColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
     _titleLabel.fontSize = fontsize;
     _titleLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     _titleLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
@@ -41,7 +41,7 @@
     
     NSMutableString * stringL = [[NSMutableString alloc]init];
     
-    [stringL appendString:NSLocalizedString(@"Score:", nil)];
+    [stringL appendString:NSLocalizedString(@"Score", nil)];
     [stringL appendFormat:@" %d/%d", _currentScore, _targetScore];
     _titleLabel.text = stringL;
     
@@ -51,10 +51,10 @@
         _titleLabel.alpha = 0;
         
         SKLabelNode * reachL = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-        reachL.fontColor = [UIColor whiteColor];
+        reachL.fontColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
         reachL.alpha = 1;
         reachL.position = CGPointMake(-self.size.width/2, -self.size.height/2);
-        reachL.fontSize = 9;
+        reachL.fontSize = [[FontChoicerClass shareFontChoicer] fontScorePanel];
         reachL.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         reachL.text = [NSString stringWithFormat:@"%d", _targetScore];
         SKAction * fadeIn = [SKAction fadeAlphaTo:0 duration:1.5];

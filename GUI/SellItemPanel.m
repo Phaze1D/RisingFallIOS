@@ -28,10 +28,14 @@
 
 -(void)createTextView:(int)powerType{
     
-    float fontsize = 17;
+    float fontsize = [[FontChoicerClass shareFontChoicer] fontStoreInfo];
     
-    NSString * key = [NSString stringWithFormat:@"PowerInfoK%d", powerType];
+    NSString * key = [NSString stringWithFormat:@"P%dTitle", powerType];
+    NSString * key2 = [NSString stringWithFormat:@"P%dInfo", powerType];
     NSString * info = NSLocalizedString(key, nil);
+    NSString * info2 = NSLocalizedString(key2, nil);
+    
+    NSString * comp = [NSString stringWithFormat:@"%@\n%@", info, info2];
     
     CGRect frame = CGRectMake(self.position.x + self.size.width/2 - _textViewSize.width/2, self.position.y + self.size.height/2 - _textViewSize.height/2, _textViewSize.width, _textViewSize.height);
 
@@ -39,7 +43,7 @@
     _textView.textColor = [UIColor blackColor];
     _textView.font = [UIFont fontWithName:@"CooperBlack" size:fontsize];
     _textView.backgroundColor = [UIColor clearColor];
-    _textView.text = info;
+    _textView.text = comp;
     _textView.textAlignment = NSTextAlignmentCenter;
     _textView.clipsToBounds = YES;
     _textView.layer.cornerRadius = 10.0f;

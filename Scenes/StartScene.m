@@ -250,6 +250,7 @@
     
     SKSpriteNode * backbo = [SKSpriteNode spriteNodeWithTexture:[_startAtlas textureNamed:@"background0.png"]];
     backbo.position = CGPointMake(self.size.width/2, self.size.height/2);
+    backbo.size = CGSizeMake(backbo.size.width/2, backbo.size.height/2);
     backbo.zPosition = 0;
     [self addChild:backbo];
     

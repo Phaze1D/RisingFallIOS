@@ -168,14 +168,14 @@
 
 //Creates the back button
 -(void)createBackButton{
-    _backB = [ButtonNode spriteNodeWithTexture:[_sceneAtlas textureNamed:@"backButton"]];
+    _backB = [ButtonNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"backButton"]];
     _backB.position = _backButtonPosition;
     _backB.delegate = self;
     _backB.size = CGSizeMake(_backB.size.width/2, _backB.size.height/2);
     _backB.zPosition = 3;
     _backB.anchorPoint = CGPointMake(0.5, 0);
     _backB.userInteractionEnabled = YES;
-    [_backB setImages:[_sceneAtlas textureNamed:@"backButton"] pressedImage:[_sceneAtlas textureNamed:@"backButton2"]];
+    [_backB setImages:[[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"backButton"] pressedImage:[[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"backButton2"]];
     [self addChild:_backB];
 }
 
