@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 #import "DejalActivityView.h"
+#import "GameData.h"
 
 @protocol PaymentClassDelegate <NSObject>
 

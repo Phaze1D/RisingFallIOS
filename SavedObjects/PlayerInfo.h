@@ -20,6 +20,8 @@
 @property int power5;
 @property int lifesLeft;
 
+@property NSString * playerRandomString;
+
 @property NSMutableArray* scores;
 
 @property NSTimeInterval timeLeftOnLifes;

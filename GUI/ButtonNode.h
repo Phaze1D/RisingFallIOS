@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger,
 
 @property ButtonType buttontype;
 
+
+
 @property BOOL isMoved;
 
 -(void)setImages: (SKTexture *)defaultImage pressedImage:(SKTexture * )pressedImage;

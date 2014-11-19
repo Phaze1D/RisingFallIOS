@@ -46,6 +46,7 @@
     _titleLabel.text = stringL;
     
     if (_currentScore >= _targetScore && !_reachYet) {
+        [self runAction:[SKAction playSoundFileNamed:@"highReach.wav" waitForCompletion:NO]];
         //Create score reach animation
         _reachYet = YES;
         _titleLabel.alpha = 0;

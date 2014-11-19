@@ -36,6 +36,11 @@
 @property int targetScore;
 @property int gameObjective;
 
+@property BOOL velocityGreater;
+@property BOOL velocityLess;
+@property BOOL dropGreater;
+@property BOOL dropLess;
+
 -(id)initLevelNumber: (int) levelNumber;
 -(void)changeSpeedAndDrop;
 

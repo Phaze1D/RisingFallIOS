@@ -418,6 +418,9 @@
             
             if (_ceilingHit) {
                 
+                [self runAction:[SKAction playSoundFileNamed:@"lostSound.wav" waitForCompletion:NO]];
+                _player.lifesLeft--;
+                
                 SKAction * fadeIn = [SKAction fadeAlphaTo:.5 duration:.8];
                 SKAction * fadeOut = [SKAction fadeAlphaTo:1 duration:.8];
                 SKAction * seq = [SKAction sequence:@[fadeOut, fadeIn]];
@@ -455,12 +458,15 @@
             }else{
                 
                 if (!_didReachScore) {
+                    _player.lifesLeft--;
                     //Create score not reached animation
+                    [self runAction:[SKAction playSoundFileNamed:@"lostSound.wav" waitForCompletion:NO]];
                     [_scorePanel didNotReachAnimation];
                     _didWin = NO;
                 }
                 
                 if (_objectiveReached && _didReachScore) {
+                    [self runAction:[SKAction playSoundFileNamed:@"winSound.wav" waitForCompletion:NO]];
                     _didWin = YES;
                 }
                 
@@ -722,17 +728,21 @@
 //Called whent the player pressed the quit button in the setting panel
 -(void)quitButtonPressed{
     
+    if (_stageAt == 2) {
+        _player.lifesLeft--;
+    }
     
     if (_didWin) {
         if (_player.levelAt < 100 && _player.levelAt == _levelID) {
             _player.levelAt = _player.levelAt + 1;
         }
     }else{
-        _player.lifesLeft--;
+        
         if (_player.lifesLeft == 0) {
             [_player calculateNextLifeTime];
         }
     }
+    
     
     if ( [(NSNumber *)[_player.scores objectAtIndex:_levelID] intValue] < _scorePanel.currentScore) {
         
@@ -779,7 +789,7 @@
     }
     
     
-    _player.lifesLeft--;
+    
     if (_player.lifesLeft == 0) {
         [_player calculateNextLifeTime];
         [self.mdelegate quitGameplay];
@@ -821,6 +831,7 @@
     if (!_ceilingHit) {
         
         
+        
         NSMutableArray *  connectedBalls = [[NSMutableArray alloc] init];
         [self connectionAlgo:ball Array:connectedBalls];
         
@@ -830,6 +841,7 @@
         
         
         if (connectedBalls.count >= 3) {
+            [self runAction:[SKAction playSoundFileNamed:@"normalBall.wav" waitForCompletion:NO]];
             int score = (int)(connectedBalls.count - 2 )*3;
             
             if (_powerTypeAt == 5) {
@@ -886,6 +898,7 @@
 //Called when a ball is moved to a new location but finger has not been removed from the screen
 -(void)ballMoved:(Ball *)ball direction:(int)dirc{
     
+    [self runAction:[SKAction playSoundFileNamed:@"swipeSound.wav" waitForCompletion:NO]];
     int ballIndex = ball.column + _levelFactory.numOfColumns*ball.row;
 
     if (dirc == 1) {
@@ -940,6 +953,7 @@
 -(void)powerBallTouch:(Ball *)ball{
     
     int powerBallType = ball.powerBallType;
+    [self runAction:[SKAction playSoundFileNamed:@"powerBall.wav" waitForCompletion:NO]];
     
     switch (powerBallType) {
         case 1:
@@ -1227,6 +1241,12 @@
 -(void)continuePlaying{
     
     int midIndex = (int)_ballsArray.count/2;
+    if(_animationNode != nil && _animationNode.parent == self){
+        [_animationNode removeFromParent];
+        _animationNode = nil;
+    }
+    
+    _player.lifesLeft++;
     
     for (int i = midIndex - 1; i < _ballsArray.count; i++) {
         if ([_ballsArray objectAtIndex:i] != [NSNull null] ) {

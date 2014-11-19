@@ -16,6 +16,8 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     self.alpha = .5;
+    [self runAction:[SKAction playSoundFileNamed:@"buttonSound.wav" waitForCompletion:NO]];
+    NSLog(@"Level buttonpressed");
     
 }
 

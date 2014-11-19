@@ -46,5 +46,8 @@
 
 @property LifePanel * lifeP;
 
+-(void)disableButtons;
+-(void)enableButtons;
+
 
 @end

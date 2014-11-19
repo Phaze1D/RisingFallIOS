@@ -354,6 +354,14 @@
     
 }
 
+-(void)disableButtons{
+    _navigationB.userInteractionEnabled = NO;
+}
+
+-(void)enableButtons{
+    _navigationB.userInteractionEnabled = YES;
+}
+
 
 
 

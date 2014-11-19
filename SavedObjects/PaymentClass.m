@@ -81,7 +81,7 @@
         if ([product.productIdentifier isEqualToString:self.currentProductID]) {
             SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
             payment.quantity = 1;
-            //payment.applicationUsername = @"add developer payload";
+            payment.applicationUsername = ((GameData *)[GameData sharedGameData]).player.playerRandomString;
             [[SKPaymentQueue defaultQueue] addPayment:payment];
             break;
         }

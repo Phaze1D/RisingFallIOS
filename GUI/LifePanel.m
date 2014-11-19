@@ -7,6 +7,7 @@
 //
 
 #import "LifePanel.h"
+#import "LevelsScene.h"
 
 @implementation LifePanel
 
@@ -25,12 +26,17 @@
 //    title.position = CGPointMake(0, 0);
 //    [self addChild:title];
     
+    SKSpriteNode * heart = [SKSpriteNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] levelSceneAtlas] textureNamed:@"heart"]];
+    heart.size = CGSizeMake(heart.size.width/2, heart.size.height/2);
+    heart.position = CGPointMake(0, 0);
+    [self addChild:heart];
+    
     SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     lifes.text = [NSString stringWithFormat:@"%d", info.player.lifesLeft ];
     lifes.fontColor = [UIColor whiteColor];
     lifes.position = CGPointMake(0, 0);
     lifes.fontSize = fontSize;
-    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [self addChild:lifes];
     
 }
@@ -55,14 +61,30 @@
 //    title.position = CGPointMake(0, self.size.height/3);
 //    [self addChild:title];
     
+    SKSpriteNode * heart = [SKSpriteNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] levelSceneAtlas] textureNamed:@"heart"]];
+    heart.size = CGSizeMake(heart.size.width/2, heart.size.height/2);
+    heart.position = CGPointMake(0, 0);
+    [self addChild:heart];
+
+    
     _timeL = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
-    _timeL.position = CGPointMake(0, 0);
+    _timeL.position = CGPointMake(0, self.size.height/3);
     _timeL.text = [NSString stringWithFormat:@"%02d:%02d",minutes, seconds];
     _timeL.fontSize = fontSize;
     _timeL.fontColor = [UIColor whiteColor];
     _timeL.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    _timeL.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [self addChild: _timeL];
-
+    
+    SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+    lifes.text = [NSString stringWithFormat:@"%d", info.player.lifesLeft ];
+    lifes.fontColor = [UIColor whiteColor];
+    lifes.position = CGPointMake(0, 0);
+    lifes.fontSize = fontSize;
+    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [self addChild:lifes];
+    
+   
     SKTextureAtlas * buttonA  = [[TextureLoader shareTextureLoader] buttonAtlas];
     
     _buyB = [ButtonNode spriteNodeWithTexture: [buttonA textureNamed:@"buttonS1B"]];
@@ -114,6 +136,7 @@
 
 //Pressed when the buy Button is pressed
 -(void)buttonPressed:(ButtonType)type{
+    [((LevelsScene *)self.parent) disableButtons];
     _buyB.userInteractionEnabled = NO;
     PaymentClass * paymentClass = [PaymentClass sharePaymentClass];
     paymentClass.delegate = self;
@@ -121,10 +144,11 @@
 }
 
 -(void)buyTransctionFinished:(BOOL)didBuy{
+    [((LevelsScene *)self.parent) enableButtons];
     _buyB.userInteractionEnabled = YES;
     if (didBuy) {
         GameData * info = [GameData sharedGameData];
-        info.player.lifesLeft = 5;
+        info.player.lifesLeft =+ 5;
         info.player.timeLeftOnLifes = 0;
         
         [self clearAll];

@@ -146,7 +146,7 @@ static DejalActivityView *dejalActivityView = nil;
     self.borderView = [self makeBorderView];
     self.activityIndicator = [self makeActivityIndicator];
     self.activityLabel = [self makeActivityLabelWithText:labelText];
-    [self makeCloseButton];
+    //[self makeCloseButton];
     
     // Assemble the subviews:
 	[addToView addSubview:self];
@@ -295,7 +295,8 @@ static DejalActivityView *dejalActivityView = nil;
 }
 
 -(void)makeCloseButton{
-    UIImage * closeImage = [UIImage imageNamed:@"close.png"];
+    NSString * path = [NSString stringWithFormat:@"close%@.png", ((TextureLoader *)[TextureLoader shareTextureLoader]).screenSizeAlt];
+    UIImage * closeImage = [UIImage imageNamed:path];
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.closeButton setImage:closeImage forState:UIControlStateNormal];
     self.closeButton.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, closeImage.size.width/2, closeImage.size.height/2);

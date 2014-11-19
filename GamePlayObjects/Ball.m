@@ -54,6 +54,7 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
         if (_isPowerBall) {
+            
             if ([self.parent isKindOfClass:[PowerPanel class]]) {
                 
                 PlayerInfo * player = ((GameData * )[GameData sharedGameData]).player;
@@ -76,7 +77,9 @@
             
         }else{
             if (!_didMove) {
+                
                 [self.delegate ballTaped:self];
+                
             }
             
         }

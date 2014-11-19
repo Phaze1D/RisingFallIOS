@@ -53,6 +53,9 @@
     
     _scores= [[NSMutableArray alloc] initWithArray:arry];
     
+    _playerRandomString = [[NSUUID UUID] UUIDString];
+    
+    
     
 }
 
@@ -154,7 +157,7 @@
 }
 
 -(void)calculateNextLifeTime{
-    NSDate * next = [NSDate dateWithTimeIntervalSinceNow:300];
+    NSDate * next = [NSDate dateWithTimeIntervalSinceNow:900];
     _timeLeftOnLifes = next.timeIntervalSince1970;
 }
 
@@ -173,6 +176,7 @@
     [aCoder encodeInt:playerInfo.lifesLeft forKey:@"Lifes Left"];
     [aCoder encodeDouble:playerInfo.timeLeftOnLifes forKey:@"Time Left Lifes"];
     [aCoder encodeObject:playerInfo.scores forKey:@"Scores"];
+    [aCoder encodeObject:_playerRandomString forKey:@"PlayerString"];
     
     
     
@@ -192,7 +196,7 @@
     playerInfo.lifesLeft = [aDecoder decodeIntForKey:@"Lifes Left"];
     playerInfo.timeLeftOnLifes = [aDecoder decodeDoubleForKey:@"Time Left Lifes"];
     playerInfo.scores =[aDecoder decodeObjectForKey:@"Scores"];
-    
+    playerInfo.playerRandomString = [aDecoder decodeObjectForKey:@"PlayerString"];
     return playerInfo;
 }
 

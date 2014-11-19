@@ -28,6 +28,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TextureLoader.h"
 
 @protocol DejalActivityViewDelegate <NSObject>
 

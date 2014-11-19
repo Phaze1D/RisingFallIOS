@@ -25,13 +25,10 @@
             key = [NSString stringWithFormat:@"InfoLevel%d",levelAt];
             info = NSLocalizedString(key, nil);
         }else{
-            if (_gameType == 1) {
+            
                 key = [NSString stringWithFormat:@"InfoLevel%d",101];
-                info = NSLocalizedString(key, nil);
-            }else{
-                key = [NSString stringWithFormat:@"InfoLevel%d",101];
-                info = NSLocalizedString(key, nil);
-            }
+                info = [NSString stringWithFormat:NSLocalizedString(key, nil), _targetScore];
+           
         }
         
         CGRect frame = CGRectMake(self.position.x ,self.position.y+self.size.height/1.5,self.size.width - self.size.width/50,self.size.height/2);
@@ -113,6 +110,23 @@
     resumenButton.position = resumenPosition;
     resumenButton.userInteractionEnabled = YES;
     
+    
+    SKSpriteNode * heart = [SKSpriteNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] gameplayAtlas] textureNamed:@"heart"]];
+    heart.size = CGSizeMake(heart.size.width/2, heart.size.height/2);
+    heart.position = CGPointMake(heart.size.width/2, self.size.height - heart.size.height/2);
+    [self addChild:heart];
+    
+    PlayerInfo * player = ((GameData *)[GameData sharedGameData]).player;
+    
+    SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+    lifes.text = [NSString stringWithFormat:@"%d", player.lifesLeft];
+    lifes.fontColor = [UIColor whiteColor];
+    lifes.position = CGPointMake(heart.size.width/2, self.size.height - heart.size.height/2);
+    lifes.fontSize = [[FontChoicerClass shareFontChoicer] fontLifePanelLifes];
+    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [self addChild:lifes];
+    
+    
     [self createSoundButton];
     
     [self addChild:resumenButton];
@@ -188,6 +202,21 @@
     CGPoint endLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*4 - buttonS1T.size.height*7/4);
     CGPoint resestPosition = CGPointMake(xOffset + buttonS1T.size.width/4 , self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
     CGPoint quitPosition = CGPointMake(xOffset * 2 + buttonS1T.size.width*3/4, self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
+    
+    SKSpriteNode * heart = [SKSpriteNode spriteNodeWithTexture:[[[TextureLoader shareTextureLoader] gameplayAtlas] textureNamed:@"heart"]];
+    heart.size = CGSizeMake(heart.size.width/2, heart.size.height/2);
+    heart.position = CGPointMake(heart.size.width/2, self.size.height - heart.size.height/2);
+    [self addChild:heart];
+    
+    PlayerInfo * player = ((GameData *)[GameData sharedGameData]).player;
+    
+    SKLabelNode * lifes = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
+    lifes.text = [NSString stringWithFormat:@"%d", player.lifesLeft];
+    lifes.fontColor = [UIColor whiteColor];
+    lifes.position = CGPointMake(heart.size.width/2, self.size.height - heart.size.height/2);
+    lifes.fontSize = [[FontChoicerClass shareFontChoicer] fontLifePanelLifes];
+    lifes.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [self addChild:lifes];
     
     SKLabelNode * keepPlayingLabel = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     keepPlayingLabel.position = keepLabelPosition;
@@ -355,6 +384,7 @@
     
     if (didShare) {
         [self.delegate continuePlaying];
+        
     }else{
         //Display error message
     }

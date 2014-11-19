@@ -55,6 +55,21 @@
     _powerBallDrop = arc4random_uniform(4);
     
  
+    if(_velocity > _finalSpeed){
+        _velocityGreater = true;
+        _velocityLess = false;
+    }else{
+        _velocityGreater = false;
+        _velocityLess = true;
+    }
+    
+    if(_dropRate > _finalDRate){
+        _dropGreater = true;
+        _dropLess = false;
+    }else{
+        _dropGreater = false;
+        _dropLess = true;
+    }
     [self calculateChangeSpeedTime];
     
 }
@@ -72,13 +87,39 @@
 
 //Changes the speed and drop rate
 -(void)changeSpeedAndDrop{
-    if (_velocity + _incrementS > 0  && _velocity != _finalSpeed) {
-        _velocity = _velocity + _incrementS;
+    
+    if(_velocityGreater){
+        
+        if (_velocity + _incrementS > 0  && _velocity >= _finalSpeed) {
+            _velocity = _velocity + _incrementS;
+           
+        }
     }
     
-    if (_dropRate + _incrementD > 0 && _dropRate != _finalDRate) {
-        _dropRate = _dropRate + _incrementD;
+    if(_velocityLess){
+        
+        if (_velocity + _incrementS > 0  && _velocity <= _finalSpeed) {
+            _velocity = _velocity + _incrementS;
+            
+        }
     }
+    
+    if(_dropGreater){
+        
+        if (_dropRate + _incrementD > 0 && _dropRate >= _finalDRate) {
+            _dropRate = _dropRate + _incrementD;
+            
+        }
+    }
+    
+    if(_dropLess){
+            if (_dropRate + _incrementD > 0 && _dropRate <= _finalDRate) {
+            _dropRate = _dropRate + _incrementD;
+            
+        }
+    }
+    
+ 
 }
 
 

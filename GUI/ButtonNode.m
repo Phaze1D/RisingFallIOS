@@ -29,6 +29,8 @@
     [self addChild: _label];
     
     
+    
+    
 }
 
 
@@ -59,6 +61,8 @@
     
     self.texture = _pressedImage;
     //self.alpha = .5;
+    
+    [self runAction:[SKAction playSoundFileNamed:@"buttonSound.wav" waitForCompletion:NO]];
 }
 
 
