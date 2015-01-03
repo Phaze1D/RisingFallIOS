@@ -10,6 +10,7 @@
 "Play" = "Jouer";
 "Store" = "Boutique";
 "Powers" = "Produits";
+"buy" = "Acheter";
 
 "P5Title" = "Double de Points";
 "P5Info" = "Le double de points pendant 10 secondes";

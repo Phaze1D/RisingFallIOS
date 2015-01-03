@@ -70,6 +70,10 @@
     
 }
 
+-(SKTexture *)infoTexture:(int)level{
+    return [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"Intro50%@", _screenSizeAlt]];
+}
+
 //Returns the atlas with all the social media art
 -(SKTextureAtlas *)socialMediaAtlas{
     
@@ -178,7 +182,7 @@
 
 
 -(SKTextureAtlas *)infoAtlas: (int)levelAt{
-    return [SKTextureAtlas atlasNamed:[NSString stringWithFormat:@"Info%d",levelAt]];
+    return [SKTextureAtlas atlasNamed:[NSString stringWithFormat:@"Intro%d%@",levelAt,_screenSizeAlt]];
 }
 
 

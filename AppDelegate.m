@@ -78,6 +78,7 @@
     _googleBack = NO;
 }
 
+
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     ViewController * myView = (ViewController *) self.window.rootViewController;
@@ -89,10 +90,22 @@
   sourceApplication: (NSString *)sourceApplication
          annotation: (id)annotation {
     
+    BOOL google = [GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation];
+    BOOL facebook = [FBAppCall handleOpenURL:url
+                           sourceApplication:sourceApplication
+                             fallbackHandler:^(FBAppCall *call) {
+                                 //NSLog(@"Unhandled deep link: %@", call.dialogData.results);
+                                 
+                                 
+                                 
+                             }];
    
-    if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+    if (google) {
         _googleBack = YES;
         return  YES;
+    }else if(facebook){
+        _googleBack = NO;
+        return YES;
     }else{
         _googleBack = NO;
         return NO;

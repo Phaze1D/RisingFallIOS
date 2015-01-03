@@ -93,7 +93,7 @@
     _buyB.delegate = self;
     _buyB.size = CGSizeMake(_buyB.size.width/2, _buyB.size.height/2);
     [_buyB setImages:[buttonA textureNamed:@"buttonS1B"] pressedImage:[buttonA textureNamed:@"buttonS2B"]];
-    [_buyB setText:NSLocalizedString(@".99", nil)];
+    [_buyB setText:NSLocalizedString(@"buy", nil)];
     [self addChild: _buyB];
 
     

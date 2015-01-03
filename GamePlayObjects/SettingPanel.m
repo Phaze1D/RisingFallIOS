@@ -48,7 +48,7 @@
         
         [owner.view addSubview:_textView];
         
-        //[self createInfoTexture:levelAt];
+        [self createInfoTexture:levelAt];
         
     });
     
@@ -57,24 +57,28 @@
 //Creates the info images
 -(void)createInfoTexture: (int)levelAt{
     
-    if (levelAt <= 2 || levelAt == 18 || levelAt == 28 || levelAt == 50 || levelAt == 70) {
+    if (levelAt <= 2 || levelAt == 18 ) {
         
-    }else{
-        levelAt = 101;
+        SKTextureAtlas * atlas = [[TextureLoader shareTextureLoader] infoAtlas:levelAt];
+        NSMutableArray * frames = [[NSMutableArray alloc] initWithCapacity:atlas.textureNames.count];
+        
+        for (int i = 0; i < atlas.textureNames.count; i++) {
+            [frames addObject:[atlas textureNamed:[NSString stringWithFormat:@"Level%d%d", levelAt, i]]];
+        }
+        
+        SKSpriteNode * animat = [SKSpriteNode spriteNodeWithTexture:[frames objectAtIndex:0]];
+        animat.position = CGPointMake(self.size.width/2, self.size.height - self.size.height/4 - 5);
+        animat.size = CGSizeMake(animat.size.width/2, animat.size.height/2);
+        [animat runAction:[SKAction repeatActionForever:[SKAction animateWithTextures:frames timePerFrame:1 resize:NO restore:NO]]];
+        [self addChild:animat];
     }
     
-    SKTextureAtlas * infoAtlas  = [[TextureLoader shareTextureLoader] infoAtlas:levelAt ];
-    float xOffset = (self.size.width - [infoAtlas textureNamed:@"correct"].size.width*2)/3;
-    
-    SKSpriteNode * node1 = [SKSpriteNode spriteNodeWithTexture:[infoAtlas textureNamed:@"correct"]];
-    node1.position = CGPointMake(xOffset, self.size.height - self.size.height/10);
-    node1.anchorPoint = CGPointMake(0, 1);
-    [self addChild:node1];
-    
-    SKSpriteNode * node2 = [SKSpriteNode spriteNodeWithTexture:[infoAtlas textureNamed:@"incorrect"]];
-    node2.position = CGPointMake(xOffset*2 + [infoAtlas textureNamed:@"correct"].size.width, self.size.height - self.size.height/10);
-    node2.anchorPoint = CGPointMake(0, 1);
-    [self addChild:node2];
+    if(levelAt == 50 ){
+        SKSpriteNode * animat = [SKSpriteNode spriteNodeWithTexture: [[TextureLoader shareTextureLoader] infoTexture:50]];
+        animat.position = CGPointMake(self.size.width/2, self.size.height - self.size.height/4 - 5);
+        animat.size = CGSizeMake(animat.size.width/2, animat.size.height/2);
+        [self addChild:animat];
+    }
     
 }
 
@@ -127,7 +131,7 @@
     [self addChild:lifes];
     
     
-    [self createSoundButton];
+    //[self createSoundButton];
     
     [self addChild:resumenButton];
     [self addChild:quitButton];
@@ -197,8 +201,8 @@
     float yOffset = (self.size.height - buttonS1T.size.height/2*5)/6;
     float xOffset = (self.size.width - buttonS1T.size.width)/3;
     CGPoint keepLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset - buttonS1T.size.height/4);
-    CGPoint payPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*2 - buttonS1T.size.height*3/4);
-    CGPoint socialPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*3 - buttonS1T.size.height*5/4);
+    CGPoint payPosition = CGPointMake(xOffset + buttonS1T.size.width/4, self.size.height - yOffset*2 - buttonS1T.size.height*3/4);
+    CGPoint socialPosition = CGPointMake(xOffset * 2 + buttonS1T.size.width*3/4, self.size.height - yOffset*2 - buttonS1T.size.height*3/4);
     CGPoint endLabelPosition = CGPointMake(self.size.width/2, self.size.height - yOffset*4 - buttonS1T.size.height*7/4);
     CGPoint resestPosition = CGPointMake(xOffset + buttonS1T.size.width/4 , self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
     CGPoint quitPosition = CGPointMake(xOffset * 2 + buttonS1T.size.width*3/4, self.size.height - yOffset*5 - buttonS1T.size.height*9/4);
@@ -232,7 +236,7 @@
     payButton.delegate = self;
     payButton.size = CGSizeMake(payButton.size.width/2, payButton.size.height/2);
     payButton.userInteractionEnabled = YES;
-    [payButton setText:NSLocalizedString(@".99", nil)];
+    [payButton setText:NSLocalizedString(@"buy", nil)];
     [payButton setImages:buttonS1T pressedImage:buttonS2T];
     [self addChild:payButton];
     

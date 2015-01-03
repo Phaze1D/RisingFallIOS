@@ -83,10 +83,10 @@
    
     
     self.texture = _defaultImage;
-    if (!_isMoved) {
-        [self.delegate buttonPressed: _buttontype];
-    }
-    _isMoved = NO;
+    
+    [self.delegate buttonPressed: _buttontype];
+    
+   
     //self.alpha = 1;
     
 }

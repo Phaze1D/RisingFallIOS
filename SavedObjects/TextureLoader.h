@@ -27,6 +27,7 @@
 -(SKTextureAtlas *)itemsAtlas;
 -(SKTextureAtlas *)infoAtlas: (int)levelAt;
 -(SKTexture *)playAreaTexture:(int)height;
+-(SKTexture *)infoTexture:(int)level;
 
 
 @property NSString * screenSizeAlt;

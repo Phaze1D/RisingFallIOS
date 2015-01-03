@@ -119,7 +119,7 @@
     SKLabelNode * timeL = [SKLabelNode labelNodeWithFontNamed:@"CooperBlack"];
     timeL.position = CGPointMake(0, -self.size.height/2);
     timeL.text = [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
-    timeL.fontSize = 13;
+    timeL.fontSize = [[FontChoicerClass shareFontChoicer] fontGameplayLevelID] - 1;
     timeL.alpha = 0;
     timeL.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     timeL.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
@@ -142,7 +142,7 @@
             self.userInteractionEnabled = YES;
     }];
     
-    [self addChild:title];
+   // [self addChild:title];
     [self addChild:timeL];
     
 }

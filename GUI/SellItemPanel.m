@@ -74,7 +74,7 @@
      _buyButton = [ButtonNode spriteNodeWithTexture:buyButtonText];
     _buyButton.size = CGSizeMake(_buyButton.size.width/2, _buyButton.size.height/2);
     _buyButton.position = CGPointMake(self.size.width/2, yOffset);
-    [_buyButton setText:NSLocalizedString(@".99k", nil)];
+    [_buyButton setText:NSLocalizedString(@"buy", nil)];
     [_buyButton setImages:buyButtonText pressedImage:[[[TextureLoader shareTextureLoader] buttonAtlas] textureNamed:@"buttonS2B"]];
     _buyButton.delegate = self;
     _buyButton.userInteractionEnabled = YES;

@@ -290,7 +290,7 @@
     }else if(_M){
         return 20;
     }else if(_H){
-        return 26;
+        return 24;
     }else if(_XH){
         
     }
@@ -320,13 +320,13 @@
     if (_XXS) {
         return 7.5;
     }else if(_XS){
-        return 11;
+        return 10;
     }else if(_S){
-        return 15;
+        return 13;
     }else if(_M){
-        return 21;
+        return 16;
     }else if(_H){
-        return 27;
+        return 19;
     }else if(_XH){
         
     }
@@ -362,7 +362,7 @@
     }else if(_M){
         return 20;
     }else if(_H){
-        return 26;
+        return 24;
     }else if(_XH){
         
     }

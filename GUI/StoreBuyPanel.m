@@ -54,7 +54,7 @@
     SKAction * scaleDown = [SKAction scaleTo:.9 duration:1];
     
     for (int i = 0; i < 5; i++) {
-        SKTexture * pText = [_iteamsAtlas textureNamed:[[_iteamsAtlas textureNames] objectAtIndex:i]];
+        SKTexture * pText = [_iteamsAtlas textureNamed:[NSString stringWithFormat:@"st%d", i+1]];
         ButtonNode * pbutton = [ButtonNode spriteNodeWithTexture: pText];
         pbutton.buttontype = i+7;
         pbutton.delegate = self;

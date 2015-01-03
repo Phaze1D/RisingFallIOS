@@ -146,7 +146,7 @@ static DejalActivityView *dejalActivityView = nil;
     self.borderView = [self makeBorderView];
     self.activityIndicator = [self makeActivityIndicator];
     self.activityLabel = [self makeActivityLabelWithText:labelText];
-    //[self makeCloseButton];
+    [self makeCloseButton];
     
     // Assemble the subviews:
 	[addToView addSubview:self];

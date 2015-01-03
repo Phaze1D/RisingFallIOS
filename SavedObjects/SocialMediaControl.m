@@ -32,68 +32,176 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     
     [self.delegate disableOther];
     _viewC.mainView.paused = YES;
-    // Put together the dialog parameters
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                   @"Sharing Tutorial", @"name",
-                                   @"Build great social apps and get more installs.", @"caption",
-                                   @"Allow your users to share stories on Facebook from your app using the iOS SDK.", @"description",
-                                   @"https://developers.facebook.com/docs/ios/share/", @"link",
-                                   @"http://i.imgur.com/g3Qc1HN.png", @"picture",
-                                   nil];
     
-    // Show the feed dialog
     
-    [FBWebDialogs presentFeedDialogModallyWithSession:nil
-                                           parameters:params
-                                              handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-                                                  [self.delegate enableOther];
-                                                  [self resumeGame];
-                                                  if (error) {
-                                                      // An error occurred, we need to handle the error
-                                                      // See: https://developers.facebook.com/docs/ios/errors
-                                                      NSLog(@"Error publishing story: %@", error.description);
-                                                      [self.delegate sharedCallBack:NO];
-                                                      [self sharedErrorCallBack: @"Post Failed"];
-                                                      
-                                                  } else {
-                                                      if (result == FBWebDialogResultDialogNotCompleted) {
-                                                          // User cancelled.
-                                                          NSLog(@"User cancelled.");
-                                                          [self.delegate sharedCallBack:NO];
-                                                          [self sharedErrorCallBack: @"Post Failed"];
-                                                          
-                                                      } else {
-                                                          // Handle the publish feed callback
-                                                          NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
-                                                          
-                                                          if (![urlParams valueForKey:@"post_id"]) {
-                                                              // User cancelled.
-                                                              NSLog(@"User cancelled.");
-                                                              [self.delegate sharedCallBack:NO];
-                                                              [self sharedErrorCallBack : @"Post Failed"];
-                                                          } else {
-                                                              // User clicked the Share button
-                                                              //NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
-                                                              //NSLog(@"result %@", result);
-                                                              [self.delegate sharedCallBack:YES];
-                                                          }
-                                                      }
-                                                  }
-                                                  
-                                                  NSLog(@"Close session");
-                                                  NSHTTPCookie *cookie;
-                                                  NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                                                  for (cookie in [storage cookies])
-                                                  {
-                                                      NSString* domainName = [cookie domain];
-                                                      NSRange domainRange = [domainName rangeOfString:@"facebook"];
-                                                      if(domainRange.length > 0)
-                                                      {
-                                                          [storage deleteCookie:cookie];
-                                                      }
-                                                  }
-                                              }];
     
+    [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"publish_actions"]
+                                       allowLoginUI:YES
+                                  completionHandler:
+     ^(FBSession *session, FBSessionState state, NSError *error) {
+        
+         NSLog(@"%@  --- %u  ----- %@", session, state, error);
+         
+         
+        
+         [self sessionStateChanged:session state:state error:error];
+         
+         
+     }];
+    
+    
+}
+
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+{
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen){
+        NSLog(@"Session opened");
+        // Show the user the logged-in UI
+        
+        [self facebookCheckingPer];
+        
+        //[self userLoggedIn];
+        return;
+    }
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
+        // If the session is closed
+        NSLog(@"Session closed");
+        // Show the user the logged-out UI
+        
+        //[self userLoggedOut];
+    }
+    
+    // Handle errors
+    if (error){
+        NSLog(@"Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            
+            //[self showMessage:alertText withTitle:alertTitle];
+        } else {
+            
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+                NSLog(@"User cancelled login");
+                
+                // Handle session closures that happen outside of the app
+            } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+               
+                //[self showMessage:alertText withTitle:alertTitle];
+                
+                // Here we will handle all other errors with a generic error message.
+                // We recommend you check our Handling Errors guide for more information
+                // https://developers.facebook.com/docs/ios/errors/
+            } else {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                
+                //[self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        // Show the user the logged-out UI
+        
+        //[self userLoggedOut];
+    }
+}
+
+
+
+-(void)facebookCheckingPer{
+    
+    [FBRequestConnection startWithGraphPath:@"/me/permissions"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              __block NSString *alertText;
+                              __block NSString *alertTitle;
+                              if (!error){
+                                  // Walk the list of permissions looking to see if publish_actions has been granted
+                                  NSArray *permissions = (NSArray *)[result data];
+                                  BOOL publishActionsSet = FALSE;
+                                  for (NSDictionary *perm in permissions) {
+                                      if ([[perm objectForKey:@"permission"] isEqualToString:@"publish_actions"] &&
+                                          [[perm objectForKey:@"status"] isEqualToString:@"granted"]) {
+                                          publishActionsSet = TRUE;
+                                          NSLog(@"publish_actions granted.");
+                                          break;
+                                      }
+                                  }
+                                  if (!publishActionsSet){
+                                      // Publish permissions not found, ask for publish_actions
+                                      [self requestPublishPermissions];
+                                      
+                                  } else {
+                                      // Publish permissions found, publish the OG story
+                                      [self publishStory];
+                                  }
+                                  
+                              } else {
+                                  // There was an error, handle it
+                                  // See https://developers.facebook.com/docs/ios/errors/
+                              }
+                          }];
+    
+    
+}
+
+-(void)requestPublishPermissions{
+    [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
+                                          defaultAudience:FBSessionDefaultAudienceFriends
+                                        completionHandler:^(FBSession *session, NSError *error) {
+                                            __block NSString *alertText;
+                                            __block NSString *alertTitle;
+                                            if (!error) {
+                                                if ([FBSession.activeSession.permissions
+                                                     indexOfObject:@"publish_actions"] == NSNotFound){
+                                                    // Permission not granted, tell the user we will not publish
+                                                    alertTitle = @"Permission not granted";
+                                                    alertText = @"Your action will not be published to Facebook.";
+                                                    [[[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                message:alertText
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"OK!"
+                                                                      otherButtonTitles:nil] show];
+                                                } else {
+                                                    // Permission granted, publish the OG story
+                                                    [self publishStory];
+                                                }
+                                                
+                                            } else {
+                                                // There was an error, handle it
+                                                // See https://developers.facebook.com/docs/ios/errors/
+                                            }
+                                        }];
+}
+
+-(void)publishStory{
+   
+    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+    params.link = [NSURL URLWithString:@"https://www.facebook.com/RisingFallApp"];
+    params.picture = [NSURL URLWithString:@"http://i.imgur.com/rt0Z71e.png"];
+    params.name = @"Rising Fall";
+    params.caption = @"Playing Rising Fall";
+    params.linkDescription = @"Small little game I made";
+    
+    
+    if([FBDialogs canPresentShareDialogWithParams:params]){
+        [self facebookNativeApp];
+    }else{
+        [self facebookWebDialog];
+    }
+
 }
 
 // A function for parsing URL parameters returned by the Feed Dialog.
@@ -109,6 +217,111 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     return params;
 }
 
+//Facebook native app handler
+-(void)facebookNativeApp{
+    
+    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+    params.link = [NSURL URLWithString:@"https://www.facebook.com/RisingFallApp"];
+    params.picture = [NSURL URLWithString:@"http://i.imgur.com/rt0Z71e.png"];
+    params.name = @"Rising Fall";
+    params.caption = @"Playing Rising Fall";
+    params.linkDescription = @"Small little game I made";
+    
+    [FBDialogs presentShareDialogWithParams:params clientState:nil
+                                  handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                      if(error) {
+                                          // An error occurred, we need to handle the error
+                                          // See: https://developers.facebook.com/docs/ios/errors
+                                          NSLog(@"Error publishing story: %@", error.description);
+                                          [self.delegate sharedCallBack:NO];
+                                          [self sharedErrorCallBack: @"Post Failed"];
+                                          
+                                      } else {
+                                          // Success
+                                          NSLog(@"result %@", results);
+                                          
+                                          if ([results[@"completionGesture"] isEqualToString:@"post"]) {
+                                              [self.delegate sharedCallBack:YES];
+                                          }else{
+                                              [self.delegate sharedCallBack:NO];
+                                              [self sharedErrorCallBack: @"Post Failed"];
+                                          }
+                                          
+                                      }
+                                      
+                                      [[FBSession activeSession] closeAndClearTokenInformation];
+                                  }];
+    
+}
+
+
+//Facebook WebDialog
+-(void)facebookWebDialog{
+    
+    // Put together the dialog parameters
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   @"Rising Fall", @"name",
+                                   @"Playing Rising Fall", @"caption",
+                                   @"Small little game I made", @"description",
+                                   @"https://www.facebook.com/RisingFallApp", @"link",
+                                   @"http://i.imgur.com/rt0Z71e.png", @"picture",
+                                   nil];
+    
+    // Show the feed dialog
+    
+    [FBWebDialogs presentFeedDialogModallyWithSession:nil
+                                           parameters:params
+                                              handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                  [self.delegate enableOther];
+                                                  [self resumeGame];
+                                                  if (error) {
+                                                      // An error occurred, we need to handle the error
+                                                      // See: https://developers.facebook.com/docs/ios/errors
+                                                      //NSLog(@"Error publishing story: %@", error.description);
+                                                      [self.delegate sharedCallBack:NO];
+                                                      [self sharedErrorCallBack: @"Post Failed"];
+                                                      
+                                                  } else {
+                                                      if (result == FBWebDialogResultDialogNotCompleted) {
+                                                          // User cancelled.
+                                                          // NSLog(@"User cancelled.");
+                                                          [self.delegate sharedCallBack:NO];
+                                                          [self sharedErrorCallBack: @"Post Failed"];
+                                                          
+                                                      } else {
+                                                          // Handle the publish feed callback
+                                                          NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                                                          
+                                                          if (![urlParams valueForKey:@"post_id"]) {
+                                                              // User cancelled.
+                                                              // NSLog(@"User cancelled.");
+                                                              [self.delegate sharedCallBack:NO];
+                                                              [self sharedErrorCallBack : @"Post Failed"];
+                                                          } else {
+                                                              
+                                                              [self.delegate sharedCallBack:YES];
+                                                          }
+                                                      }
+                                                  }
+                                                  
+                                                  [[FBSession activeSession] closeAndClearTokenInformation];
+                                                  
+                                                  //NSLog(@"Close session");
+                                                  NSHTTPCookie *cookie;
+                                                  NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                                                  for (cookie in [storage cookies])
+                                                  {
+                                                      NSString* domainName = [cookie domain];
+                                                      NSRange domainRange = [domainName rangeOfString:@"facebook"];
+                                                      if(domainRange.length > 0)
+                                                      {
+                                                          [storage deleteCookie:cookie];
+                                                      }
+                                                  }
+                                              }];
+    
+}
+
 
 
 
@@ -119,7 +332,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         _viewC.mainView.paused = YES;
         MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
         messageController.messageComposeDelegate = self;
-        [messageController setBody:@"This is just a test"];
+        [messageController setBody:@"Playing Rising Fall https://www.facebook.com/RisingFallApp"];
         [_viewC presentViewController:messageController animated:YES completion:nil];
         
     }else{
@@ -134,20 +347,20 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     switch (result) {
         case MessageComposeResultCancelled:
             
-            NSLog(@"cancel");
+           // NSLog(@"cancel");
             [_viewC dismissViewControllerAnimated:YES completion:nil];
             [self sharedErrorCallBack:@"Post Failed"];
             break;
             
         case MessageComposeResultFailed:
-            NSLog(@"faild");
+            //NSLog(@"faild");
             [_viewC dismissViewControllerAnimated:YES completion:nil];
             [self sharedErrorCallBack:@"Post Failed"];
             break;
             
             
         case MessageComposeResultSent:
-            NSLog(@"sent");
+           // NSLog(@"sent");
             [_viewC dismissViewControllerAnimated:YES completion:nil];
             [self.delegate sharedCallBack:YES];
             break;
@@ -183,7 +396,6 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
 
 //Google delegate
 -(void)finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error{
-    NSLog(@"Received error %@ and auth object %@",error, auth);
     
     if (error) {
         [self.delegate enableOther];
@@ -194,7 +406,10 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         _viewC.mainView.paused = YES;
         [GPPShare sharedInstance].delegate = self;
         id<GPPNativeShareBuilder> shareBuilder = [[GPPShare sharedInstance] nativeShareDialog];
-        [shareBuilder setURLToShare:[NSURL URLWithString:@"https://www.facebook.com/footdavid"]];
+        [shareBuilder setTitle:@"Rising Fall" description:@"Small fun game I made" thumbnailURL:[NSURL URLWithString:@"http://i.imgur.com/rt0Z71e.png"]];
+        [shareBuilder setPrefillText:@"Playing Rising Fall"];
+        
+        [shareBuilder setURLToShare:[NSURL URLWithString:@"https://www.facebook.com/RisingFallApp"]];
         [shareBuilder open];
         
     }
@@ -220,7 +435,7 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         [self sharedErrorCallBack:@"Post Failed"];
     }
     
-    NSLog(@"Status: %@", text);
+    
     
     GPPSignIn *signIn = [GPPSignIn sharedInstance];
     [signIn signOut];
@@ -235,25 +450,25 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
         _viewC.mainView.paused = YES;
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:NSLocalizedString(@"ShareMessageK", nil)];
+        [tweetSheet setInitialText:@"Playing Rising Fall"];
         [_viewC presentViewController:tweetSheet animated:YES completion:nil];
         
         [tweetSheet addURL:[NSURL URLWithString:@"https://www.facebook.com/RisingFallApp"]];
-        [tweetSheet addImage:[UIImage imageNamed:@"http://i.imgur.com/g3Qc1HN.png"]];
+        [tweetSheet addImage:[UIImage imageNamed:@"RF120.png"]];
         
         tweetSheet.completionHandler = ^(SLComposeViewControllerResult result) {
             
                 switch(result) {
                         //  This means the user cancelled without sending the Tweet
                     case SLComposeViewControllerResultCancelled:
-                        NSLog(@"canecle");
+                        
                         [self.delegate sharedCallBack:NO];
                         [self sharedErrorCallBack: @"Post Failed"];
                         [self resumeGame];
                         break;
                         //  This means the user hit 'Send'
                     case SLComposeViewControllerResultDone:
-                        NSLog(@"posted");
+                        
                         [self.delegate sharedCallBack:YES];
                         [self resumeGame];
                         break;
@@ -312,9 +527,9 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
         
        
             VKShareDialogController * shareDialog = [VKShareDialogController new]; //1
-            shareDialog.text = @"Your share text here"; //2
-            //shareDialog.uploadImages = @[[VKUploadImage uploadImageWithImage:[UIImage imageNamed:@"Title.png"] andParams:[VKImageParameters jpegImageWithQuality:0.9]]]; //3
-            shareDialog.otherAttachmentsStrings = @[@"https://vk.com/dev/ios_sdk"]; //4
+            shareDialog.text = @"Playing Rising Fall"; //2
+            shareDialog.uploadImages = @[[VKUploadImage uploadImageWithImage:[UIImage imageNamed:@"RF120.png"] andParams:[VKImageParameters jpegImageWithQuality:0.9]]]; //3
+            shareDialog.otherAttachmentsStrings = @[@"https://www.facebook.com/RisingFallApp"]; //4
             shareDialog.delegate = self;
             [shareDialog presentIn:_viewC]; //5
         
@@ -350,25 +565,25 @@ static NSString * const kClientId = @"115719295372-v67pr17teh0rfbfae713cg4jgk2a3
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo] ){
         _viewC.mainView.paused = YES;
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeSinaWeibo];
-        [tweetSheet setInitialText:NSLocalizedString(@"ShareMessageK", nil)];
+        [tweetSheet setInitialText:@"Playing Rising Fall"];
         [_viewC presentViewController:tweetSheet animated:YES completion:nil];
         
         [tweetSheet addURL:[NSURL URLWithString:@"https://www.facebook.com/RisingFallApp"]];
-        [tweetSheet addImage:[UIImage imageNamed:@"http://i.imgur.com/g3Qc1HN.png"]];
+        [tweetSheet addImage:[UIImage imageNamed:@"RF120.png"]];
         
         tweetSheet.completionHandler = ^(SLComposeViewControllerResult result) {
             
                 switch(result) {
                         //  This means the user cancelled without sending the Tweet
                     case SLComposeViewControllerResultCancelled:
-                        NSLog(@"canecle");
+                        
                         [self.delegate sharedCallBack:NO];
                         [self sharedErrorCallBack:@"Post Failed"];
                         [self resumeGame];
                         break;
                         //  This means the user hit 'Send'
                     case SLComposeViewControllerResultDone:
-                        NSLog(@"posted");
+                       
                         [self.delegate sharedCallBack:YES];
                         [self resumeGame];
                         break;

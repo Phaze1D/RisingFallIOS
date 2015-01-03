@@ -39,7 +39,7 @@
 //Gets the players info
 -(void)getPlayInfo{
     
-    _levelAt = 90;
+    _levelAt = 0;
     _power1 = 1;
     _power2 = 1;
     _power3 = 1;
@@ -150,14 +150,14 @@
 
 //Calculates the next time the user can share this app
 -(void)calculateNextShareTime{
-    //NSDate * next = [NSDate dateWithTimeIntervalSinceNow:15];
+   // NSDate * next = [NSDate dateWithTimeIntervalSinceNow:15];
     NSDate * next = [NSDate dateWithTimeIntervalSinceNow:172800];
     _timeLeftOnSocialMedia = next.timeIntervalSince1970;
     
 }
 
 -(void)calculateNextLifeTime{
-    NSDate * next = [NSDate dateWithTimeIntervalSinceNow:900];
+    NSDate * next = [NSDate dateWithTimeIntervalSinceNow:600];
     _timeLeftOnLifes = next.timeIntervalSince1970;
 }
 
